@@ -5,124 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantera Sama Studio</title>
     <style>
-        /* Estilos encapsulados para la navegación */
-        body { margin: 0; font-family: sans-serif; background-color: #fafaf9; }
-        
-        .nav-pantera {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            right: 1rem;
-            z-index: 50;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1.5rem;
-            border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-        }
+/* Estilos base de la navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #eaeaea;
+}
 
-        @media (min-width: 768px) {
-            .nav-pantera {
-                left: 50%;
-                transform: translateX(-50%);
-                width: auto;
-                min-width: 500px;
-            }
-        }
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
 
-        .nav-logo {
-            font-weight: 800;
-            font-size: 1.125rem;
-            letter-spacing: -0.05em;
-            color: #1c1917;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .nav-logo span { color: #f43f5e; }
-        .nav-logo:hover { color: #f43f5e; }
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
 
-        .menu-links {
-            display: none;
-            flex-direction: column;
-            gap: 1.5rem;
-            width: 100%;
-            margin-top: 1rem;
-            text-align: center;
-        }
-        .menu-links.show { display: flex; }
+.nav-links a:hover {
+    color: #ff4757; /* Color de acento */
+}
 
-        @media (min-width: 768px) {
-            .menu-links {
-                display: flex;
-                flex-direction: row;
-                width: auto;
-                margin-top: 0;
-                gap: 2rem;
-            }
-        }
-
-        .menu-links a {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #57534e;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .menu-links a:hover { color: #e11d48; transform: scale(1.05); }
-
-        .btn-galeria {
-            background: #1c1917;
-            color: white;
-            padding: 0.5rem 1.25rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-galeria:hover { background: #e11d48; }
-
-        #menu-btn {
-            display: block;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #1c1917;
-        }
-        @media (min-width: 768px) { #menu-btn { display: none; } }
+.cta-button {
+    background-color: #333;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
 
-    <!-- Inicio de Barra de Navegación -->
-    <nav class="nav-pantera" id="navbar">
-        <a href="index.html" class="nav-logo">PANTERA<span>SAMA</span></a>
+<nav class="navbar">
+    <div class="logo">PanteraSama</div>
+    
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="simulador.html">Simulador</a></li>
+        <li><a href="metododepago.html">Medios de Pago</a></li>
+    </ul>
 
-        <button id="menu-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-        </button>
-
-        <div class="menu-links" id="nav-menu">
-            <a href="index.html">Inicio</a>
-            <a href="simulador.html">Simulador</a>
-            <a href="metododepago.html">Encargo</a>
-            <button class="btn-galeria">Mi Galería</button>
-        </div>
-    </nav>
-
-    <script>
-        document.getElementById('menu-btn').addEventListener('click', () => {
-            document.getElementById('nav-menu').classList.toggle('show');
-        });
-    </script>
-    <!-- Fin de Barra de Navegación -->
-
+    <a href="https://www.constanzatubio.com" class="cta-button" target="_blank">
+        PanteraSama Studio: Manos terminadas
+    </a>
+</nav>
 </body>
 </html>
