@@ -43,7 +43,62 @@
     text-decoration: none;
     font-weight: bold;
 }
+/* --- Estilos del Footer --- */
+.site-footer {
+    background-color: #2c3e50; /* Un azul muy oscuro para contraste */
+    color: #ecf0f1;
+    padding: 40px 5%;
+    margin-top: 50px;
+    text-align: center;
+}
 
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+    color: #f1c40f; /* Un tono amarillo suave para destacar */
+    font-size: 1.2rem;
+}
+
+.footer-section p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: #3498db; /* Color tipo link estándar */
+    text-decoration: none;
+    display: block;
+    margin: 8px 0;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.footer-section a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    border-top: 1px solid #5d6d7e;
+    padding-top: 20px;
+    color: #bdc3c7;
+}
         
     </style>
 </head>
@@ -120,7 +175,31 @@
             Iniciar reserva de producción
         </a>
     </section>
+<footer class="site-footer">
+    <div class="footer-content">
+        <!-- Sección Información -->
+        <div class="footer-section">
+            <h4>PanteraSama Studio</h4>
+            <p>Compromiso con la calidad y el detalle.</p>
+            <p>Protección total en tus encargos.</p>
+        </div>
 
+        <!-- Sección Contacto -->
+        <div class="footer-section">
+            <h4>Contacto</h4>
+            <p>¿Dudas sobre tus pagos o envíos?</p>
+            <!-- Enlace configurado con tu número -->
+            <a href="https://wa.me/5491166545235" target="_blank">
+                💬 Escríbenos por WhatsApp
+            </a>
+            <a href="https://www.constanzatubio.com" target="_blank">Visita nuestra web principal</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 PanteraSama Studio. Todos los derechos reservados.</p>
+    </div>
+</footer>
     <footer class="py-12 text-center text-neutral-500 text-sm">
         <p>© 2026 Pantera Sama Studio. Arte original, hecho a mano.</p>
     </footer>
