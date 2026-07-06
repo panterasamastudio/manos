@@ -1,61 +1,193 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantera Sama Studio</title>
+    <title>La Escultura Digital | Experiencia de Transformación</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-/* Estilos base de la navegación */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #eaeaea;
-}
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
+        .gradient-text { background: linear-gradient(90deg, #d4d4d4, #a3a3a3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Estilos base de la navegación */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: #ffffff;
+            border-bottom: 2px solid #eaeaea;
+        }
 
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
 
-.nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    transition: color 0.3s;
-}
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
 
-.nav-links a:hover {
-    color: #ff4757; /* Color de acento */
-}
+        .nav-links a:hover {
+            color: #ff4757; /* Color de acento */
+        }
 
-.cta-button {
-    background-color: #333;
-    color: white !important;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-}
+        .cta-button {
+            background-color: #333;
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* --- Estilos del Footer --- */
+        .site-footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 40px 5%;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        .footer-section h4 {
+            margin-bottom: 15px;
+            color: #f1c40f;
+            font-size: 1.2rem;
+        }
+        .footer-section p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .footer-section a {
+            color: #3498db;
+            text-decoration: none;
+            display: block;
+            margin: 8px 0;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .footer-bottom {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            border-top: 1px solid #5d6d7e;
+            padding-top: 20px;
+            color: #bdc3c7;
+        }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-<nav class="navbar">
-    <div class="logo">PanteraSama</div>
-    
-    <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="simulador.html">Simulador</a></li>
-        <li><a href="metododepago.html">Medios de Pago</a></li>
-    </ul>
+    <nav class="navbar">
+        <div class="logo font-bold text-xl text-neutral-800">PanteraSama</div>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="simulador.html">Simulador</a></li>
+            <li><a href="metododepago.html">Medios de Pago</a></li>
+        </ul>
 
-    <a href="https://www.constanzatubio.com" class="cta-button" target="_blank">
-        PanteraSama Studio: Manos terminadas
-    </a>
-</nav>
+        <a href="https://www.constanzatubio.com" class="cta-button" target="_blank">
+            PanteraSama Studio: Manos terminadas
+        </a>
+    </nav>
+
+    <main>
+        <section class="h-screen flex flex-col justify-center items-center text-center p-6">
+            <h1 class="text-5xl md:text-7xl font-light mb-6">Diseñá tu mano.<br><span class="gradient-text italic">Recibí arte.</span></h1>
+            <p class="max-w-xl text-gray-400 text-lg mb-10 leading-relaxed">No es un objeto. Es una transformación de tu identidad digital a una pieza física, única, certificada y numerada.</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="document.getElementById('waitlist').scrollIntoView()" class="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition">Comenzar Diseño</button>
+            </div>
+        </section>
+
+        <section id="proceso" class="py-24 px-6 max-w-5xl mx-auto">
+            <h2 class="text-3xl font-light mb-16 text-center">Del píxel a la materia</h2>
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="glass p-8 rounded-2xl">
+                    <div class="text-4xl mb-4 text-gray-500">01</div>
+                    <h3 class="text-xl font-semibold mb-2">Diseño Digital</h3>
+                    <p class="text-gray-400">Utilizá nuestra app para modelar tu mano. Sos el artista, nosotros el vehículo.</p>
+                </div>
+                <div class="glass p-8 rounded-2xl">
+                    <div class="text-4xl mb-4 text-gray-500">02</div>
+                    <h3 class="text-xl font-semibold mb-2">Interpretación</h3>
+                    <p class="text-gray-400">Nuestro taller artesanal interpreta tu modelo y lo transforma en una pieza escultórica única.</p>
+                </div>
+                <div class="glass p-8 rounded-2xl">
+                    <div class="text-4xl mb-4 text-gray-500">03</div>
+                    <h3 class="text-xl font-semibold mb-2">Certificación</h3>
+                    <p class="text-gray-400">Firmada y numerada. Recibirás una obra de arte protegida en un packaging de galería.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="waitlist" class="py-24 bg-neutral-900 text-center px-6">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-3xl font-light mb-6">Escasez Programada</h2>
+                <p class="text-gray-400 mb-10">Para garantizar la calidad artesanal, limitamos nuestra producción mensual. Actualmente, los cupos son estrictos.</p>
+                
+                <form onsubmit="event.preventDefault(); alert('Gracias. Te notificaremos cuando se abra un nuevo ciclo de producción.');" class="glass p-8 rounded-3xl">
+                    <label class="block mb-4 text-sm uppercase tracking-widest text-gray-500">Unite a la lista de espera</label>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <input type="email" required placeholder="tu@email.com" class="flex-1 bg-black p-4 rounded-xl border border-white/10 text-white outline-none focus:border-white transition">
+                        <button type="submit" class="px-8 py-4 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transition">Reservar Cupo</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PanteraSama Studio</h4>
+                    <p>Compromiso con la calidad y el detalle.</p>
+                    <p>Protección total en tus encargos.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>¿Dudas sobre tus pagos o envíos?</p>
+                    <a href="https://wa.me/5491166545235" target="_blank">💬 Escríbenos por WhatsApp</a>
+                    <a href="https://www.constanzatubio.com" target="_blank">Visita nuestra web principal</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PanteraSama Studio. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('glass');
+            } else {
+                header.classList.remove('glass');
+            }
+        });
+    </script>
 </body>
 </html>
