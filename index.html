@@ -60,11 +60,11 @@
             <div x-data="{ 
                 activeSlide: 0, 
                 slides: [
-                    'imagen (1).jpeg', 'imagen (2).jpeg', 'imagen (2).png', 
                     'imagen10.png', 'imagen11.png', 'imagen12.png', 
-                    'imagen2.png', 'imagen3.png', 'imagen4.png', 
-                    'imagen5.jpeg', 'imagen6.png', 'imagen7.png', 
-                    'imagen8.png', 'imagen9.png'
+                    'imagen13.png', 'imagen14.png', 'imagen2.png', 
+                    'imagen3.png', 'imagen4.png', 'imagen5.jpeg', 
+                    'imagen6.png', 'imagen7.png', 'imagen8.png', 
+                    'imagen9.png'
                 ],
                 next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },
                 prev() { this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length }
