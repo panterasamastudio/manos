@@ -102,7 +102,29 @@
         .snap-center { scroll-snap-align: center; }
     </style>
 </head>
-<div class="antialiased">
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obras & Galería | Pantera Sama Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --fucsia: #E4007C; --violeta: #6C2483; --bg: #0a0a0a; --text: #D9D9D9; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #e5e5e5; }
+        .text-fucsia { color: var(--fucsia); }
+        .bg-fucsia { background-color: var(--fucsia); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .cta-button { background-color: var(--fucsia); color: white !important; padding: 14px 28px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(228, 0, 124, 0.3); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .snap-mandatory { scroll-snap-type: x mandatory; }
+        .snap-center { scroll-snap-align: center; }
+    </style>
+</head>
+<div class="antialiased"><!--imgs-->
 
     <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -129,9 +151,23 @@
             </div>
 
             <div id="carousel" class="flex gap-6 overflow-x-auto hide-scrollbar scroll-smooth snap-mandatory">
-                <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5"></div>
-                <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5"></div>
-                <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5"></div>
+                <script>
+                    // Lista precisa de tus 16 archivos
+                    const imagenes = [
+                        "imagen (1).jpeg", "imagen (01).jpeg", "imagen (02).jpeg", "imagen (02).jpeg",
+                        "imagen (03).jpeg", "imagen (03).jpeg", "imagen (04).jpeg", "imagen (04).jpeg",
+                        "imagen (05).jpeg", "imagen (05).jpeg", "imagen (06).jpeg", "imagen (06).jpeg",
+                        "imagen (07).jpeg", "imagen (07).jpeg", "imagen (08).jpeg", "imagen (08).jpeg"
+                    ];
+                    
+                    imagenes.forEach((img) => {
+                        document.write(`
+                            <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5 overflow-hidden">
+                                <img src="${img}" alt="Obra de manos" class="w-full h-full object-cover">
+                            </div>
+                        `);
+                    });
+                </script>
             </div>
         </section>
 
@@ -143,13 +179,17 @@
         <section>
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Exposición colectiva: PanteraSama Studio</h2>
             <p class="text-gray-400 mb-10 text-lg">Gallery 619 Center, San Martín 353, CABA. Todo el mes de julio (a pasos del Obelisco).</p>
-            <div class="aspect-video rounded-3xl overflow-hidden glass border border-white/5"></div>
+            <div class="aspect-video rounded-3xl overflow-hidden glass border border-white/5">
+                <video class="w-full h-full object-cover" controls>
+                    <source src="video-expo.mp4" type="video/mp4">
+                    Tu navegador no soporta videos.
+                </video>
+            </div>
         </section>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Fix menuBtn error
             const menuBtn = document.getElementById('menuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
             if (menuBtn && mobileMenu) {
@@ -158,7 +198,6 @@
                 });
             }
 
-            // Carousel control
             const carousel = document.getElementById('carousel');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
@@ -174,6 +213,7 @@
         });
     </script>
 </div>
+<!--fin de img-->
         <section id="waitlist" class="py-24 bg-[#1C1C1C] text-center px-6">
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-3xl font-bold mb-6">Escasez Programada</h2>
