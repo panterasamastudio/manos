@@ -88,7 +88,92 @@
                 </div>
             </div>
         </section>
+    <style>
+        :root { --fucsia: #E4007C; --violeta: #6C2483; --bg: #0a0a0a; --text: #D9D9D9; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #e5e5e5; }
+        .text-fucsia { color: var(--fucsia); }
+        .bg-fucsia { background-color: var(--fucsia); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .cta-button { background-color: var(--fucsia); color: white !important; padding: 14px 28px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(228, 0, 124, 0.3); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .snap-mandatory { scroll-snap-type: x mandatory; }
+        .snap-center { scroll-snap-align: center; }
+    </style>
+</head>
+<div class="antialiased">
 
+    <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="font-bold text-xl tracking-tighter text-white">PANTERA<span class="text-fucsia">SAMA</span></div>
+            <button id="menuBtn" class="md:hidden text-white p-2">Menu</button>
+            <div id="mobileMenu" class="hidden absolute top-full left-0 w-full bg-[#0a0a0a] border-b border-[#1C1C1C] p-6 flex flex-col gap-4">
+                <a href="#proceso" class="text-white">Proceso</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        
+        <section class="mb-24">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Obras de las manos</h2>
+                    <p class="text-gray-400">Esculturas que capturan la esencia del momento.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="prevBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-fucsia transition text-white">←</button>
+                    <button id="nextBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-fucsia transition text-white">→</button>
+                </div>
+            </div>
+
+            <div id="carousel" class="flex gap-6 overflow-x-auto hide-scrollbar scroll-smooth snap-mandatory">
+                <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5"></div>
+                <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5"></div>
+                <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5"></div>
+            </div>
+        </section>
+
+        <section class="glass rounded-[3rem] p-12 md:p-20 text-center mb-24 border border-fucsia/20">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Listo para crear la tuya?</h2>
+            <a href="simulador.html" class="cta-button text-lg inline-block">Diseña tu mano →</a>
+        </section>
+
+        <section>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Exposición colectiva: PanteraSama Studio</h2>
+            <p class="text-gray-400 mb-10 text-lg">Gallery 619 Center, San Martín 353, CABA. Todo el mes de julio (a pasos del Obelisco).</p>
+            <div class="aspect-video rounded-3xl overflow-hidden glass border border-white/5"></div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fix menuBtn error
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Carousel control
+            const carousel = document.getElementById('carousel');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (carousel && prevBtn && nextBtn) {
+                prevBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: -400, behavior: 'smooth' });
+                });
+                nextBtn.addEventListener('click', () => {
+                    carousel.scrollBy({ left: 400, behavior: 'smooth' });
+                });
+            }
+        });
+    </script>
+</div>
         <section id="waitlist" class="py-24 bg-[#1C1C1C] text-center px-6">
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-3xl font-bold mb-6">Escasez Programada</h2>
