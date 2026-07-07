@@ -73,7 +73,7 @@
                 <div class="relative flex transition-transform duration-700 ease-in-out h-[300px] md:h-[450px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
                     <template x-for="(slide, index) in slides" :key="index">
                         <div class="w-full h-full flex-shrink-0 relative">
-                            <img :src="slide" class="h-full w-full object-cover" onerror="this.src='https://placehold.co/800x400/111/fff?text=Imagen+no+disponible'" alt="Galería de Obra">
+                            <img :src="slide" class="h-full w-full object-cover" onerror="this.src='https://placehold.co/800x400/111/fff?text=Error+Carga'" alt="Galería de Obra">
                         </div>
                     </template>
                 </div>
