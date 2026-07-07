@@ -18,32 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <style>
-        /* Estilos base de la navegación */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #eaeaea;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.nav-links a:hover {
-    color: #ff4757; /* Color de acento */
-}
+ 
 
 .cta-button {
     background-color: #333;
@@ -121,26 +96,54 @@
 <body class="min-h-screen text-stone-800 flex flex-col transition-colors duration-300">
 
 
-<nav class="navbar">
-    <div class="logo">PanteraSama</div>
-    
-    <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="simulador.html">Simulador</a></li>
-        <li><a href="metododepago.html">Medios de Pago</a></li>
-    </ul>
+<style>
+    .nav-pantera {
+        --fucsia: #E4007C;
+        --bg: #0a0a0a;
+    }
+    .nav-pantera .text-fucsia-custom { color: var(--fucsia); }
+    .nav-pantera .cta-button-custom { 
+        background-color: var(--fucsia); 
+        color: white !important; 
+        padding: 12px 24px; 
+        border-radius: 8px; 
+        text-decoration: none; 
+        font-weight: 700; 
+        transition: opacity 0.3s; 
+    }
+    .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
+</style>
 
-    <a href="https://www.constanzatubio.com" class="cta-button" target="_blank">
-        PanteraSama Studio: Manos terminadas
-    </a>
+<nav class="nav-pantera sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
+            PANTERA<span class="text-fucsia-custom">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2">ClayHand 3D</span>
+        </div>
+        <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+            <li><a href="index.html" class="hover:text-[#E4007C] transition">Inicio</a></li>
+            <li><a href="simulador.html" class="hover:text-[#E4007C] transition">Simulador</a></li>
+            <li><a href="index.html#proceso" class="hover:text-[#E4007C] transition">El Proceso</a></li>
+            <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
+            <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+        </ul>
+        <button id="menuBtn" class="md:hidden text-white focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-[#0a0a0a] border-t border-[#1C1C1C] mt-4 flex flex-col gap-4 p-4 text-center text-white">
+        <a href="index.html" class="block py-2">Inicio</a>
+        <a href="simulador.html" class="block py-2">Simulador</a>
+        <a href="index.html#proceso" class="block py-2">El Proceso</a>
+        <a href="metododepago.html" class="block py-2">Medios de Pago</a>
+        <a href="https://www.constanzatubio.com" class="cta-button-custom block mt-2">Estudio</a>
+    </div>
 </nav>
 
-    <script>
-        document.getElementById('menu-btn').addEventListener('click', () => {
-            document.getElementById('nav-menu').classList.toggle('show');
-        });
-    </script>
-    <!-- Fin de Barra de Navegación -->
+<script>
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+</script>
 
             
             <!-- Selector de Arcilla -->
