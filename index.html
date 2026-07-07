@@ -5,110 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClayHand 3D · Pantera Sama Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Roboto', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
-        .text-fucsia { color: #E4007C; }
-        .bg-fucsia { background-color: #E4007C; }
-        .text-violeta { color: #6C2483; }
-        .bg-violeta { background-color: #6C2483; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .nav-links a { transition: all 0.3s ease; color: #D9D9D9; }
-        .nav-links a:hover { color: #E4007C; }
-        .cta-button { background-color: #E4007C; color: white !important; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: opacity 0.3s; }
-        .cta-button:hover { opacity: 0.9; }
-        .site-footer { background-color: #1C1C1C; color: #D9D9D9; padding: 80px 5% 40px; margin-top: 100px; }
-    </style>
-</head>
-<body class="antialiased">
-
-    <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <!-- Logo -->
-            <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
-                PANTERA<span class="text-fucsia">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2">ClayHand 3D</span>
-            </div>
-
-            <!-- Menú Desktop -->
-            <ul class="hidden md:flex items-center gap-8 font-medium">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="simulador.html">Simulador</a></li>
-                <li><a href="#proceso">El Proceso</a></li>
-                <li><a href="metododepago.html">Medios de Pago</a></li>
-                <li>
-                    <a href="https://www.constanzatubio.com" class="cta-button" target="_blank">Estudio</a>
-                </li>
-            </ul>
-
-            <!-- Botón Hamburguesa -->
-            <button id="menuBtn" class="md:hidden text-white focus:outline-none">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </div>
-
-        <!-- Menú móvil desplegable -->
-        <div id="mobileMenu" class="hidden md:hidden bg-[#0a0a0a] border-t border-[#1C1C1C] mt-4 flex flex-col gap-4 p-4 text-center">
-            <a href="index.html" class="block py-2">Inicio</a>
-            <a href="simulador.html" class="block py-2">Simulador</a>
-            <a href="#proceso" class="block py-2">El Proceso</a>
-            <a href="metododepago.html" class="block py-2">Medios de Pago</a>
-            <a href="https://www.constanzatubio.com" class="cta-button block mt-2">Estudio</a>
-        </div>
-    </nav>
-
-    <main>
-        <section class="min-h-[80vh] flex flex-col justify-center items-center text-center p-6">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">Diseñá tu mano.<br><span class="text-fucsia italic">Recibí arte.</span></h1>
-            <p class="max-w-xl text-[#D9D9D9] text-lg mb-10 leading-relaxed font-light">
-                Una transformación donde tu identidad digital se funde con la materia. Obra única, certificada y numerada.
-            </p>
-            <button onclick="window.location.href='simulador.html'" 
-                    class="px-10 py-5 bg-white text-black font-bold rounded-lg hover:bg-[#D9D9D9] transition cursor-pointer">
-                Iniciar Sesión de Diseño
-            </button>
-        </section>
-
-        <section id="proceso" class="py-24 px-6 max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold mb-20 text-center">¿Cómo funciona el simulador?</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass p-10 rounded-3xl border border-white/5">
-                    <div class="text-5xl mb-6 text-violeta font-light">01</div>
-                    <h3 class="text-xl font-semibold mb-4 text-white">Captura en Vivo</h3>
-                    <p class="text-[#D9D9D9] leading-relaxed font-light">Accedé al simulador desde tu navegador. Al activar la cámara, el sistema reconoce el gesto natural de tu mano sin necesidad de dispositivos adicionales.</p>
-                </div>
-                <div class="glass p-10 rounded-3xl border border-white/5">
-                    <div class="text-5xl mb-6 text-violeta font-light">02</div>
-                    <h3 class="text-xl font-semibold mb-4 text-white">Interpretación Técnica</h3>
-                    <p class="text-[#D9D9D9] leading-relaxed font-light">El software traduce tu posición en un croquis geométrico digital, preservando la espontaneidad del trazo mientras prepara los vectores para la escultura.</p>
-                </div>
-                <div class="glass p-10 rounded-3xl border border-white/5">
-                    <div class="text-5xl mb-6 text-violeta font-light">03</div>
-                    <h3 class="text-xl font-semibold mb-4 text-white">Modelado Artístico</h3>
-                    <p class="text-[#D9D9D9] leading-relaxed font-light">Una vez confirmado tu diseño, nuestro taller comienza el proceso de modelado artesanal, convirtiendo el croquis digital en una pieza física de colección.</p>
-                </div>
-            </div>
-        </section>
-    <style>
-        :root { --fucsia: #E4007C; --violeta: #6C2483; --bg: #0a0a0a; --text: #D9D9D9; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #e5e5e5; }
-        .text-fucsia { color: var(--fucsia); }
-        .bg-fucsia { background-color: var(--fucsia); }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .cta-button { background-color: var(--fucsia); color: white !important; padding: 14px 28px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; }
-        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(228, 0, 124, 0.3); }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .snap-mandatory { scroll-snap-type: x mandatory; }
-        .snap-center { scroll-snap-align: center; }
-    </style>
-</head>
-<!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obras & Galería | Pantera Sama Studio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --fucsia: #E4007C; --violeta: #6C2483; --bg: #0a0a0a; --text: #D9D9D9; }
@@ -118,180 +15,98 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .cta-button { background-color: var(--fucsia); color: white !important; padding: 14px 28px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; }
         .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(228, 0, 124, 0.3); }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .snap-mandatory { scroll-snap-type: x mandatory; }
-        .snap-center { scroll-snap-align: center; }
+        .site-footer { background-color: #1C1C1C; color: #D9D9D9; padding: 80px 5% 40px; margin-top: 100px; }
     </style>
 </head>
-<div class="antialiased"><!--imgs-->
-
-    <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="font-bold text-xl tracking-tighter text-white">PANTERA<span class="text-fucsia">SAMA</span></div>
-            <button id="menuBtn" class="md:hidden text-white p-2">Menu</button>
-            <div id="mobileMenu" class="hidden absolute top-full left-0 w-full bg-[#0a0a0a] border-b border-[#1C1C1C] p-6 flex flex-col gap-4">
-                <a href="#proceso" class="text-white">Proceso</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        
-        <section class="mb-24">
-            <div class="flex justify-between items-end mb-10">
-                <div>
-                    <h2 class="text-3xl font-bold mb-2">Obras de las manos</h2>
-                    <p class="text-gray-400">Esculturas que capturan la esencia del momento.</p>
-                </div>
-                <div class="flex gap-2">
-                    <button id="prevBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-fucsia transition text-white">←</button>
-                    <button id="nextBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-fucsia transition text-white">→</button>
-                </div>
-            </div>
-
-            <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
-        .text-fucsia { color: #E4007C; }
-        .bg-fucsia { background-color: #E4007C; }
-        .text-violeta { color: #6C2483; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .cta-button { background-color: #E4007C; color: white !important; padding: 14px 28px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-</head>
-<div class="antialiased">
+<body class="antialiased">
 
     <!-- Navegación -->
     <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="font-bold text-xl tracking-tighter text-white">PANTERA<span class="text-fucsia">SAMA</span></div>
+            <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
+                PANTERA<span class="text-fucsia">SAMA</span>
+            </div>
             <button id="menuBtn" class="md:hidden text-white">Menu</button>
-            <div id="mobileMenu" class="hidden md:flex gap-6">
-                <a href="#proceso">El Proceso</a>
-                <a href="simulador.html">Simulador</a>
+            <div id="mobileMenu" class="hidden md:flex gap-8 font-medium items-center">
+                <a href="#proceso" class="hover:text-fucsia transition">El Proceso</a>
+                <a href="simulador.html" class="hover:text-fucsia transition">Simulador</a>
             </div>
         </div>
     </nav>
 
-<div class="antialiased">
+    <main>
+        <!-- Sección Hero -->
+        <section class="min-h-[60vh] flex flex-col justify-center items-center text-center p-6">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">Diseñá tu mano.<br><span class="text-fucsia italic">Recibí arte.</span></h1>
+            <p class="max-w-xl text-[#D9D9D9] text-lg mb-10 leading-relaxed font-light">
+                Una transformación donde tu identidad digital se funde con la materia. Obra única, certificada y numerada.
+            </p>
+            <a href="simulador.html" class="cta-button cursor-pointer">Iniciar Sesión de Diseño</a>
+        </section>
 
-    <!-- Carrusel de Obras Mejorado -->
-    <section class="py-20 px-6 max-w-5xl mx-auto">
-        <h2 class="text-4xl font-bold text-white mb-12 tracking-tight">Obras de las <span class="text-fucsia">Manos</span></h2>
-        
-        <div x-data="{
-            activeSlide: 0,
-            slides: [
-                'imagen (1).jpeg', 'imagen (2).jpeg', 'imagen (2).png', 'imagen10.png', 
-                'imagen11.png', 'imagen12.png', 'imagen2.png', 'imagen3.png', 
-                'imagen4.png', 'imagen5.jpeg', 'imagen6.png', 'imagen7.png', 
-                'imagen8.png', 'imagen9.png'
-            ]
-        }" class="relative w-full overflow-hidden rounded-2xl shadow-2xl border border-[#1C1C1C]">
+        <!-- Carrusel de Obras -->
+        <section class="py-20 px-6 max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Obras de las <span class="text-fucsia">Manos</span></h2>
             
-            <!-- Contenedor de Slides -->
-            <div class="flex transition-transform duration-700 ease-out h-[500px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
-                <template x-for="slide in slides" :key="slide">
-                    <div class="w-full h-full flex-shrink-0 bg-[#111] flex items-center justify-center p-4">
-                        <img :src="slide" alt="Obra de arte" class="max-h-full max-w-full object-contain">
-                    </div>
-                </template>
+            <div x-data="{
+                activeSlide: 0,
+                slides: ['imagen (1).jpeg', 'imagen (2).jpeg', 'imagen (2).png', 'imagen10.png', 'imagen11.png', 'imagen12.png', 'imagen2.png', 'imagen3.png', 'imagen4.png', 'imagen5.jpeg', 'imagen6.png', 'imagen7.png', 'imagen8.png', 'imagen9.png']
+            }" class="relative w-full overflow-hidden rounded-2xl shadow-2xl border border-[#1C1C1C] bg-[#111]">
+                
+                <div class="flex transition-transform duration-700 ease-out h-[400px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
+                    <template x-for="slide in slides" :key="slide">
+                        <div class="w-full h-full flex-shrink-0 flex items-center justify-center p-4">
+                            <img :src="slide" alt="Obra de arte" class="max-h-full max-w-full object-contain rounded-lg" onerror="this.style.display='none'">
+                        </div>
+                    </template>
+                </div>
+
+                <button @click="activeSlide = (activeSlide - 1 + slides.length) % slides.length" 
+                        class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-fucsia transition text-white">◀</button>
+                <button @click="activeSlide = (activeSlide + 1) % slides.length" 
+                        class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-fucsia transition text-white">▶</button>
             </div>
+        </section>
 
-            <!-- Controles -->
-            <button @click="activeSlide = (activeSlide - 1 + slides.length) % slides.length" 
-                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-fucsia transition">◀</button>
-            <button @click="activeSlide = (activeSlide + 1) % slides.length" 
-                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-fucsia transition">▶</button>
-
-            <!-- Puntos de Navegación -->
-            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                <template x-for="(slide, index) in slides" :key="index">
-                    <button @click="activeSlide = index" 
-                            class="w-3 h-3 rounded-full transition-all" 
-                            :class="activeSlide === index ? 'bg-fucsia scale-125' : 'bg-white/30'"></button>
-                </template>
+        <!-- Video Proceso -->
+        <section class="py-20 bg-[#0f0f0f] border-t border-[#1C1C1C]">
+            <div class="max-w-2xl mx-auto px-6 text-center">
+                <h3 class="text-2xl font-bold text-white mb-8">Proceso Creativo</h3>
+                <div class="rounded-2xl border border-[#1C1C1C] overflow-hidden shadow-lg">
+                    <video class="w-full h-auto" autoplay loop muted playsinline>
+                        <source src="PanteraSama (2).mp4" type="video/mp4">
+                    </video>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Sección de Proceso Creativo -->
-    <section class="py-20 bg-[#0f0f0f] border-t border-[#1C1C1C]">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h3 class="text-2xl font-bold text-white mb-8">Proceso Creativo</h3>
-            <div class="relative overflow-hidden rounded-2xl border border-[#1C1C1C]">
-                <video class="w-full h-auto" autoplay loop muted playsinline>
-                    <source src="PanteraSama (2).mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </section>
-
-</body>
+        <!-- Waitlist -->
         <section id="waitlist" class="py-24 bg-[#1C1C1C] text-center px-6">
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-3xl font-bold mb-6">Escasez Programada</h2>
-                <p class="text-[#D9D9D9] mb-10 font-light">La calidad artesanal requiere tiempo. Limitamos nuestros cupos mensuales para garantizar que cada obra mantenga nuestra firma de calidad.</p>
-                
+                <p class="text-[#D9D9D9] mb-10 font-light">Limitamos nuestros cupos mensuales para garantizar la excelencia artesanal.</p>
                 <form id="waitlistForm" class="glass p-8 rounded-2xl">
-                    <label class="block mb-4 text-xs uppercase tracking-widest text-[#D9D9D9]">Unite a la lista de espera</label>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <input type="email" id="userEmail" required placeholder="tu@email.com" class="flex-1 bg-black p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia transition">
-                        <button type="submit" class="px-8 py-4 bg-fucsia text-white font-bold rounded-lg hover:opacity-90 transition">Reservar Cupo</button>
+                        <input type="email" id="userEmail" required placeholder="tu@email.com" class="flex-1 bg-black p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia">
+                        <button type="submit" class="cta-button">Reservar Cupo</button>
                     </div>
                 </form>
             </div>
         </section>
 
-        <footer class="site-footer">
-            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
-                <div class="space-y-4">
-                    <h4 class="font-bold text-white text-lg">PanteraSama Studio</h4>
-                    <p class="text-sm font-light">Autenticidad, sobriedad y espontaneidad en cada trazo.</p>
-                </div>
-                <div class="space-y-4">
-                    <h4 class="font-bold text-white text-lg">Contacto</h4>
-                    <a href="mailto:panterasamastudio@tumanoenescultura.com" class="block text-sm text-fucsia hover:underline">panterasamastudio@tumanoenescultura.com</a>
-                    <a href="https://wa.me/5491166545235" target="_blank" class="block text-sm text-white hover:text-fucsia transition">💬 Escríbenos por WhatsApp</a>
-                    <a href="https://www.constanzatubio.com" target="_blank" class="block text-sm text-violeta hover:underline">Visita nuestra web principal</a>
-                </div>
-                <div class="space-y-4">
-                    <h4 class="font-bold text-white text-lg">Certificación</h4>
-                    <div class="w-12 h-1 bg-fucsia"></div>
-                    <p class="text-xs font-light text-[#D9D9D9] mt-4">2026 © PanteraSama. Todos los derechos reservados.</p>
-                </div>
-            </div>
+        <footer class="site-footer text-center">
+            <p class="text-xs font-light text-[#D9D9D9]">2026 © PanteraSama. Todos los derechos reservados.</p>
         </footer>
     </main>
 
     <script>
-        // Hamburguesa
         document.getElementById('menuBtn').addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         });
-
-        // Scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
-                nav.style.backdropFilter = 'blur(10px)';
-            } else {
-                nav.style.backgroundColor = '#0a0a0a';
-                nav.style.backdropFilter = 'none';
-            }
-        });
-
-        // Formulario
         document.getElementById('waitlistForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const userEmail = document.getElementById('userEmail').value;
-            const to = "panterasamastudio@tumanoenescultura.com";
-            const subject = encodeURIComponent("Reserva de Cupo - PanteraSama");
-            const body = encodeURIComponent(`Hola PanteraSama,\n\nMe encantó la pieza. Estoy muy interesado en el proceso y quiero recibir más información.\n\nAtentamente,\n${userEmail}`);
-            window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:panterasamastudio@tumanoenescultura.com?subject=Reserva de Cupo&body=Hola, quiero mas informacion. Email: ${userEmail}`;
         });
     </script>
 </body>
