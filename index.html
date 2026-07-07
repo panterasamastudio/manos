@@ -60,11 +60,9 @@
             <div x-data="{ 
                 activeSlide: 0, 
                 slides: [
-                    'imagen10.png', 'imagen11.png', 'imagen12.png', 
-                    'imagen13.png', 'imagen14.png', 'imagen2.png', 
-                    'imagen3.png', 'imagen4.png', 'imagen5.jpeg', 
-                    'imagen6.png', 'imagen7.png', 'imagen8.png', 
-                    'imagen9.png'
+                    'imagen2.png', 'imagen3.png', 'imagen4.png', 'imagen5.jpeg', 
+                    'imagen6.png', 'imagen7.png', 'imagen8.png', 'imagen9.png', 
+                    'imagen10.png', 'imagen11.png', 'imagen12.png', 'imagen13.png', 'imagen14.png'
                 ],
                 next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },
                 prev() { this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length }
@@ -73,7 +71,7 @@
                 <div class="relative flex transition-transform duration-700 ease-in-out h-[300px] md:h-[450px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
                     <template x-for="(slide, index) in slides" :key="index">
                         <div class="w-full h-full flex-shrink-0 relative">
-                            <img :src="slide" class="h-full w-full object-cover" onerror="this.src='https://placehold.co/800x400/111/fff?text=Error+Carga'" alt="Galería de Obra">
+                            <img :src="slide" class="h-full w-full object-cover" onerror="this.style.display='none'; console.error('Error cargando:', slide)" alt="Galería de Obra">
                         </div>
                     </template>
                 </div>
