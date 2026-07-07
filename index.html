@@ -60,24 +60,24 @@
             <div x-data="{ 
                 activeSlide: 0, 
                 slides: [
-                    'https://placehold.co/800x400/111/fff?text=Obra+1', 
-                    'https://placehold.co/800x400/222/fff?text=Obra+2', 
-                    'https://placehold.co/800x400/333/fff?text=Obra+3'
+                    'imagen (1).jpeg', 'imagen (2).jpeg', 'imagen (2).png', 
+                    'imagen10.png', 'imagen11.png', 'imagen12.png', 
+                    'imagen2.png', 'imagen3.png', 'imagen4.png', 
+                    'imagen5.jpeg', 'imagen6.png', 'imagen7.png', 
+                    'imagen8.png', 'imagen9.png'
                 ],
                 next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },
                 prev() { this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length }
             }" class="relative w-full overflow-hidden rounded-2xl border border-[#1C1C1C] bg-[#111] shadow-2xl">
                 
-                <!-- Slides Container -->
                 <div class="relative flex transition-transform duration-700 ease-in-out h-[300px] md:h-[450px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
                     <template x-for="(slide, index) in slides" :key="index">
                         <div class="w-full h-full flex-shrink-0 relative">
-                            <img :src="slide" class="h-full w-full object-cover" alt="Galería de Obra">
+                            <img :src="slide" class="h-full w-full object-cover" onerror="this.src='https://placehold.co/800x400/111/fff?text=Imagen+no+disponible'" alt="Galería de Obra">
                         </div>
                     </template>
                 </div>
 
-                <!-- Navigation Controls -->
                 <button @click="prev()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-fucsia text-white p-3 rounded-full backdrop-blur-sm transition-all z-10">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
@@ -85,10 +85,9 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
 
-                <!-- Dots Indicators -->
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 overflow-x-auto px-4">
                     <template x-for="(slide, index) in slides" :key="index">
-                        <button @click="activeSlide = index" :class="activeSlide === index ? 'bg-fucsia w-8' : 'bg-white/50 w-2'" class="h-2 rounded-full transition-all"></button>
+                        <button @click="activeSlide = index" :class="activeSlide === index ? 'bg-fucsia w-6' : 'bg-white/50 w-2'" class="h-2 rounded-full transition-all flex-shrink-0"></button>
                     </template>
                 </div>
             </div>
@@ -113,12 +112,10 @@
     </main>
 
     <script>
-        // Menu Toggle
         document.getElementById('menuBtn').addEventListener('click', () => {
             document.getElementById('mobileMenu').classList.toggle('hidden');
         });
         
-        // Form Handling
         document.getElementById('waitlistForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const userEmail = document.getElementById('userEmail').value;
