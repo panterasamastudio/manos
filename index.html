@@ -175,93 +175,61 @@
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        <!-- Carrusel Corregido -->
-        <section class="mb-24">
-            <div class="flex justify-between items-end mb-10">
-                <div>
-                    <h2 class="text-3xl font-bold mb-2">Obras de las manos</h2>
-                    <p class="text-gray-400">Esculturas que capturan la esencia del momento.</p>
-                </div>
-                <div class="flex gap-2">
-                    <button id="prevBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E4007C] text-white">←</button>
-                    <button id="nextBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E4007C] text-white">→</button>
-                </div>
+<div class="antialiased">
+
+    <!-- Carrusel de Obras Mejorado -->
+    <section class="py-20 px-6 max-w-5xl mx-auto">
+        <h2 class="text-4xl font-bold text-white mb-12 tracking-tight">Obras de las <span class="text-fucsia">Manos</span></h2>
+        
+        <div x-data="{
+            activeSlide: 0,
+            slides: [
+                'imagen (1).jpeg', 'imagen (2).jpeg', 'imagen (2).png', 'imagen10.png', 
+                'imagen11.png', 'imagen12.png', 'imagen2.png', 'imagen3.png', 
+                'imagen4.png', 'imagen5.jpeg', 'imagen6.png', 'imagen7.png', 
+                'imagen8.png', 'imagen9.png'
+            ]
+        }" class="relative w-full overflow-hidden rounded-2xl shadow-2xl border border-[#1C1C1C]">
+            
+            <!-- Contenedor de Slides -->
+            <div class="flex transition-transform duration-700 ease-out h-[500px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
+                <template x-for="slide in slides" :key="slide">
+                    <div class="w-full h-full flex-shrink-0 bg-[#111] flex items-center justify-center p-4">
+                        <img :src="slide" alt="Obra de arte" class="max-h-full max-w-full object-contain">
+                    </div>
+                </template>
             </div>
 
-            <div id="carousel" class="flex gap-6 overflow-x-auto hide-scrollbar scroll-smooth snap-x">
-                <script>
-                    // Genera automáticamente del 1 al 10
-                    for (let i = 1; i <= 10; i++) {
-                        // Cambia la extensión si todas tus imágenes son .png
-                        const fileName = `imagen${i}.png`; 
-                        document.write(`
-                            <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5 overflow-hidden flex-shrink-0">
-                                <img src="${fileName}" alt="Obra ${i}" class="w-full h-full object-cover" onerror="this.style.display='none'">
-                            </div>
-                        `);
-                    }
-                </script>
+            <!-- Controles -->
+            <button @click="activeSlide = (activeSlide - 1 + slides.length) % slides.length" 
+                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-fucsia transition">◀</button>
+            <button @click="activeSlide = (activeSlide + 1) % slides.length" 
+                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-fucsia transition">▶</button>
+
+            <!-- Puntos de Navegación -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                <template x-for="(slide, index) in slides" :key="index">
+                    <button @click="activeSlide = index" 
+                            class="w-3 h-3 rounded-full transition-all" 
+                            :class="activeSlide === index ? 'bg-fucsia scale-125' : 'bg-white/30'"></button>
+                </template>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <script>
-        // Lógica del carrusel y menú
-        document.getElementById('menuBtn').addEventListener('click', () => {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-
-        const carousel = document.getElementById('carousel');
-        document.getElementById('prevBtn').addEventListener('click', () => carousel.scrollBy({ left: -400, behavior: 'smooth' }));
-        document.getElementById('nextBtn').addEventListener('click', () => carousel.scrollBy({ left: 400, behavior: 'smooth' }));
-    </script>
-</div><!--ffin de carrousel->>
-        </section>
-
-        <section class="glass rounded-[3rem] p-12 md:p-20 text-center mb-24 border border-fucsia/20">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Listo para crear la tuya?</h2>
-            <a href="simulador.html" class="cta-button text-lg inline-block">Diseña tu mano →</a>
-        </section>
-
-        <section>
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Exposición colectiva: PanteraSama Studio</h2>
-            <p class="text-gray-400 mb-10 text-lg">Gallery 619 Center, San Martín 353, CABA. Todo el mes de julio (a pasos del Obelisco).</p>
-            <div class="aspect-video rounded-3xl overflow-hidden glass border border-white/5">
-                <video class="w-full h-full object-cover" controls>
-                    <source src="video.mp4" type="video/mp4">
-                    Tu navegador no soporta videos.
+    <!-- Sección de Proceso Creativo -->
+    <section class="py-20 bg-[#0f0f0f] border-t border-[#1C1C1C]">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold text-white mb-8">Proceso Creativo</h3>
+            <div class="relative overflow-hidden rounded-2xl border border-[#1C1C1C]">
+                <video class="w-full h-auto" autoplay loop muted playsinline>
+                    <source src="PanteraSama (2).mp4" type="video/mp4">
                 </video>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const menuBtn = document.getElementById('menuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            if (menuBtn && mobileMenu) {
-                menuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-
-            const carousel = document.getElementById('carousel');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-
-            if (carousel && prevBtn && nextBtn) {
-                prevBtn.addEventListener('click', () => {
-                    carousel.scrollBy({ left: -400, behavior: 'smooth' });
-                });
-                nextBtn.addEventListener('click', () => {
-                    carousel.scrollBy({ left: 400, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
-</div>
-<!--fin de img-->
+</body>
         <section id="waitlist" class="py-24 bg-[#1C1C1C] text-center px-6">
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-3xl font-bold mb-6">Escasez Programada</h2>
