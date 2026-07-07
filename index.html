@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Escultura Digital | Pantera Sama</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cargando fuente Roboto según manual -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -120,10 +119,10 @@
                 <h2 class="text-3xl font-bold mb-6">Escasez Programada</h2>
                 <p class="text-[#D9D9D9] mb-10 font-light">La calidad artesanal requiere tiempo. Limitamos nuestros cupos mensuales para garantizar que cada obra mantenga nuestra firma de calidad.</p>
                 
-                <form onsubmit="event.preventDefault();" class="glass p-8 rounded-2xl">
+                <form id="waitlistForm" class="glass p-8 rounded-2xl">
                     <label class="block mb-4 text-xs uppercase tracking-widest text-[#D9D9D9]">Unite a la lista de espera</label>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <input type="email" required placeholder="tu@email.com" class="flex-1 bg-black p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia transition">
+                        <input type="email" id="userEmail" required placeholder="tu@email.com" class="flex-1 bg-black p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia transition">
                         <button type="submit" class="px-8 py-4 bg-fucsia text-white font-bold rounded-lg hover:opacity-90 transition">Reservar Cupo</button>
                     </div>
                 </form>
@@ -138,7 +137,8 @@
                 </div>
                 <div class="space-y-4">
                     <h4 class="font-bold text-white text-lg">Contacto</h4>
-                    <a href="https://wa.me/5491166545235" target="_blank" class="block text-sm text-fucsia hover:underline">💬 Escríbenos por WhatsApp</a>
+                    <a href="mailto:panterasamastudio@tumanoenescultura.com" class="block text-sm text-fucsia hover:underline">panterasamastudio@tumanoenescultura.com</a>
+                    <a href="https://wa.me/5491166545235" target="_blank" class="block text-sm text-white hover:text-fucsia transition">💬 Escríbenos por WhatsApp</a>
                     <a href="https://www.constanzatubio.com" target="_blank" class="block text-sm text-violeta hover:underline">Visita nuestra web principal</a>
                 </div>
                 <div class="space-y-4">
@@ -151,6 +151,7 @@
     </main>
 
     <script>
+        // Efecto scroll en Navbar
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
             if (window.scrollY > 50) {
@@ -160,6 +161,29 @@
                 nav.style.backgroundColor = '#0a0a0a';
                 nav.style.backdropFilter = 'none';
             }
+        });
+
+        // Manejo del formulario de lista de espera
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userEmail = document.getElementById('userEmail').value;
+            const to = "panterasamastudio@tumanoenescultura.com";
+            const subject = encodeURIComponent("Reserva de Cupo - PanteraSama");
+            
+            const body = encodeURIComponent(`Hola PanteraSama,
+
+Me encantó la pieza. Estoy muy interesado en el proceso y quiero recibir más información para ponerme en contacto con ustedes.
+
+Adjunto a este correo la imagen que creé en el simulador.
+
+Quedo a la espera de su respuesta.
+
+Atentamente,
+${userEmail}`);
+
+            // Dispara el cliente de correo
+            window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
         });
     </script>
 </body>
