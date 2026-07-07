@@ -20,19 +20,134 @@
 </head>
 <body class="antialiased">
 
-    <!-- Navegación -->
-    <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
-                PANTERA<span class="text-fucsia">SAMA</span>
-            </div>
-            <button id="menuBtn" class="md:hidden text-white">Menu</button>
-            <div id="mobileMenu" class="hidden md:flex gap-8 font-medium items-center">
-                <a href="#proceso" class="hover:text-fucsia transition">El Proceso</a>
-                <a href="simulador.html" class="hover:text-fucsia transition">Simulador</a>
-            </div>
+ 
+    <style>
+ 
+
+.cta-button {
+    background-color: #333;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+        /* Tipografía corporativa Pantera Sama: Roboto (fallback Arial), según Manual de Identidad Visual */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+
+        :root {
+            /* Paleta oficial Pantera Sama */
+            --ps-negro: #1C1C1C;   /* Negro suave, nunca negro puro */
+            --ps-blanco: #FFFFFF;
+            --ps-fucsia: #E4007C;
+            --ps-violeta: #6C2483;
+            --ps-gris: #D9D9D9;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f7f5f0;
+        }
+        .serif-font {
+            font-family: 'Roboto', Arial, sans-serif;
+            font-weight: 700; /* Roboto Bold — títulos y encabezados, según manual */
+            letter-spacing: -0.01em;
+        }
+        .clay-card {
+            background: #ffffff;
+            border: 1px solid #e5dec9;
+            box-shadow: 0 12px 36px -12px rgba(115, 80, 50, 0.12);
+        }
+        .clay-brand-dark {
+            background-color: var(--ps-negro);
+        }
+        .ps-logo-img {
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+        }
+        /* Efecto láser de escaneo */
+        @keyframes scan {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(280px); opacity: 0.2; }
+        }
+        .scan-line {
+            animation: scan 2s infinite ease-in-out;
+        }
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spin-slow {
+            animation: spin-slow 20s infinite linear;
+        }
+        /* Animación de pulso dorado alquímico */
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(228, 0, 124, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(228, 0, 124, 0); }
+        }
+        .pulse-gold {
+            animation: pulse-gold 2s infinite;
+        }
+        /* Efecto de flotación sutil para el CTA */
+        @keyframes float-subtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        .float-subtle {
+            animation: float-subtle 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-stone-800 flex flex-col transition-colors duration-300">
+
+
+<style>
+    .nav-pantera {
+        --fucsia: #E4007C;
+        --bg: #0a0a0a;
+    }
+    .nav-pantera .text-fucsia-custom { color: var(--fucsia); }
+    .nav-pantera .cta-button-custom { 
+        background-color: var(--fucsia); 
+        color: white !important; 
+        padding: 12px 24px; 
+        border-radius: 8px; 
+        text-decoration: none; 
+        font-weight: 700; 
+        transition: opacity 0.3s; 
+    }
+    .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
+</style>
+
+<nav class="nav-pantera sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
+            PANTERA<span class="text-fucsia-custom">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2">ClayHand 3D</span>
         </div>
-    </nav>
+        <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+            <li><a href="index.html" class="hover:text-[#E4007C] transition">Inicio</a></li>
+            <li><a href="simulador.html" class="hover:text-[#E4007C] transition">Simulador</a></li>
+            <li><a href="index.html#proceso" class="hover:text-[#E4007C] transition">El Proceso</a></li>
+            <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
+            <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+        </ul>
+        <button id="menuBtn" class="md:hidden text-white focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-[#0a0a0a] border-t border-[#1C1C1C] mt-4 flex flex-col gap-4 p-4 text-center text-white">
+        <a href="index.html" class="block py-2">Inicio</a>
+        <a href="simulador.html" class="block py-2">Simulador</a>
+        <a href="index.html#proceso" class="block py-2">El Proceso</a>
+        <a href="metododepago.html" class="block py-2">Medios de Pago</a>
+        <a href="https://www.constanzatubio.com" class="cta-button-custom block mt-2">Estudio</a>
+    </div>
+</nav>
+
+<script>
+    document.getElementById('menuBtn').addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+</script>
 
     <main>
         <!-- Sección Hero -->
