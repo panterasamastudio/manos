@@ -150,24 +150,73 @@
                 </div>
             </div>
 
-            <div id="carousel" class="flex gap-6 overflow-x-auto hide-scrollbar scroll-smooth snap-mandatory">
+            <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
+        .text-fucsia { color: #E4007C; }
+        .bg-fucsia { background-color: #E4007C; }
+        .text-violeta { color: #6C2483; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .cta-button { background-color: #E4007C; color: white !important; padding: 14px 28px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<div class="antialiased">
+
+    <!-- Navegación -->
+    <nav class="sticky top-0 z-50 bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="font-bold text-xl tracking-tighter text-white">PANTERA<span class="text-fucsia">SAMA</span></div>
+            <button id="menuBtn" class="md:hidden text-white">Menu</button>
+            <div id="mobileMenu" class="hidden md:flex gap-6">
+                <a href="#proceso">El Proceso</a>
+                <a href="simulador.html">Simulador</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Carrusel Corregido -->
+        <section class="mb-24">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Obras de las manos</h2>
+                    <p class="text-gray-400">Esculturas que capturan la esencia del momento.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="prevBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E4007C] text-white">←</button>
+                    <button id="nextBtn" class="p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E4007C] text-white">→</button>
+                </div>
+            </div>
+
+            <div id="carousel" class="flex gap-6 overflow-x-auto hide-scrollbar scroll-smooth snap-x">
                 <script>
-                    // Lista precisa de tus 16 archivos
-                    const imagenes = [
-                        "imagen (1).jpeg", "imagen2.png", "imagen3.png", "imagen4.png",
-                        "imagen5.png", "imagen6.png", "imagen7.png", "imagen8.png",
-                        "imagen9.png", "imagen10.png", "imagen11.png"
-                    ];
-                    
-                    imagenes.forEach((img) => {
+                    // Genera automáticamente del 1 al 10
+                    for (let i = 1; i <= 10; i++) {
+                        // Cambia la extensión si todas tus imágenes son .png
+                        const fileName = `imagen${i}.png`; 
                         document.write(`
-                            <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5 overflow-hidden">
-                                <img src="${img}" alt="Obra de manos" class="w-full h-full object-cover">
+                            <div class="snap-center min-w-[300px] md:min-w-[400px] aspect-[4/5] bg-[#1C1C1C] rounded-3xl border border-white/5 overflow-hidden flex-shrink-0">
+                                <img src="${fileName}" alt="Obra ${i}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                             </div>
                         `);
-                    });
+                    }
                 </script>
             </div>
+        </section>
+    </main>
+
+    <script>
+        // Lógica del carrusel y menú
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        const carousel = document.getElementById('carousel');
+        document.getElementById('prevBtn').addEventListener('click', () => carousel.scrollBy({ left: -400, behavior: 'smooth' }));
+        document.getElementById('nextBtn').addEventListener('click', () => carousel.scrollBy({ left: 400, behavior: 'smooth' }));
+    </script>
+</div><!--ffin de carrousel->>
         </section>
 
         <section class="glass rounded-[3rem] p-12 md:p-20 text-center mb-24 border border-fucsia/20">
