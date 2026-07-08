@@ -17,19 +17,7 @@
         .nav-pantera .text-fucsia-custom { color: var(--fucsia); }
         .nav-pantera .cta-button-custom { background-color: var(--fucsia); color: white !important; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: opacity 0.3s; }
         .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
-         /* Carrusel CSS Nativo */
-        .carousel-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .carousel-container::-webkit-scrollbar { display: none; }
-        .carousel-item {
-            flex: 0 0 100%;
-            scroll-snap-align: center;
-        }
+       
     </style>
 </head>
 <body class="antialiased">
@@ -134,21 +122,31 @@
                 </div>
             </div>
         </section>
+        <!--css-->
+        <style>  /* Carrusel CSS Nativo */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+        .carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }</style>
      <!-- Carrusel CSS Puro -->
         <section class="py-12 px-6">
             <div class="max-w-5xl mx-auto">
                 <div class="carousel-container rounded-2xl glass aspect-video">
                     <!-- Iteración de imágenes: Se reemplazó el script por la lista estática -->
-                    <div class="carousel-item"><img src="imagen2.png" class="w-full h-full object-cover" alt="Obra 1"></div>
                     <div class="carousel-item"><img src="imagen3.png" class="w-full h-full object-cover" alt="Obra 2"></div>
                     <div class="carousel-item"><img src="imagen4.png" class="w-full h-full object-cover" alt="Obra 3"></div>
                     <div class="carousel-item"><img src="imagen5.jpeg" class="w-full h-full object-cover" alt="Obra 4"></div>
                     <div class="carousel-item"><img src="imagen6.png" class="w-full h-full object-cover" alt="Obra 5"></div>
-                    <div class="carousel-item"><img src="imagen7.png" class="w-full h-full object-cover" alt="Obra 6"></div>
                     <div class="carousel-item"><img src="imagen8.png" class="w-full h-full object-cover" alt="Obra 7"></div>
-                    <div class="carousel-item"><img src="imagen9.png" class="w-full h-full object-cover" alt="Obra 8"></div>
                     <div class="carousel-item"><img src="imagen10.png" class="w-full h-full object-cover" alt="Obra 9"></div>
-                    <div class="carousel-item"><img src="imagen11.png" class="w-full h-full object-cover" alt="Obra 10"></div>
                     <div class="carousel-item"><img src="imagen12.png" class="w-full h-full object-cover" alt="Obra 11"></div>
                     <div class="carousel-item"><img src="imagen13.png" class="w-full h-full object-cover" alt="Obra 12"></div>
                     <div class="carousel-item"><img src="imagen14.png" class="w-full h-full object-cover" alt="Obra 13"></div>
