@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClayHand 3D · Pantera Sama Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=33fc5f57"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --fucsia: #E4007C; --violeta: #6C2483; --bg: #0a0a0a; --text: #D9D9D9; }
@@ -23,6 +21,7 @@
 </head>
 <body class="antialiased">
 
+    <!-- Navegación Original -->
     <nav class="nav-pantera sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
@@ -39,16 +38,10 @@
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
-        <div id="mobileMenu" class="hidden md:hidden bg-[#0a0a0a] border-t border-[#1C1C1C] mt-4 flex flex-col gap-4 p-4 text-center text-white">
-            <a href="index.html" class="block py-2">Inicio</a>
-            <a href="simulador.html" class="block py-2">Simulador</a>
-            <a href="#proceso" class="block py-2">El Proceso</a>
-            <a href="metododepago.html" class="block py-2">Medios de Pago</a>
-            <a href="https://www.constanzatubio.com" class="cta-button-custom block mt-2">Estudio</a>
-        </div>
     </nav>
 
     <main>
+        <!-- Hero Original -->
         <section class="min-h-[60vh] flex flex-col justify-center items-center text-center p-6">
             <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white">Diseñá tu mano.<br><span class="text-fucsia italic">Recibí arte.</span></h1>
             <p class="max-w-xl text-[#D9D9D9] text-lg mb-10 leading-relaxed font-light">
@@ -56,42 +49,98 @@
             </p>
             <a href="simulador.html" class="cta-button cursor-pointer">Iniciar Sesión de Diseño</a>
         </section>
-<img src="instructivo.png" alt="Descripción" style="display: block; margin: 0 auto; border-radius: 15px; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); width: 100%; max-width: 500px;">        <section class="py-12 px-6 max-w-4xl mx-auto">
-            <div x-data="{ 
-                activeSlide: 0, 
-                slides: [
-                    'imagen2.png', 'imagen4.png', 'imagen5.jpeg', 'imagen6.png', 'imagen9.png', 'imagen12.png', 'imagen14.png'
-                ],
-                next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },
-                prev() { this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length }
-            }" class="relative w-full overflow-hidden rounded-2xl border border-[#1C1C1C] bg-[#111] shadow-2xl">
-                
-                <div class="relative flex transition-transform duration-700 ease-in-out h-[300px] md:h-[450px]" :style="'transform: translateX(-' + activeSlide * 100 + '%)'">
-                    <template x-for="(slide, index) in slides" :key="index">
-                        <div class="w-full h-full flex-shrink-0 relative">
-                            <img :src="slide" class="h-full w-full object-cover" onerror="this.style.display='none'" alt="Galería de Obra">
-                        </div>
-                    </template>
+
+        <!-- Nueva Sección de Proceso -->
+        <section id="proceso" class="py-20 px-6 bg-[#0d0d0d]">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">¿Cómo funciona el <span class="text-fucsia">simulador?</span></h2>
+                    <p class="text-gray-400">Seguí estos 6 pasos para materializar tu identidad.</p>
                 </div>
 
-                <button @click="prev()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-fucsia text-white p-3 rounded-full backdrop-blur-sm transition-all z-10">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                </button>
-                <button @click="next()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-fucsia text-white p-3 rounded-full backdrop-blur-sm transition-all z-10">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Paso 1 -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 hover:border-fucsia/50 transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">📷</span>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">01</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2">Captura</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Abrí tu cámara y posiciona la mano sobre el círculo guía en pantalla.</p>
+                    </div>
 
-                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 overflow-x-auto px-4">
-                    <template x-for="(slide, index) in slides" :key="index">
-                        <button @click="activeSlide = index" :class="activeSlide === index ? 'bg-fucsia w-6' : 'bg-white/50 w-2'" class="h-2 rounded-full transition-all flex-shrink-0"></button>
-                    </template>
+                    <!-- Paso 2 -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 hover:border-fucsia/50 transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">🖐</span>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">02</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2">Escaneo</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Escanea la mano en la posición deseada; será el croquis de tu mano de arcilla real.</p>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 hover:border-fucsia/50 transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">🔄</span>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">03</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2">Interactuá</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Rotá, incliná y posicioná tu modelo en 360 grados o descarga la imagen para tu colección.</p>
+                    </div>
+
+                    <!-- Paso 4 -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 hover:border-fucsia/50 transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">⚗️</span>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">04</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2">Alquimia</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Presiona el botón de personalización y aplicá los toques finales a tu diseño.</p>
+                    </div>
+
+                    <!-- Paso 5 -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 hover:border-fucsia/50 transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">📧</span>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">05</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2">Formulario</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Rellena los detalles, confirma tu orden y recibe tu comprobante por correo.</p>
+                    </div>
+
+                    <!-- Paso 6 -->
+                    <div class="glass p-6 rounded-2xl border border-white/5 hover:border-fucsia/50 transition-all group">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">📦</span>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">06</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2">Entrega</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">En 7 días, tu obra de arcilla llega al destino donde la solicites.</p>
+                    </div>
                 </div>
             </div>
         </section>
+<section class="py-12 px-6">
+    <div class="max-w-5xl mx-auto" x-data="{ activeSlide: 1 }">
+        <div class="relative w-full overflow-hidden rounded-2xl glass">
+            <template x-for="i in 13" :key="i">
+                <div x-show="activeSlide === i" class="aspect-video flex items-center justify-center p-4">
+                    <img :src="'imagen' + (i + 1) + '.png'" alt="Obra ClayHand" class="object-cover rounded-xl w-full h-full">
+                </div>
+            </template>
 
+            <button @click="activeSlide = activeSlide === 1 ? 13 : activeSlide - 1" class="absolute left-4 top-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-fucsia transition">❮</button>
+            <button @click="activeSlide = activeSlide === 13 ? 1 : activeSlide + 1" class="absolute right-4 top-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-fucsia transition">❯</button>
+        </div>
+    </div>
+</section>
+
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <!-- Newsletter Original -->
         <section id="waitlist" class="py-24 bg-[#1C1C1C] text-center px-6">
             <div class="max-w-2xl mx-auto">
-                <h2 class="text-3xl font-bold mb-6">Escasez Programada</h2>
+                <h2 class="text-3xl font-bold mb-6">Escasez Programada - <span class="text-fucsia">solicita prioridad</span></h2>
                 <p class="text-[#D9D9D9] mb-10 font-light">Limitamos nuestros cupos mensuales para garantizar la excelencia artesanal.</p>
                 <form id="waitlistForm" class="glass p-8 rounded-2xl">
                     <div class="flex flex-col sm:flex-row gap-4">
