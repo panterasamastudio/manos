@@ -17,6 +17,19 @@
         .nav-pantera .text-fucsia-custom { color: var(--fucsia); }
         .nav-pantera .cta-button-custom { background-color: var(--fucsia); color: white !important; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: opacity 0.3s; }
         .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
+         /* Carrusel CSS Nativo */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
+        .carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -121,20 +134,28 @@
                 </div>
             </div>
         </section>
-<section class="py-12 px-6">
-    <div class="max-w-5xl mx-auto" x-data="{ activeSlide: 1 }">
-        <div class="relative w-full overflow-hidden rounded-2xl glass">
-            <template x-for="i in 13" :key="i">
-                <div x-show="activeSlide === i" class="aspect-video flex items-center justify-center p-4">
-                    <img :src="'imagen' + (i + 1) + '.png'" alt="Obra ClayHand" class="object-cover rounded-xl w-full h-full">
+     <!-- Carrusel CSS Puro -->
+        <section class="py-12 px-6">
+            <div class="max-w-5xl mx-auto">
+                <div class="carousel-container rounded-2xl glass aspect-video">
+                    <!-- Iteración de imágenes: Se reemplazó el script por la lista estática -->
+                    <div class="carousel-item"><img src="imagen2.png" class="w-full h-full object-cover" alt="Obra 1"></div>
+                    <div class="carousel-item"><img src="imagen3.png" class="w-full h-full object-cover" alt="Obra 2"></div>
+                    <div class="carousel-item"><img src="imagen4.png" class="w-full h-full object-cover" alt="Obra 3"></div>
+                    <div class="carousel-item"><img src="imagen5.jpeg" class="w-full h-full object-cover" alt="Obra 4"></div>
+                    <div class="carousel-item"><img src="imagen6.png" class="w-full h-full object-cover" alt="Obra 5"></div>
+                    <div class="carousel-item"><img src="imagen7.png" class="w-full h-full object-cover" alt="Obra 6"></div>
+                    <div class="carousel-item"><img src="imagen8.png" class="w-full h-full object-cover" alt="Obra 7"></div>
+                    <div class="carousel-item"><img src="imagen9.png" class="w-full h-full object-cover" alt="Obra 8"></div>
+                    <div class="carousel-item"><img src="imagen10.png" class="w-full h-full object-cover" alt="Obra 9"></div>
+                    <div class="carousel-item"><img src="imagen11.png" class="w-full h-full object-cover" alt="Obra 10"></div>
+                    <div class="carousel-item"><img src="imagen12.png" class="w-full h-full object-cover" alt="Obra 11"></div>
+                    <div class="carousel-item"><img src="imagen13.png" class="w-full h-full object-cover" alt="Obra 12"></div>
+                    <div class="carousel-item"><img src="imagen14.png" class="w-full h-full object-cover" alt="Obra 13"></div>
                 </div>
-            </template>
-
-            <button @click="activeSlide = activeSlide === 1 ? 13 : activeSlide - 1" class="absolute left-4 top-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-fucsia transition">❮</button>
-            <button @click="activeSlide = activeSlide === 13 ? 1 : activeSlide + 1" class="absolute right-4 top-1/2 bg-black/50 p-2 rounded-full text-white hover:bg-fucsia transition">❯</button>
-        </div>
-    </div>
-</section>
+                <p class="text-center text-gray-500 text-sm mt-4 italic">Deslizá lateralmente para ver más obras</p>
+            </div>
+        </section>
 
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <!-- Newsletter Original -->
