@@ -34,10 +34,38 @@
     display: inline-block;
     text-decoration: none;
 }
+  
+
+
+  /* Usamos un prefijo único 'ch-' para evitar conflictos con otros estilos */
+  .ch-notification-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 8px 16px;
+    font-family: sans-serif;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    z-index: 9999; /* Asegura que esté por encima de todo */
+  }
+
+  .ch-notification-text {
+    margin: 0;
+    font-weight: 400;
+  }
+
     </style>
 </head>
 <body class="antialiased">
-
+<div class="ch-notification-banner">
+  <p class="ch-notification-text">
+    <strong>ClayHand 3D:</strong> Para comenzar, habilita los permisos de cámara. Si no se inicia, recarga la página.
+  </p>
+</div>
     <!-- Navegación Original -->
     <nav class="nav-pantera sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
