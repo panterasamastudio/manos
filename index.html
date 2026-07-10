@@ -35,37 +35,60 @@
     text-decoration: none;
 }
   
+/* Espaciado para que no tape el nav (ajusta el valor si tu nav es más alto) */
+  body {
+    padding-top: 40px; 
+  }
 
-
-  /* Usamos un prefijo único 'ch-' para evitar conflictos con otros estilos */
   .ch-notification-banner {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    height: 40px;
     background-color: #ffffff;
     color: #000000;
-    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
     font-family: sans-serif;
-    font-size: 14px;
-    text-align: center;
+    font-size: 13px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    z-index: 9999; /* Asegura que esté por encima de todo */
+    z-index: 9999;
   }
 
-  .ch-notification-text {
-    margin: 0;
-    font-weight: 400;
+  .ch-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 15px;
+    line-height: 1;
+    color: #555;
   }
+
+  .ch-close-btn:hover { color: #000; }
+
+
 
     </style>
 </head>
 <body class="antialiased">
-<div class="ch-notification-banner">
-  <p class="ch-notification-text">
-    <strong>ClayHand 3D:</strong> Para comenzar, habilita los permisos de cámara. Si no se inicia, recarga la página.
-  </p>
+<div id="ch-notification" class="ch-notification-banner">
+  <span class="ch-notification-text">
+    <strong>ClayHand 3D:</strong> Esta app usa tu cámara para simular tus manos en 3D. Habilita los permisos; si no carga, recarga la página.
+  </span>
+  <button class="ch-close-btn" onclick="closeNotification()">×</button>
 </div>
+    <script>
+  function closeNotification() {
+    const banner = document.getElementById('ch-notification');
+    banner.style.display = 'none';
+    // Removemos el padding del body al cerrar para que el contenido suba
+    document.body.style.paddingTop = '0';
+  }
+</script>
     <!-- Navegación Original -->
     <nav class="nav-pantera sticky top-50 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
