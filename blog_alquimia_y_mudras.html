@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5W4LY7V9RL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5W4LY7V9RL');
+    </script>
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WQ28T4NC');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClayHand 3D · Pantera Sama Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --fucsia: #E4007C; --violeta: #6C2483; --bg: #0a0a0a; --text: #D9D9D9; --card-bg: #141414; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #e5e5e5; padding-top: 40px; }
+        .text-fucsia-custom { color: var(--fucsia); }
+        .bg-fucsia-custom { background-color: var(--fucsia); }
+        .cta-button-custom { background-color: var(--fucsia); color: white !important; padding: 12px 24px; border-radius: 8px; font-weight: 700; transition: opacity 0.3s; }
+        .cta-button-custom:hover { opacity: 0.8; }
+        
+        .ch-notification-banner { position: fixed; top: 0; left: 0; width: 100%; height: 40px; background-color: #ffffff; color: #000000; display: flex; align-items: center; justify-content: center; padding: 0 16px; font-size: 13px; z-index: 9999; }
+        .ch-close-btn { background: none; border: none; cursor: pointer; margin-left: 15px; }
+
+        /* Estilos específicos del Blog */
+        .blog-card { background-color: var(--card-bg); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #2a2a2a; }
+        .blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -10px var(--violeta); border-color: var(--fucsia); }
+        .filter-btn { transition: all 0.2s; border: 1px solid #2a2a2a; }
+        .filter-btn.active { background-color: var(--fucsia); border-color: var(--fucsia); color: white; }
+        .filter-btn:hover:not(.active) { border-color: var(--violeta); color: white; }
+        
+        .article-content h2 { color: white; font-size: 1.5rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
+        .article-content p { margin-bottom: 1rem; line-height: 1.7; color: #b3b3b3; }
+        .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #b3b3b3; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="ch-notification" class="ch-notification-banner">
+        <span><strong>ClayHand 3D:</strong> Esta app usa tu cámara para simular tus manos en 3D.</span>
+        <button class="ch-close-btn" onclick="closeNotification()">×</button>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="font-bold text-xl tracking-tighter text-white cursor-pointer" onclick="window.location.reload()">
+                PANTERA<span class="text-fucsia-custom">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2 hidden sm:inline-block">ClayHand 3D</span>
+            </div>
+            <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+                <li><a href="#" class="hover:text-[#E4007C] transition">Inicio</a></li>
+                <li><a href="#" class="hover:text-[#E4007C] transition">Simulador</a></li>
+                <li><a href="#" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
+                <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="min-h-[70vh] max-w-7xl mx-auto px-6 py-12 relative" id="main-content">
+        
+        <!-- Contenedor del listado del blog (Cards, Filtros, Paginación) -->
+        <div id="blog-list-container" class="transition-opacity duration-500">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">El Códice de las Manos</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explora el simbolismo místico: Mudras antiguos, los misterios de la Alquimia del siglo I, y el poder de los gestos.</p>
+            </header>
+
+            <!-- Filtros -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10" id="filter-container">
+                <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Todos">Todos</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Mudras">Mudras</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Gestos">Gestos Alquímicos</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Elementos">Elementos</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Maria">María la Judía</button>
+            </div>
+
+            <!-- Grid de Artículos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="articles-grid">
+                <!-- Las cards se inyectan aquí por JS -->
+            </div>
+
+            <!-- Paginación -->
+            <div class="flex justify-center items-center gap-2 mt-12" id="pagination-container">
+                <!-- Botones de paginación se inyectan aquí por JS -->
+            </div>
+        </div>
+
+        <!-- Contenedor de Vista de Artículo Individual -->
+        <div id="single-article-container" class="hidden opacity-0 transition-opacity duration-500 max-w-4xl mx-auto">
+            <button onclick="backToList()" class="mb-8 flex items-center text-fucsia-custom hover:text-white transition group">
+                <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Volver al Códice
+            </button>
+            
+            <article class="bg-[#141414] rounded-2xl p-8 md:p-12 border border-[#2a2a2a] shadow-2xl shadow-purple-900/10">
+                <div class="flex items-center gap-3 mb-6">
+                    <span id="article-category-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-fucsia-custom/20 text-fucsia-custom border border-fucsia-custom/30"></span>
+                    <span id="article-read-time" class="text-xs text-gray-500"></span>
+                </div>
+                <h1 id="article-title" class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight"></h1>
+                <div class="h-px w-full bg-gradient-to-r from-fucsia-custom via-violeta to-transparent mb-8"></div>
+                <div id="article-body" class="article-content text-lg">
+                    <!-- Contenido del artículo inyectado por JS -->
+                </div>
+            </article>
+        </div>
+
+    </main>
+
+    <footer class="text-center p-8 mt-10 border-t border-[#1C1C1C]">
+        <p class="text-xs font-light text-[#D9D9D9]">2026 © PanteraSama. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function closeNotification() {
+            const banner = document.getElementById('ch-notification');
+            banner.style.display = 'none';
+            document.body.style.paddingTop = '0';
+        }
+
+        // Generador de la base de datos de 50 artículos
+        const generateArticles = () => {
+            const db = [];
+            let idCounter = 1;
+
+            // Categoría: Mudras (15 artículos)
+            const mudras = [
+                { t: "Gyan Mudra", s: "El gesto del conocimiento y la sabiduría." },
+                { t: "Shuni Mudra", s: "El sello de la paciencia y el compromiso." },
+                { t: "Surya Mudra", s: "Activando el fuego interno y la energía." },
+                { t: "Buddhi Mudra", s: "Conectando con la comunicación clara." },
+                { t: "Prana Mudra", s: "El gesto de la fuerza vital." },
+                { t: "Apana Mudra", s: "Purificación y eliminación de toxinas." },
+                { t: "Vayu Mudra", s: "Controlando el aire en el cuerpo." },
+                { t: "Akash Mudra", s: "El sello del éter y el espacio." },
+                { t: "Prithvi Mudra", s: "Sanación y conexión con la tierra." },
+                { t: "Varun Mudra", s: "Equilibrando el elemento agua." },
+                { t: "Hakini Mudra", s: "Potenciando la concentración cerebral." },
+                { t: "Kalesvara Mudra", s: "Calmando la mente ansiosa." },
+                { t: "Tse Mudra", s: "El antídoto contra la tristeza." },
+                { t: "Ling Mudra", s: "Generando calor y resistencia." },
+                { t: "Dharmachakra Mudra", s: "La rueda del dharma y la transformación." }
+            ];
+
+            // Categoría: Gestos Alquímicos (10 artículos)
+            const gestos = [
+                { t: "La Mano de los Misterios", s: "Símbolo maestro de transformación." },
+                { t: "Gesto Solve et Coagula", s: "Disolver y coagular mediante las manos." },
+                { t: "El Toque del Mercurio", s: "Transfiriendo energía fluida." },
+                { t: "La Mano Filosofal", s: "Herramienta simbólica del adepto." },
+                { t: "Señal de Bendición Hermética", s: "Canalización cósmica." },
+                { t: "El Sello del Ouroboros", s: "Las manos entrelazadas en el infinito." },
+                { t: "Apertura del Crisol", s: "Gesto de receptividad térmica." },
+                { t: "El Cierre Retortiano", s: "Sellando la energía espiritual." },
+                { t: "Gestualidad de la Rubedo", s: "Invocando la obra en rojo." },
+                { t: "El Gesto de la Nigredo", s: "Las manos en el caos primordial." }
+            ];
+
+            // Categoría: Elementos (15 artículos)
+            const elementos = [
+                { t: "La Sal Alquímica", s: "El principio del cuerpo y la solidez." },
+                { t: "El Azufre", s: "El alma, la pasión y el fuego." },
+                { t: "El Mercurio", s: "El espíritu fluido y conector." },
+                { t: "El Fuego Secreto", s: "El motor de la transmutación." },
+                { t: "El Agua Celestial", s: "El solvente universal." },
+                { t: "La Tierra Virgen", s: "La materia prima no corrompida." },
+                { t: "El Aire Filosófico", s: "El mediador entre lo sutil y lo denso." },
+                { t: "La Quintaesencia (Éter)", s: "El quinto elemento perfecto." },
+                { t: "El Plomo (Saturno)", s: "El inicio de la Gran Obra." },
+                { t: "El Estaño (Júpiter)", s: "Expansión y crecimiento espiritual." },
+                { t: "El Hierro (Marte)", s: "La fuerza purificadora y cortante." },
+                { t: "El Cobre (Venus)", s: "Atracción y magnetismo alquímico." },
+                { t: "La Plata (Luna)", s: "Albedo, purificación e intuición." },
+                { t: "El Oro (Sol)", s: "La perfección, Rubedo y la meta final." },
+                { t: "El Antimonio", s: "El lobo de los metales." }
+            ];
+
+            // Categoría: María la Judía (10 artículos)
+            const maria = [
+                { t: "María Prophetissima", s: "La primera alquimista documentada." },
+                { t: "El Baño María", s: "La invención del calor suave." },
+                { t: "El Tribikos", s: "El destilador de tres brazos." },
+                { t: "La Kerotakis", s: "El vaso sellado para metales." },
+                { t: "El Axioma de María", s: "El uno se convierte en dos." },
+                { t: "Alquimia en el Siglo I", s: "Contexto histórico en Alejandría." },
+                { t: "El Fuego Oculto de María", s: "Técnicas de temperatura." },
+                { t: "Transmutación del Cobre", s: "El proceso de ennegrecimiento." },
+                { t: "Vasos Herméticos Antiguos", s: "La importancia del sellado." },
+                { t: "El Legado Femenino en Alquimia", s: "La influencia de María en Zósimo." }
+            ];
+
+            const createContent = (title, category) => {
+                let content = `<p>El concepto de <strong>${title}</strong> representa una de las piedras angulares dentro del estudio del esoterismo, la simbología y las prácticas milenarias del cuerpo y el espíritu.</p>`;
+                
+                if(category === "Mudras") {
+                    content += `<h2>El Significado Oculto</h2><p>Los mudras son gestos, a menudo realizados con las manos, que guían el flujo de energía hacia el cerebro. Cada área de la mano conecta con una parte distinta del cerebro, y al aplicar presión en puntos específicos, se generan reacciones neurológicas y energéticas.</p><p>En el caso del <strong>${title}</strong>, su práctica regular está diseñada para redirigir la fuerza vital.</p><h2>Cómo realizarlo</h2><ul><li>Encuentra una postura cómoda y erguida.</li><li>Conecta los dedos correspondientes de forma suave pero firme.</li><li>Descansa las manos sobre las rodillas.</li><li>Mantén la postura mientras respiras profundamente durante 5 a 15 minutos.</li></ul><p>El uso combinado del ${title} en alquimia interna ayuda a transmutar la energía densa en luz (conciencia).</p>`;
+                } else if (category === "Gestos") {
+                    content += `<h2>La Anatomía del Gesto Alquímico</h2><p>En la iconografía medieval y renacentista, las manos no solo sostienen instrumentos, sino que *son* instrumentos. El <strong>${title}</strong> es un arquetipo gestual.</p><p>Se creía que las posturas físicas del Adepto influían magnéticamente en el crisol. La geometría formada por los dedos actuaba como una antena para atraer influencias planetarias.</p><h2>Simbología</h2><ul><li>El pulgar representa la voluntad (El Rey).</li><li>El índice representa la dirección y el mercurio.</li><li>El gesto en sí mismo es un espejo de lo que ocurre en la Retorta.</li></ul><p>Aplicar el ${title} no es solo una acción teatral, es una técnica de enfoque mental para facilitar el Solve et Coagula.</p>`;
+                } else if (category === "Elementos") {
+                    content += `<h2>La Naturaleza de ${title}</h2><p>Para los alquimistas, los elementos no eran la tabla periódica que conocemos hoy, sino principios filosóficos y vibratorios de la materia y el espíritu. <strong>${title}</strong> encierra un secreto profundo.</p><h2>Operación en la Gran Obra</h2><p>En el laboratorio interior y exterior, ${title} debe ser purificado. El fuego extrae sus impurezas, el agua lava sus cenizas, y el aire eleva su espíritu.</p><ul><li>Estado inicial: Oscuridad y densidad.</li><li>Proceso: Sublimación y purificación.</li><li>Estado final: Elevación a su forma filosófica pura.</li></ul><p>Quien comprende la verdadera naturaleza del ${title}, tiene la llave para avanzar hacia la piedra filosofal.</p>`;
+                } else if (category === "Maria") {
+                    content += `<h2>El Genio de Alejandría</h2><p>En el siglo I d.C., en la vibrante y multicultural Alejandría, surgió una figura clave: <strong>${title}</strong>. A través de los escritos de Zósimo de Panópolis, conocemos sus extraordinarios inventos y axiomas que fundaron la alquimia occidental.</p><h2>Innovación y Legado</h2><p>María no solo teorizaba; era una inventora práctica de equipos de laboratorio. Su comprensión de cómo el calor afecta a la materia cambió la ciencia para siempre.</p><ul><li>Desarrolló aparatos herméticos perfectos.</li><li>Comprendió la sublimación de los metales base.</li><li>Unificó la mística judía, la filosofía griega y las técnicas egipcias.</li></ul><p>Su famosa frase: <em>"Uno se convierte en dos, dos se convierte en tres, y del tercero viene el uno como el cuarto"</em> sigue siendo el axioma más misterioso e influyente de la historia alquímica.</p>`;
+                }
+
+                return content;
+            };
+
+            const addArticles = (arr, category) => {
+                arr.forEach(item => {
+                    db.push({
+                        id: idCounter++,
+                        title: item.t,
+                        category: category,
+                        summary: item.s,
+                        readTime: Math.floor(Math.random() * 4) + 3 + " min de lectura",
+                        content: createContent(item.t, category)
+                    });
+                });
+            };
+
+            addArticles(mudras, "Mudras");
+            addArticles(gestos, "Gestos");
+            addArticles(elementos, "Elementos");
+            addArticles(maria, "Maria");
+
+            return db;
+        };
+
+        const articlesData = generateArticles(); // Total 50
+        
+        let currentPage = 1;
+        const itemsPerPage = 9;
+        let currentFilter = 'Todos';
+        let filteredData = [...articlesData];
+
+        const gridEl = document.getElementById('articles-grid');
+        const paginationEl = document.getElementById('pagination-container');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        
+        const listContainer = document.getElementById('blog-list-container');
+        const articleContainer = document.getElementById('single-article-container');
+
+        function renderGrid() {
+            gridEl.innerHTML = '';
+            
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedItems = filteredData.slice(start, end);
+
+            if(paginatedItems.length === 0) {
+                gridEl.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">No se encontraron artículos.</p>';
+                return;
+            }
+
+            paginatedItems.forEach(article => {
+                const card = document.createElement('div');
+                card.className = 'blog-card rounded-xl p-6 cursor-pointer flex flex-col h-full';
+                card.onclick = () => openArticle(article.id);
+                
+                // Imágenes placeholders temáticas basadas en id
+                const bgHue = (article.id * 15) % 360;
+                const imgUrl = `https://placehold.co/400x250/111111/E4007C?text=${article.category}`;
+
+                card.innerHTML = `
+                    <div class="h-40 w-full mb-4 rounded-lg overflow-hidden relative">
+                        <img src="${imgUrl}" alt="${article.category}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition duration-300">
+                        <span class="absolute top-2 right-2 bg-fucsia-custom text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">${article.category}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">${article.title}</h3>
+                    <p class="text-sm text-gray-400 mb-4 flex-grow line-clamp-3">${article.summary}</p>
+                    <div class="mt-auto pt-4 border-t border-[#2a2a2a] flex justify-between items-center">
+                        <span class="text-xs text-gray-500">${article.readTime}</span>
+                        <span class="text-fucsia-custom text-sm font-semibold hover:text-white transition">Leer más →</span>
+                    </div>
+                `;
+                gridEl.appendChild(card);
+            });
+        }
+
+        function renderPagination() {
+            paginationEl.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+            if(totalPages <= 1) return;
+
+            // Botón Prev
+            const prevBtn = document.createElement('button');
+            prevBtn.innerHTML = '←';
+            prevBtn.className = `px-3 py-1 rounded border border-[#2a2a2a] ${currentPage === 1 ? 'text-gray-600 cursor-not-allowed' : 'text-white hover:border-fucsia-custom'}`;
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => { currentPage--; updateView(); window.scrollTo(0, 0); };
+            paginationEl.appendChild(prevBtn);
+
+            // Números
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i;
+                btn.className = `w-8 h-8 flex items-center justify-center rounded-full text-sm transition ${i === currentPage ? 'bg-fucsia-custom text-white font-bold' : 'text-gray-400 hover:text-white border border-transparent hover:border-[#2a2a2a]'}`;
+                btn.onclick = () => { currentPage = i; updateView(); window.scrollTo(0, 0); };
+                paginationEl.appendChild(btn);
+            }
+
+            // Botón Next
+            const nextBtn = document.createElement('button');
+            nextBtn.innerHTML = '→';
+            nextBtn.className = `px-3 py-1 rounded border border-[#2a2a2a] ${currentPage === totalPages ? 'text-gray-600 cursor-not-allowed' : 'text-white hover:border-fucsia-custom'}`;
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => { currentPage++; updateView(); window.scrollTo(0, 0); };
+            paginationEl.appendChild(nextBtn);
+        }
+
+        function updateView() {
+            renderGrid();
+            renderPagination();
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Actualizar UI de botones
+                filterBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Filtrar datos
+                currentFilter = e.target.getAttribute('data-filter');
+                if(currentFilter === 'Todos') {
+                    filteredData = [...articlesData];
+                } else {
+                    filteredData = articlesData.filter(item => item.category === currentFilter);
+                }
+
+                // Reset página y renderizar
+                currentPage = 1;
+                updateView();
+            });
+        });
+
+        function openArticle(id) {
+            const article = articlesData.find(a => a.id === id);
+            if(!article) return;
+
+            // Llenar datos
+            document.getElementById('article-title').innerText = article.title;
+            document.getElementById('article-category-badge').innerText = article.category.toUpperCase();
+            document.getElementById('article-read-time').innerText = article.readTime;
+            document.getElementById('article-body').innerHTML = article.content;
+
+            // Transiciones CSS
+            listContainer.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                listContainer.classList.add('hidden');
+                articleContainer.classList.remove('hidden');
+                
+                // Permitir que el display block tome efecto antes de animar opacidad
+                setTimeout(() => {
+                    articleContainer.classList.remove('opacity-0');
+                    window.scrollTo({ top: 100, behavior: 'smooth' });
+                }, 50);
+            }, 300); // 300ms es la duración de transition-opacity
+        }
+
+        function backToList() {
+            articleContainer.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                articleContainer.classList.add('hidden');
+                listContainer.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    listContainer.classList.remove('opacity-0');
+                    window.scrollTo({ top: 100, behavior: 'smooth' });
+                }, 50);
+            }, 300);
+        }
+
+        // Inicializar
+        updateView();
+    </script>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ28T4NC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+</body>
+</html>
