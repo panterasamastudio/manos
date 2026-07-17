@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full w-full">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5W4LY7V9RL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5W4LY7V9RL');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WQ28T4NC');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Laboratorio Alquímico Gestual - HUD Premium Adaptativo</title>
+    
+    <!-- Librerías de MediaPipe, ThreeJS y Tailwind CSS para diseño de primer nivel -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Fuentes premium de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "xmuf6w4umn");
+    </script>
+    
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background: #020105; 
+            font-family: 'Inter', sans-serif; 
+            color: #e5e7eb; 
+            height: 100%;
+            width: 100%;
+            position: fixed;
+        }
+        
+        /* Tipografías místicas */
+        .alchemy-title {
+            font-family: 'Cinzel', serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Efecto Vidrio Esmerilado (Glassmorphism) con resplandor dorado sutil */
+        .glass-card {
+            background: rgba(10, 6, 18, 0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212, 175, 55, 0.22);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 0 12px rgba(212, 175, 55, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.45);
+            box-shadow: 0 12px 40px 0 rgba(170, 85, 255, 0.15), inset 0 0 18px rgba(212, 175, 55, 0.08);
+        }
+
+        /* Contenedores de la Interfaz del Laboratorio (Ocultos al inicio) */
+        #ui, #topBar, #debugPanel, #rightSidebarPanel, #toggleDock {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Brillo de Texto de runas */
+        .text-glow-gold {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 40px rgba(212, 175, 55, 0.2);
+        }
+        .text-glow-purple {
+            text-shadow: 0 0 20px rgba(170, 85, 255, 0.7), 0 0 40px rgba(170, 85, 255, 0.3);
+        }
+
+        /* Barras de scroll personalizadas para terminales de datos */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 6, 18, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.25);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.5);
+        }
+
+        /* Animación de latido para señales de calibración */
+        @keyframes pulse-gold {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        }
+        .pulse-active {
+            animation: pulse-gold 2s infinite ease-in-out;
+        }
+
+        /* Scrollable container setup */
+        .scroller-fade {
+            position: relative;
+        }
+        .scroller-fade::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: linear-gradient(to top, rgba(10, 6, 18, 0.8), transparent);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="select-none h-full w-full flex flex-col justify-between">
+
+    <!-- PANTALLA DE INICIO INMERSIVA (INTRO) -->
+    <div id="introOverlay" class="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-[#030107]/90 p-4 md:p-8 transition-all duration-[1500ms] ease-in-out overflow-y-auto">
+        <div class="glass-card max-w-3xl w-full rounded-2xl p-6 md:p-10 text-center flex flex-col md:flex-row items-center gap-6 md:gap-10 border-amber-500/40 my-auto">
+            <!-- Columna izquierda: Lore / Alquimia -->
+            <div class="flex-1 text-left space-y-3">
+                <div class="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-[10px] font-semibold text-[#d4af37] tracking-widest uppercase">
+                    Módulo de Iniciación V5.0 Adaptativo
+                </div>
+                <h1 class="alchemy-title text-3xl md:text-4xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-[#d4af37] to-purple-400">
+                    LABORATORIO ALQUÍMICO
+                </h1>
+                <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-light">
+                    Bienvenido a la confluencia entre la computación gestual y la transmutación hermética. Este simulador interpreta la cinemática de tus manos en tiempo real para moldear la materia y el cosmos.
+                </p>
+                <div class="border-t border-purple-500/20 pt-3 space-y-1.5">
+                    <div class="text-[10px] text-[#d4af37] tracking-wider uppercase font-semibold">Requerimientos estelares:</div>
+                    <ul class="text-[10px] text-gray-400 space-y-1 list-disc list-inside">
+                        <li>Habilitar acceso a cámara (procesamiento local protegido)</li>
+                        <li>Entorno iluminado para detección de articulaciones</li>
+                        <li>Mantener la mano estable dentro de la guía para confirmar fórmulas</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Columna derecha: Acceso interactivo -->
+            <div class="flex flex-col items-center gap-4 justify-center w-full md:w-64 border-t md:border-t-0 md:border-l border-purple-500/20 pt-5 md:pt-0 md:pl-8">
+                <div class="w-16 h-16 rounded-full border border-amber-500/40 flex items-center justify-center bg-amber-500/5 animate-pulse">
+                    <span class="text-2xl text-glow-gold">🜁</span>
+                </div>
+                <div class="w-full flex flex-col gap-2">
+                    <button id="startBtn" class="w-full py-3.5 px-4 rounded-xl font-semibold tracking-wider text-xs text-[#d4af37] border border-amber-500/60 bg-amber-500/10 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 transform active:scale-95 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+                        ✨ EMPEZAR EL VIAJE
+                    </button>
+                    <button id="exitBtn" class="w-full py-2 px-4 rounded-xl font-semibold tracking-wider text-[10px] text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 hover:bg-cyan-500/10 hover:border-cyan-300 transition-all duration-300 transform active:scale-95">
+                        🚪 SALIR DEL PORTAL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BARRA SUPERIOR HUD -->
+    <div id="topBar" class="absolute top-0 left-0 right-0 z-20 p-3 md:p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
+        <div class="flex items-center gap-2 pointer-events-auto">
+            <div class="px-2.5 py-1 glass-card rounded-lg flex items-center gap-1.5">
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span class="text-[10px] font-semibold tracking-wider text-emerald-400 code-font uppercase">SENSADO ONLINE</span>
+            </div>
+            <div class="hidden sm:flex px-2.5 py-1 glass-card rounded-lg text-[10px] font-medium text-gray-300 tracking-wide uppercase">
+                Cronología: <span id="sessionTimer" class="ml-1 text-amber-400 font-bold code-font">00:00</span>
+            </div>
+        </div>
+        
+        <div class="pointer-events-auto">
+            <button id="activeExitBtn" class="flex items-center gap-1.5 bg-rose-950/40 border border-rose-500/40 hover:border-rose-400 hover:bg-rose-900/40 text-rose-200 text-[10px] font-bold tracking-widest uppercase px-3 py-2 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(239,68,68,0.1)] hover:shadow-[0_0_25px_rgba(239,68,68,0.25)]" title="Salir de la simulación y regresar al portal">
+                🚪 Salir
+            </button>
+        </div>
+    </div>
+
+    <!-- BOTONES DE NAVEGACIÓN RÁPIDA (Responsive Docking) -->
+    <div id="toggleDock" class="absolute top-16 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 lg:hidden pointer-events-auto">
+        <button id="toggleLeftBtn" class="px-3 py-1.5 glass-card rounded-xl text-xs font-semibold text-purple-300 flex items-center gap-1">
+            🧪 <span>Diagnóstico</span>
+        </button>
+        <button id="toggleRightBtn" class="px-3 py-1.5 glass-card rounded-xl text-xs font-semibold text-amber-300 flex items-center gap-1">
+            🎛️ <span>Consola</span>
+        </button>
+    </div>
+
+    <!-- PANEL IZQUIERDO: DIAGNÓSTICO GESTUAL (Slide-in en móviles) -->
+    <div id="debugPanel" class="absolute left-4 top-28 lg:top-20 bottom-24 lg:bottom-4 w-[280px] sm:w-[320px] md:w-[340px] z-20 rounded-2xl p-4 overflow-y-auto glass-card border-amber-500/20 text-xs flex flex-col gap-3 transform -translate-x-[120%] lg:translate-x-0 transition-transform duration-500 ease-out">
+        <div class="text-[#d4af37] font-semibold tracking-widest border-b border-amber-500/20 pb-2 uppercase text-xs alchemy-title flex justify-between items-center">
+            <span>Métricas de Conexión</span>
+            <button class="lg:hidden text-gray-400 hover:text-white" onclick="toggleSidebar('left')">✕</button>
+        </div>
+        <div class="text-gray-400 italic">
+            Esperando telemetría del sensor...
+        </div>
+    </div>
+
+    <!-- PANEL DERECHO: CONSOLA INTELIGENTE CON TABS (Slide-in en móviles) -->
+    <div id="rightSidebarPanel" class="absolute right-4 top-28 lg:top-20 bottom-24 lg:bottom-4 w-[280px] sm:w-[320px] md:w-[340px] z-20 flex flex-col glass-card border-amber-500/20 rounded-2xl overflow-hidden transform translate-x-[120%] lg:translate-x-0 transition-transform duration-500 ease-out">
+        
+        <!-- Tab Bar Premium -->
+        <div class="flex border-b border-amber-500/20 bg-black/40 text-[10px] uppercase font-bold tracking-wider text-gray-400">
+            <button id="tabControlBtn" class="flex-1 py-3 text-center border-b-2 border-amber-500 text-amber-400 bg-amber-500/5 transition-all" onclick="switchTab('control')">
+                🎛️ Ritual
+            </button>
+            <button id="tabStatsBtn" class="flex-1 py-3 text-center border-b-2 border-transparent hover:text-white transition-all" onclick="switchTab('stats')">
+                📊 Métricas
+            </button>
+            <button id="tabSensorBtn" class="flex-1 py-3 text-center border-b-2 border-transparent hover:text-white transition-all" onclick="switchTab('sensor')">
+                📷 Lidar
+            </button>
+            <button class="lg:hidden px-3 text-gray-400 hover:text-white border-l border-amber-500/10" onclick="toggleSidebar('right')">
+                ✕
+            </button>
+        </div>
+
+        <!-- Contenedor con scroll interno para asegurar que todo quepa en el viewport -->
+        <div class="flex-1 overflow-y-auto p-4 scroller-fade text-xs flex flex-col gap-4">
+            
+            <!-- CONTENIDO TAB 1: CONTROLADORES DE RITUAL -->
+            <div id="tabContentControl" class="space-y-4">
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-[9px] tracking-wider text-gray-400 uppercase font-semibold">Configuración de Lectura</span>
+                    <button id="modeToggle" class="w-full bg-purple-950/30 hover:bg-purple-900/40 border border-purple-500/30 hover:border-purple-400 text-purple-300 font-semibold py-2 px-3 rounded-xl text-[11px] tracking-wider transition-all duration-300">
+                        Modo: Gestos ✋
+                    </button>
+                </div>
+                
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex justify-between items-center text-[9px] tracking-wider text-gray-400 uppercase font-semibold">
+                        <span>Ventana de Confirmación</span>
+                        <div><span id="holdTimeValue" class="text-amber-400 font-bold code-font">700</span> <span class="text-gray-500 text-[8px] -ml-0.5">ms</span></div>
+                    </div>
+                    <div id="holdTimeControl" class="w-full flex items-center">
+                        <input type="range" id="holdTimeSlider" min="200" max="2000" step="50" value="700" class="w-full h-1 bg-amber-950 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-[9px] tracking-wider text-gray-400 uppercase font-semibold block">Elemento de Arcilla</span>
+                    <div id="skinToneControl" class="flex items-center gap-3 bg-black/30 p-2 rounded-xl border border-purple-950/60 justify-around">
+                        <div class="skinSwatch w-6 h-6 rounded-full cursor-pointer border-2 border-transparent hover:scale-110 active:scale-95 transition-all duration-200 active" data-tone="0xd97e5a" style="background:#d97e5a" title="Terracota"></div>
+                        <div class="skinSwatch w-6 h-6 rounded-full cursor-pointer border-2 border-transparent hover:scale-110 active:scale-95 transition-all duration-200" data-tone="0x8a9597" style="background:#8a9597" title="Gris Escultura"></div>
+                        <div class="skinSwatch w-6 h-6 rounded-full cursor-pointer border-2 border-transparent hover:scale-110 active:scale-95 transition-all duration-200" data-tone="0xe3dac9" style="background:#e3dac9" title="Caolín Blanco"></div>
+                        <div class="skinSwatch w-6 h-6 rounded-full cursor-pointer border-2 border-transparent hover:scale-110 active:scale-95 transition-all duration-200" data-tone="0x2b2b2a" style="background:#2b2b2a" title="Pizarra Negra"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENIDO TAB 2: ESTADÍSTICAS REAL-TIME -->
+            <div id="tabContentStats" class="space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-black/30 border border-purple-500/10 rounded-xl p-2.5 flex flex-col justify-between">
+                        <span class="text-[8px] font-semibold text-purple-400 tracking-wider uppercase">Fórmulas Invocadas</span>
+                        <span id="statsTotalConfirmed" class="text-xl font-bold text-white tracking-tight code-font mt-0.5">0</span>
+                    </div>
+                    <div class="bg-black/30 border border-purple-500/10 rounded-xl p-2.5 flex flex-col justify-between">
+                        <span class="text-[8px] font-semibold text-[#d4af37] tracking-wider uppercase">Frecuencia Estelar</span>
+                        <span id="statsGalaxySpeed" class="text-xl font-bold text-white tracking-tight code-font mt-0.5">1.2x</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="text-[9px] tracking-wider text-gray-400 uppercase font-semibold block border-b border-purple-500/10 pb-1">Alineación Elemental</span>
+                    
+                    <!-- Tierra -->
+                    <div class="space-y-0.5">
+                        <div class="flex justify-between text-[9px] text-gray-300">
+                            <span class="flex items-center gap-1">🜃 Tierra (Pose / Materia)</span>
+                            <span id="elemTierraPct" class="font-semibold code-font text-emerald-400">0%</span>
+                        </div>
+                        <div class="w-full bg-black/40 h-1 rounded-full overflow-hidden border border-emerald-950/50">
+                            <div id="elemTierraBar" class="bg-emerald-500 h-full w-[0%] transition-all duration-500"></div>
+                        </div>
+                    </div>
+
+                    <!-- Aire -->
+                    <div class="space-y-0.5">
+                        <div class="flex justify-between text-[9px] text-gray-300">
+                            <span class="flex items-center gap-1">🜁 Aire (Dinámica / Ritual)</span>
+                            <span id="elemAirePct" class="font-semibold code-font text-cyan-400">0%</span>
+                        </div>
+                        <div class="w-full bg-black/40 h-1 rounded-full overflow-hidden border border-cyan-950/50">
+                            <div id="elemAireBar" class="bg-cyan-400 h-full w-[0%] transition-all duration-500"></div>
+                        </div>
+                    </div>
+
+                    <!-- Fuego -->
+                    <div class="space-y-0.5">
+                        <div class="flex justify-between text-[9px] text-gray-300">
+                            <span class="flex items-center gap-1">🜂 Fuego (Fusión / Sinergia)</span>
+                            <span id="elemFuegoPct" class="font-semibold code-font text-rose-400">0%</span>
+                        </div>
+                        <div class="w-full bg-black/40 h-1 rounded-full overflow-hidden border border-rose-950/50">
+                            <div id="elemFuegoBar" class="bg-rose-500 h-full w-[0%] transition-all duration-500"></div>
+                        </div>
+                    </div>
+
+                    <!-- Éter -->
+                    <div class="space-y-0.5">
+                        <div class="flex justify-between text-[9px] text-gray-300">
+                            <span class="flex items-center gap-1">🜄 Éter (Mudra Sagrado)</span>
+                            <span id="elemEterPct" class="font-semibold code-font text-purple-400">0%</span>
+                        </div>
+                        <div class="w-full bg-black/40 h-1 rounded-full overflow-hidden border border-purple-950/50">
+                            <div id="elemEterBar" class="bg-purple-500 h-full w-[0%] transition-all duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENIDO TAB 3: CÁMARA & SENSADO -->
+            <div id="tabContentSensor" class="space-y-3 hidden flex flex-col items-center">
+                <div class="w-full flex justify-between items-center border-b border-amber-500/10 pb-1.5 mb-1">
+                    <span class="text-[9px] font-semibold tracking-widest text-[#d4af37] uppercase">SENSADO ARQUITECTÓNICO</span>
+                    <span class="px-1.5 py-0.5 bg-amber-500/10 border border-amber-500/30 rounded text-[8px] font-bold text-[#d4af37] code-font">LIDAR 2D</span>
+                </div>
+                
+                <div id="cameraStage" class="relative w-full aspect-[4/3] max-w-[240px] rounded-xl overflow-hidden bg-slate-950 border border-purple-950/40">
+                    <video id="videoElement" class="absolute w-[1px] h-[1px] opacity-0 pointer-events-none" autoplay muted playsinline></video>
+                    <canvas id="croquisCanvas" class="absolute inset-0 w-full h-full z-10"></canvas>
+                    <div id="handGuideBox" class="absolute left-[15%] top-[10%] w-[70%] h-[80%] border border-dashed border-amber-500/30 rounded-xl flex items-center justify-center text-center transition-all duration-300 z-20 pointer-events-none">
+                        <span class="bg-[#0c0817]/90 text-amber-200 text-[8px] px-2 py-1 rounded border border-amber-500/20 font-medium tracking-wide">Mano guía</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL CENTRAL INFERIOR: SECTOR DE FÓRMULA ACTIVA -->
+    <div id="ui" class="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-sm sm:max-w-md md:max-w-lg px-4 z-10 text-center flex flex-col items-center gap-2 pointer-events-none">
+        <div class="glass-card w-full rounded-xl p-4 border-purple-500/20 bg-purple-950/15">
+            <!-- Glifo Alquímico -->
+            <div id="symbolDisplay" class="text-4xl sm:text-5xl md:text-6xl font-bold text-glow-gold text-[#d4af37] font-serif transition-transform duration-300 scale-100 mb-1">☿</div>
+            
+            <!-- Descripciones -->
+            <div id="infoDisplay" class="text-xs sm:text-sm font-semibold tracking-widest text-white uppercase alchemy-title mb-0.5">MERCURIO - TRANSFORMACIÓN</div>
+            <div id="actionDisplay" class="text-[10px] tracking-wider text-purple-300 mb-3 font-light leading-snug">Efectúa rotaciones espaciales sobre la arcilla primigenia.</div>
+            
+            <!-- Sostén de confirmación -->
+            <div id="holdLabel" class="text-[9px] font-semibold tracking-widest text-purple-400 h-3 uppercase block mb-1"></div>
+            <div id="holdProgressWrap" class="w-full h-1 bg-purple-950/50 rounded-full overflow-hidden border border-purple-500/20">
+                <div id="holdProgressFill" class="h-full w-0 bg-gradient-to-r from-purple-500 to-amber-500 transition-all duration-[50ms] linear"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    /* ======================================================================
+       MANEJO DE INTERFAZ PREMIUM ADAPTATIVA
+       ====================================================================== */
+    function switchTab(tabName) {
+        document.getElementById('tabContentControl').classList.add('hidden');
+        document.getElementById('tabContentStats').classList.add('hidden');
+        document.getElementById('tabContentSensor').classList.add('hidden');
+
+        document.getElementById('tabControlBtn').classList.remove('border-amber-500', 'text-amber-400', 'bg-amber-500/5');
+        document.getElementById('tabStatsBtn').classList.remove('border-amber-500', 'text-amber-400', 'bg-amber-500/5');
+        document.getElementById('tabSensorBtn').classList.remove('border-amber-500', 'text-amber-400', 'bg-amber-500/5');
+
+        document.getElementById('tabControlBtn').classList.add('border-transparent');
+        document.getElementById('tabStatsBtn').classList.add('border-transparent');
+        document.getElementById('tabSensorBtn').classList.add('border-transparent');
+
+        if (tabName === 'control') {
+            document.getElementById('tabContentControl').classList.remove('hidden');
+            document.getElementById('tabControlBtn').classList.add('border-amber-500', 'text-amber-400', 'bg-amber-500/5');
+            document.getElementById('tabControlBtn').classList.remove('border-transparent');
+        } else if (tabName === 'stats') {
+            document.getElementById('tabContentStats').classList.remove('hidden');
+            document.getElementById('tabStatsBtn').classList.add('border-amber-500', 'text-amber-400', 'bg-amber-500/5');
+            document.getElementById('tabStatsBtn').classList.remove('border-transparent');
+        } else if (tabName === 'sensor') {
+            document.getElementById('tabContentSensor').classList.remove('hidden');
+            document.getElementById('tabSensorBtn').classList.add('border-amber-500', 'text-amber-400', 'bg-amber-500/5');
+            document.getElementById('tabSensorBtn').classList.remove('border-transparent');
+            resizeCroquisCanvas();
+        }
+    }
+
+    let leftOpen = false;
+    let rightOpen = false;
+
+    function toggleSidebar(side) {
+        if (side === 'left') {
+            leftOpen = !leftOpen;
+            const leftPanel = document.getElementById('debugPanel');
+            if (leftOpen) {
+                leftPanel.classList.remove('-translate-x-[120%]');
+                leftPanel.classList.add('translate-x-0');
+                if (rightOpen) toggleSidebar('right'); // Cerrar el otro en móviles para evitar colapso
+            } else {
+                leftPanel.classList.remove('translate-x-0');
+                leftPanel.classList.add('-translate-x-[120%]');
+            }
+        } else if (side === 'right') {
+            rightOpen = !rightOpen;
+            const rightPanel = document.getElementById('rightSidebarPanel');
+            if (rightOpen) {
+                rightPanel.classList.remove('translate-x-[120%]');
+                rightPanel.classList.add('translate-x-0');
+                if (leftOpen) toggleSidebar('left'); // Cerrar el otro
+            } else {
+                rightPanel.classList.remove('translate-x-0');
+                rightPanel.classList.add('translate-x-[120%]');
+            }
+        }
+    }
+
+    document.getElementById('toggleLeftBtn').addEventListener('click', () => toggleSidebar('left'));
+    document.getElementById('toggleRightBtn').addEventListener('click', () => toggleSidebar('right'));
+
+    /* ======================================================================
+       ESTADO DE LA EXPERIENCIA E INTRODUCCIÓN
+       ====================================================================== */
+    let inIntroMode = true;
+    let transitionProgress = 0;
+    let baseGalaxySpeed = 0.0012;
+    let currentGalaxySpeed = baseGalaxySpeed;
+    let isTransitioning = false;
+    let handInteractionCenter = new THREE.Vector3(0, 0, 0);
+    let handInteractionStrength = 0;
+
+    // Métricas analíticas agregadas para las tarjetas
+    let statsTotalConfirmed = 0;
+    let statsConfirmedSet = new Set();
+    let statsElementsCount = { Tierra: 0, Aire: 0, Fuego: 0, Éter: 0 };
+    let statsStartTime = null;
+
+    /* ======================================================================
+       TABLA DE 40 GESTOS
+       ====================================================================== */
+    const GESTURE_TABLE = {
+        mano_abierta:      { id:1,  categoria:'Mano',       nombre:'Mano abierta',       simbolo:'✋',  significado:'Crear',          accion:'Genera arcilla' },
+        palma_frontal:     { id:2,  categoria:'Mano',       nombre:'Palma frontal',      simbolo:'🤚', significado:'Protección',     accion:'Pausa la experiencia o crea un escudo' },
+        puno_cerrado:      { id:3,  categoria:'Mano',       nombre:'Puño cerrado',       simbolo:'✊',  significado:'Compresión',     accion:'Compacta la materia' },
+        pulgar_arriba:     { id:4,  categoria:'Mano',       nombre:'Pulgar arriba',      simbolo:'👍', significado:'Confirmar',      accion:'Acepta la transformación' },
+        pulgar_abajo:      { id:5,  categoria:'Mano',       nombre:'Pulgar abajo',       simbolo:'👎', significado:'Cancelar',       accion:'Deshace el último paso' },
+        indice:            { id:6,  categoria:'Mano',       nombre:'Índice',             simbolo:'👆', significado:'Selección',      accion:'Selecciona un símbolo' },
+        dos_dedos:         { id:7,  categoria:'Mano',       nombre:'Dos dedos',          simbolo:'✌️', significado:'División',       accion:'Duplica el objeto' },
+        tres_dedos:        { id:8,  categoria:'Mano',       nombre:'Tres dedos',         simbolo:'🤟', significado:'Invocación',     accion:'Activa un ritual' },
+        cuatro_dedos:      { id:9,  categoria:'Mano',       nombre:'Cuatro dedos',       simbolo:'🖖', significado:'Transición',     accion:'Cambia de etapa' },
+        cinco_dedos:       { id:10, categoria:'Mano',       nombre:'Cinco dedos',        simbolo:'🖐',  significado:'Reinicio',       accion:'Reinicia la escena' },
+        pinza:             { id:11, categoria:'Mano',       nombre:'Pinza',              simbolo:'👌', significado:'Precisión',      accion:'Modela detalles' },
+        pellizco:          { id:12, categoria:'Mano',       nombre:'Pellizco',           simbolo:'🤏', significado:'Agarre',         accion:'Toma un objeto' },
+        palma_arriba:      { id:13, categoria:'Mano',       nombre:'Palma hacia arriba', simbolo:'🤲', significado:'Recibir',        accion:'Invoca energía' },
+        palma_abajo:       { id:14, categoria:'Mano',       nombre:'Palma hacia abajo',  simbolo:'🫳',  significado:'Depositar',      accion:'Coloca un objeto' },
+        mano_costado:      { id:15, categoria:'Mano',       nombre:'Mano de costado',    simbolo:'🤚', significado:'Rotación',       accion:'Cambia la vista' },
+
+        subir:             { id:16, categoria:'Movimiento', nombre:'Subir',              simbolo:'↑',  significado:'Ascenso',        accion:'Eleva la escultura' },
+        bajar:             { id:17, categoria:'Movimiento', nombre:'Bajar',              simbolo:'↓',  significado:'Descenso',       accion:'Enterrar o hundir' },
+        izquierda:         { id:18, categoria:'Movimiento', nombre:'Izquierda',          simbolo:'←',  significado:'Retroceso',      accion:'Etapa anterior' },
+        derecha:           { id:19, categoria:'Movimiento', nombre:'Derecha',            simbolo:'→',  significado:'Avance',         accion:'Etapa siguiente' },
+        acercar:           { id:20, categoria:'Movimiento', nombre:'Acercar',            simbolo:'⬆',  significado:'Energía',        accion:'Zoom o crecimiento' },
+        alejar:            { id:21, categoria:'Movimiento', nombre:'Alejar',             simbolo:'⬇',  significado:'Distancia',      accion:'Alejar objeto' },
+        circulo:           { id:22, categoria:'Movimiento', nombre:'Círculo',            simbolo:'⭕', significado:'Ritual',         accion:'Abre un círculo alquímico' },
+        espiral:           { id:23, categoria:'Movimiento', nombre:'Espiral',            simbolo:'🌀', significado:'Invocación',     accion:'Materializa partículas' },
+        infinito:          { id:24, categoria:'Movimiento', nombre:'Infinito',           simbolo:'∞',  significado:'Eternidad',      accion:'Ciclo infinito' },
+        zigzag:            { id:25, categoria:'Movimiento', nombre:'Zigzag',             simbolo:'⚡',  significado:'Caos',           accion:'Distorsiona la materia' },
+        linea_recta:       { id:26, categoria:'Movimiento', nombre:'Línea recta',        simbolo:'─',  significado:'Corte',          accion:'Divide un objeto' },
+        giro_muneca:       { id:27, categoria:'Movimiento', nombre:'Giro muñeca',        simbolo:'🔄', significado:'Transformación', accion:'Rota la escultura' },
+        quietud:           { id:28, categoria:'Movimiento', nombre:'Quietud',            simbolo:'⏸',  significado:'Concentración',  accion:'Confirma la acción' },
+
+        palmas_enfrentadas:{ id:29, categoria:'Dos manos',  nombre:'Palmas enfrentadas', simbolo:'🤲🤲', significado:'Unión',        accion:'Fusiona materiales' },
+        alejar_manos:      { id:30, categoria:'Dos manos',  nombre:'Alejar manos',       simbolo:'↔',  significado:'Expansión',      accion:'Agranda la escultura' },
+        acercar_manos:     { id:31, categoria:'Dos manos',  nombre:'Acercar manos',      simbolo:'↔',  significado:'Compresión',     accion:'Compacta el modelo' },
+        mano_sobre_mano:   { id:32, categoria:'Dos manos',  nombre:'Mano sobre mano',    simbolo:'✋✋', significado:'Protección',    accion:'Congela el estado' },
+        circulo_conjunto:  { id:33, categoria:'Dos manos',  nombre:'Círculo conjunto',   simbolo:'⭕', significado:'Portal',         accion:'Abre un portal' },
+
+        jnana:             { id:34, categoria:'Mudra',      nombre:'Jñana',              simbolo:'🤏', significado:'Sabiduría',      accion:'Activa conocimiento' },
+        dhyana:            { id:35, categoria:'Mudra',      nombre:'Dhyana',             simbolo:'🙏', significado:'Meditación',     accion:'Reduce velocidad' },
+        anjali:            { id:36, categoria:'Mudra',      nombre:'Anjali',             simbolo:'🙏', significado:'Unión',          accion:'Fusiona elementos' },
+        abhaya:            { id:37, categoria:'Mudra',      nombre:'Abhaya',             simbolo:'✋',  significado:'Protección',     accion:'Escudo energético' },
+        varada:            { id:38, categoria:'Mudra',      nombre:'Varada',             simbolo:'🤲', significado:'Dar',            accion:'Libera materia' },
+        karana:            { id:39, categoria:'Mudra',      nombre:'Karana',             simbolo:'🤟', significado:'Expulsión',      accion:'Elimina impurezas' },
+
+        ausencia:          { id:40, categoria:'Estado',     nombre:'Mano no detectada',  simbolo:'—',  significado:'Ausencia',       accion:'Suspende la simulación' }
+    };
+
+    /* ======================================================================
+       ESCENA THREE.JS CON AJUSTE AUTOMÁTICO DE VIEWPORT (RESPONSIVE FOV)
+       ====================================================================== */
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    
+    // Configuración responsiva inicial de la cámara
+    function updateResponsiveCamera() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        if (camera.aspect < 1) {
+            // Móviles / Vertical: aumentamos distancia y FOV para meter la escena en viewport
+            camera.fov = 85;
+            camera.position.set(0, 0, 13);
+        } else {
+            // Escritorio / Horizontal estándar
+            camera.fov = 75;
+            camera.position.set(0, 0, 11);
+        }
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    document.body.appendChild(renderer.domElement);
+
+    window.addEventListener('resize', updateResponsiveCamera);
+    updateResponsiveCamera();
+
+    /* ======================================================================
+       DISEÑO GENERATIVO: GALAXIA EN ESPIRAL
+       ====================================================================== */
+    const galaxyGeometry = new THREE.BufferGeometry();
+    const starCount = 12000;
+
+    const positions = new Float32Array(starCount * 3);
+    const colors = new Float32Array(starCount * 3);
+    const starMetadata = [];
+
+    const colorCore = new THREE.Color('#ffe58f');
+    const colorArmIn = new THREE.Color('#aa55ff');
+    const colorArmOut = new THREE.Color('#00f3ff');
+    const colorSpace = new THREE.Color('#0a1128');
+
+    const branches = 3;
+    const spinFactor = 1.3;
+    const maxRadius = 15;
+
+    for (let i = 0; i < starCount; i++) {
+        const radius = Math.random() * maxRadius;
+        const branchAngle = ((i % branches) / branches) * Math.PI * 2;
+        const spinAngle = radius * spinFactor;
+        const angle = branchAngle + spinAngle;
+
+        const randomPower = 3;
+        const randomX = Math.pow(Math.random(), randomPower) * (Math.random() < 0.5 ? 1 : -1) * 0.45 * (radius + 0.5);
+        const randomY = Math.pow(Math.random(), randomPower) * (Math.random() < 0.5 ? 1 : -1) * 0.45 * (radius + 0.5);
+        const randomZ = Math.pow(Math.random(), randomPower) * (Math.random() < 0.5 ? 1 : -1) * 0.25 * (radius + 0.5);
+
+        const x = Math.cos(angle) * radius + randomX;
+        const y = randomY;
+        const z = Math.sin(angle) * radius + randomZ;
+
+        positions[i * 3] = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = z;
+
+        const mixedColor = colorCore.clone();
+        if (radius < maxRadius * 0.25) {
+            mixedColor.lerp(colorArmIn, radius / (maxRadius * 0.25));
+        } else if (radius < maxRadius * 0.7) {
+            mixedColor.copy(colorArmIn).lerp(colorArmOut, (radius - maxRadius * 0.25) / (maxRadius * 0.45));
+        } else {
+            mixedColor.copy(colorArmOut).lerp(colorSpace, (radius - maxRadius * 0.7) / (maxRadius * 0.3));
+        }
+
+        colors[i * 3] = mixedColor.r;
+        colors[i * 3 + 1] = mixedColor.g;
+        colors[i * 3 + 2] = mixedColor.b;
+
+        starMetadata.push({
+            radius: radius,
+            originalAngle: angle,
+            angleSpeed: (1.5 / (radius + 1.2)) * (0.008 + Math.random() * 0.005),
+            offsetX: randomX,
+            offsetY: randomY,
+            offsetZ: randomZ,
+            currentAngle: angle,
+            gravityInfluence: 0.8 + Math.random() * 0.4
+        });
+    }
+
+    galaxyGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    galaxyGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+        size: 0.05,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    });
+
+    const starField = new THREE.Points(galaxyGeometry, starMaterial);
+    scene.add(starField);
+
+    scene.add(new THREE.AmbientLight(0x554a42, 0.7));
+    const keyLight = new THREE.PointLight(0xfff2d6, 1.3, 30);
+    keyLight.position.set(3, 4, 6);
+    scene.add(keyLight);
+    const rimLight = new THREE.PointLight(0xaa55ff, 0.6, 30);
+    rimLight.position.set(-4, -2, -3);
+    scene.add(rimLight);
+
+    /* ======================================================================
+       ESTALLIDO DE PARTÍCULAS DEL BOTÓN (BOTON SPLASH EFFECT)
+       ====================================================================== */
+    const splashCount = 400;
+    const splashGeometry = new THREE.BufferGeometry();
+    const splashPositions = new Float32Array(splashCount * 3);
+    const splashColors = new Float32Array(splashCount * 3);
+    const splashVelocities = [];
+
+    for (let i = 0; i < splashCount; i++) {
+        splashPositions[i * 3] = 0;
+        splashPositions[i * 3 + 1] = 0;
+        splashPositions[i * 3 + 2] = 2;
+
+        const colorGold = new THREE.Color('#ffe58f');
+        const colorCyan = new THREE.Color('#00f3ff');
+        colorGold.lerp(colorCyan, Math.random());
+
+        splashColors[i * 3] = colorGold.r;
+        splashColors[i * 3 + 1] = colorGold.g;
+        splashColors[i * 3 + 2] = colorGold.b;
+
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos((Math.random() * 2) - 1);
+        const speed = 0.05 + Math.random() * 0.12;
+
+        splashVelocities.push({
+            x: Math.sin(phi) * Math.cos(theta) * speed,
+            y: Math.sin(phi) * Math.sin(theta) * speed,
+            z: Math.cos(phi) * speed + 0.02,
+            life: 1.0,
+            decay: 0.01 + Math.random() * 0.015
+        });
+    }
+
+    splashGeometry.setAttribute('position', new THREE.BufferAttribute(splashPositions, 3));
+    splashGeometry.setAttribute('color', new THREE.BufferAttribute(splashColors, 3));
+
+    const splashMaterial = new THREE.PointsMaterial({
+        size: 0.08,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    });
+
+    const splashParticles = new THREE.Points(splashGeometry, splashMaterial);
+    scene.add(splashParticles);
+
+    /* ======================================================================
+       MANO ARTICULADA
+       ====================================================================== */
+    const CONNECTIONS = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20]];
+    const FINGER_CHAINS = [
+        [0,1,2,3,4],     // pulgar
+        [0,5,6,7,8],     // índice
+        [0,9,10,11,12],  // medio
+        [0,13,14,15,16], // anular
+        [0,17,18,19,20]  // meñique
+    ];
+    const NAIL_JOINTS = [[3,4], [7,8], [11,12], [15,16], [19,20]];
+    const JOINT_RADIUS = [
+        0.095,
+        0.050,0.045,0.040,0.034,
+        0.052,0.043,0.036,0.030,
+        0.052,0.043,0.036,0.030,
+        0.049,0.041,0.034,0.028,
+        0.046,0.038,0.032,0.026
+    ];
+    const BONE_RADIUS_PROFILE = [0.050, 0.041, 0.033, 0.026];
+    const boneGeoCache = BONE_RADIUS_PROFILE.map(r => new THREE.CylinderGeometry(r*0.85, r, 1, 12, 1));
+    const jointGeoCache = {};
+    function jointGeo(r) {
+        const key = r.toFixed(3);
+        if (!jointGeoCache[key]) jointGeoCache[key] = new THREE.SphereGeometry(r, 16, 12);
+        return jointGeoCache[key];
+    }
+    const nailGeo = new THREE.SphereGeometry(1, 12, 8);
+
+    function buildHandSkeleton(skinColorHex, accentHex) {
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const skinMat = new THREE.MeshStandardMaterial({
+            color: skinColorHex, roughness: 0.91, metalness: 0.03, flatShading: false
+        });
+        const jointMat = new THREE.MeshStandardMaterial({
+            color: skinColorHex, roughness: 0.88, metalness: 0.03
+        });
+        const wristMat = new THREE.MeshStandardMaterial({
+            color: skinColorHex, roughness: 0.92, metalness: 0.02
+        });
+        const palmMat = new THREE.MeshStandardMaterial({
+            color: skinColorHex, roughness: 0.92, metalness: 0.02, side: THREE.DoubleSide
+        });
+        const nailMat = new THREE.MeshStandardMaterial({
+            color: skinColorHex, roughness: 0.85, metalness: 0.04
+        });
+        const tendonMat = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(skinColorHex).multiplyScalar(0.72),
+            roughness: 0.9, transparent: true, opacity: 0.42, depthWrite: false
+        });
+
+        const nodes = JOINT_RADIUS.map(r => new THREE.Mesh(jointGeo(r), jointMat));
+        const bones = CONNECTIONS.map((c, i) => new THREE.Mesh(boneGeoCache[i % 4], skinMat));
+        nodes.forEach(n => group.add(n));
+        bones.forEach(b => group.add(b));
+
+        const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.078, 0.105, 1, 14), wristMat);
+        group.add(forearm);
+
+        const palmGeo = new THREE.BufferGeometry();
+        palmGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6 * 3), 3));
+        palmGeo.setIndex([0,1,2, 0,2,3, 0,3,4, 0,4,5, 0,5,1]);
+        const palm = new THREE.Mesh(palmGeo, palmMat);
+        group.add(palm);
+
+        const seedCurve = new THREE.CatmullRomCurve3([new THREE.Vector3(0,0,0), new THREE.Vector3(0,0.1,0)]);
+        const tendons = FINGER_CHAINS.map(() => new THREE.Mesh(new THREE.TubeGeometry(seedCurve, 6, 0.006, 5, false), tendonMat));
+        tendons.forEach(t => group.add(t));
+
+        const nails = NAIL_JOINTS.map(() => new THREE.Mesh(nailGeo, nailMat));
+        nails.forEach(n => group.add(n));
+
+        group.visible = false;
+        return { group, nodes, bones, forearm, palm, palmGeo, tendons, nails,
+                 materials: { skinMat, jointMat, wristMat, palmMat, tendonMat, baseAccent: accentHex } };
+    }
+    
+    const skeletons = [ buildHandSkeleton(0xd97e5a, 0xd28bff), buildHandSkeleton(0xd97e5a, 0x8bffcf) ];
+
+    function setSkinTone(hex) {
+        skeletons.forEach(sk => {
+            const c = new THREE.Color(hex);
+            sk.materials.skinMat.color.copy(c);
+            sk.materials.jointMat.color.copy(c);
+            sk.materials.wristMat.color.copy(c);
+            sk.materials.palmMat.color.copy(c);
+            sk.materials.tendonMat.color.copy(c).multiplyScalar(0.72);
+        });
+    }
+
+    function toScene(p) { return new THREE.Vector3((p.x - 0.5) * 8, -(p.y - 0.5) * 8, -p.z * 5); }
+
+    function renderSkeleton(sk, landmarks) {
+        sk.group.visible = true;
+        const P = landmarks.map(toScene);
+        P.forEach((v, i) => sk.nodes[i].position.copy(v));
+
+        CONNECTIONS.forEach((c, i) => {
+            const start = P[c[0]], end = P[c[1]], dir = end.clone().sub(start);
+            const len = Math.max(dir.length(), 1e-4);
+            sk.bones[i].position.copy(start.clone().add(dir.clone().multiplyScalar(0.5)));
+            sk.bones[i].scale.set(1, len, 1);
+            sk.bones[i].quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+        });
+
+        const wrist = P[0];
+        const palmDir = P[9].clone().sub(wrist).normalize();
+        const forearmEnd = wrist.clone().add(palmDir.clone().multiplyScalar(-1.1));
+        const fDir = forearmEnd.clone().sub(wrist);
+        sk.forearm.position.copy(wrist.clone().add(fDir.clone().multiplyScalar(0.5)));
+        sk.forearm.scale.set(1, Math.max(fDir.length(), 1e-4), 1);
+        sk.forearm.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), fDir.clone().normalize());
+
+        const palmCenter = new THREE.Vector3()
+            .add(wrist).add(P[5]).add(P[9]).add(P[13]).add(P[17])
+            .multiplyScalar(1/5);
+        const palmPts = [palmCenter, wrist, P[5], P[9], P[13], P[17]];
+        const posAttr = sk.palmGeo.attributes.position;
+        palmPts.forEach((v, i) => posAttr.setXYZ(i, v.x, v.y, v.z));
+        posAttr.needsUpdate = true;
+        sk.palmGeo.computeVertexNormals();
+
+        const backNormal = new THREE.Vector3().subVectors(P[5], wrist).cross(new THREE.Vector3().subVectors(P[17], wrist)).normalize();
+
+        FINGER_CHAINS.forEach((chain, fi) => {
+            const pts = chain.map(idx => P[idx].clone().add(backNormal.clone().multiplyScalar(0.012)));
+            const curve = new THREE.CatmullRomCurve3(pts);
+            sk.tendons[fi].geometry.dispose();
+            sk.tendons[fi].geometry = new THREE.TubeGeometry(curve, 10, 0.006, 5, false);
+        });
+
+        NAIL_JOINTS.forEach(([dip, tip], fi) => {
+            const a = P[dip], b = P[tip], dir = b.clone().sub(a);
+            const len = Math.max(dir.length(), 1e-4);
+            const mid = a.clone().add(dir.clone().multiplyScalar(0.62)).add(backNormal.clone().multiplyScalar(len * 0.42));
+            sk.nails[fi].position.copy(mid);
+            sk.nails[fi].quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+            sk.nails[fi].scale.set(len * 0.34, len * 0.5, len * 0.14);
+        });
+    }
+
+    /* ======================================================================
+       MOTOR DE RECONOCIMIENTO DE GESTOS PROBABILÍSTICO
+       ====================================================================== */
+    function sub(a,b){ return {x:a.x-b.x, y:a.y-b.y, z:a.z-b.z}; }
+    function dot(a,b){ return a.x*b.x + a.y*b.y + a.z*b.z; }
+    function cross(a,b){ return {x:a.y*b.z-a.z*b.y, y:a.z*b.x-a.x*b.z, z:a.x*b.y-a.y*b.x}; }
+    function norm(a){ return Math.hypot(a.x,a.y,a.z) || 1e-6; }
+    function normalize(a){ const n=norm(a); return {x:a.x/n, y:a.y/n, z:a.z/n}; }
+    function dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y, a.z-b.z); }
+    function angleAt(a,b,c){
+        const v1 = normalize(sub(a,b)), v2 = normalize(sub(c,b));
+        const d = Math.max(-1, Math.min(1, dot(v1,v2)));
+        return Math.acos(d) * 180/Math.PI;
+    }
+
+    function fingerStates(l) {
+        const thumb  = angleAt(l[1], l[2], l[4])  > 145; 
+        const index  = angleAt(l[5], l[6], l[8])  > 155;
+        const middle = angleAt(l[9], l[10], l[12])> 155;
+        const ring   = angleAt(l[13],l[14],l[16]) > 155;
+        const pinky  = angleAt(l[17],l[18],l[20]) > 155;
+        return { thumb, index, middle, ring, pinky, count: [thumb,index,middle,ring,pinky].filter(Boolean).length };
+    }
+
+    function palmNormal(l) {
+        const v1 = sub(l[5], l[0]);
+        const v2 = sub(l[17], l[0]);
+        return normalize(cross(v1, v2));
+    }
+
+    function fingertipSpread(l) {
+        const tips = [l[8], l[12], l[16], l[20]];
+        let total = 0;
+        for (let i=0; i<tips.length-1; i++) total += dist(tips[i], tips[i+1]);
+        return total / dist(l[0], l[9]);
+    }
+
+    function handSize(l) {
+        let minX=1,maxX=0,minY=1,maxY=0;
+        l.forEach(p=>{ minX=Math.min(minX,p.x); maxX=Math.max(maxX,p.x); minY=Math.min(minY,p.y); maxY=Math.max(maxY,p.y); });
+        return Math.max(maxX-minX, maxY-minY);
+    }
+
+    function classifyStaticShape(l, mudraMode) {
+        const f = fingerStates(l);
+        const n = palmNormal(l);
+        const spread = fingertipSpread(l);
+        const thumbTip = l[4], wrist = l[0];
+        const pinchDist = dist(l[4], l[8]) / dist(wrist, l[9]); 
+
+        const hypotheses = [];
+
+        // 1. Mano Abierta
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.count >= 4) { score += 0.5; reasons.push("≥4 dedos extendidos"); }
+            if (spread > 0.45) { score += 0.25; reasons.push("dedos separados"); } else { reasons.push("dedos juntos/semicerrados"); }
+            const facingCamera = Math.abs(n.z) > Math.abs(n.x) && Math.abs(n.z) > Math.abs(n.y) * 0.6;
+            if (facingCamera) { score += 0.25; reasons.push("palma frontal"); }
+            hypotheses.push({ key: "mano_abierta", score, reasons });
+        }
+
+        // 2. Palma Frontal
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.count >= 4) { score += 0.4; reasons.push("≥4 dedos extendidos"); }
+            if (spread <= 0.48) { score += 0.3; reasons.push("dedos juntos"); }
+            const facingCamera = Math.abs(n.z) > Math.abs(n.x) && Math.abs(n.z) > Math.abs(n.y) * 0.6;
+            if (facingCamera) { score += 0.3; reasons.push("palma perpendicular a cámara"); }
+            hypotheses.push({ key: "palma_frontal", score, reasons });
+        }
+
+        // 3. Puño Cerrado
+        {
+            let score = 0;
+            const reasons = [];
+            const nonThumbCount = [f.index, f.middle, f.ring, f.pinky].filter(Boolean).length;
+            if (nonThumbCount === 0) { score += 0.7; reasons.push("dedos largos flexionados"); }
+            if (!f.thumb) { score += 0.3; reasons.push("pulgar replegado"); }
+            hypotheses.push({ key: "puno_cerrado", score, reasons });
+        }
+
+        // 4. Pulgar Arriba / Pulgar Abajo
+        {
+            let scoreUp = 0, scoreDown = 0;
+            const reasonsUp = [], reasonsDown = [];
+            const nonThumbCount = [f.index, f.middle, f.ring, f.pinky].filter(Boolean).length;
+            if (nonThumbCount === 0) {
+                scoreUp += 0.4; scoreDown += 0.4;
+                reasonsUp.push("dedos largos contraídos"); reasonsDown.push("dedos largos contraídos");
+            }
+            if (f.thumb) {
+                scoreUp += 0.3; scoreDown += 0.3;
+                reasonsUp.push("pulgar extendido"); reasonsDown.push("pulgar extendido");
+            }
+            const isVerticalUp = thumbTip.y < wrist.y - 0.05;
+            if (isVerticalUp) {
+                scoreUp += 0.3; reasonsUp.push("orientado hacia arriba");
+            } else {
+                scoreDown += 0.3; reasonsDown.push("orientado hacia abajo");
+            }
+            hypotheses.push({ key: "pulgar_arriba", score: scoreUp, reasons: reasonsUp });
+            hypotheses.push({ key: "pulgar_abajo", score: scoreDown, reasons: reasonsDown });
+        }
+
+        // 5. Índice
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.index) { score += 0.5; reasons.push("índice extendido"); }
+            const otherClosed = !f.middle && !f.ring && !f.pinky && !f.thumb;
+            if (otherClosed) { score += 0.5; reasons.push("otros dedos cerrados"); }
+            hypotheses.push({ key: "indice", score, reasons });
+        }
+
+        // 6. Dos Dedos (Victoria / División)
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.index && f.middle) { score += 0.6; reasons.push("índice y medio extendidos"); }
+            const otherClosed = !f.ring && !f.pinky && !f.thumb;
+            if (otherClosed) { score += 0.4; reasons.push("anular, meñique y pulgar cerrados"); }
+            hypotheses.push({ key: "dos_dedos", score, reasons });
+        }
+
+        // 7. Tres Dedos (Invocación)
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.thumb && f.index && f.pinky) { score += 0.6; reasons.push("pulgar, índice y meñique extendidos"); }
+            if (!f.middle && !f.ring) { score += 0.4; reasons.push("medio y anular contraídos"); }
+            hypotheses.push({ key: "tres_dedos", score, reasons });
+        }
+
+        // 8. Cuatro Dedos
+        {
+            let score = 0;
+            const reasons = [];
+            const nonThumbCount = [f.index, f.middle, f.ring, f.pinky].filter(Boolean).length;
+            if (nonThumbCount === 4) { score += 0.6; reasons.push("cuatro dedos largos extendidos"); }
+            if (!f.thumb) { score += 0.4; reasons.push("pulgar replegado"); }
+            hypotheses.push({ key: "cuatro_dedos", score, reasons });
+        }
+
+        // 9. Cinco Dedos
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.count === 5) { score += 0.7; reasons.push("5 dedos detectados"); }
+            if (spread > 0.3) { score += 0.3; reasons.push("visibilidad extendida"); }
+            hypotheses.push({ key: "cinco_dedos", score, reasons });
+        }
+
+        // 10. Pinza / Jñana / Pellizco
+        {
+            let scorePinza = 0, scorePellizco = 0, scoreJnana = 0;
+            const rPinza = [], rPellizco = [], rJnana = [];
+
+            if (pinchDist < 0.42) {
+                const w = 0.5;
+                scorePinza += w; scorePellizco += w; scoreJnana += w;
+                rPinza.push("pulgar cercano a índice"); rPellizco.push("pulgar cercano a índice"); rJnana.push("pulgar cercano a índice");
+            }
+            const othersExtended = f.middle && f.ring && f.pinky;
+            if (othersExtended) {
+                scorePinza += 0.3; scoreJnana += 0.3;
+                rPinza.push("dedos restantes extendidos"); rJnana.push("dedos restantes extendidos");
+            } else {
+                scorePellizco += 0.5;
+                rPellizco.push("dedos restantes flexionados");
+            }
+
+            if (mudraMode) {
+                scoreJnana += 0.2; rJnana.push("modo mudra activo");
+            } else {
+                scorePinza += 0.2; rPinza.push("modo gestos activo");
+            }
+
+            hypotheses.push({ key: "pinza", score: scorePinza, reasons: rPinza });
+            hypotheses.push({ key: "pellizco", score: scorePellizco, reasons: rPellizco });
+            hypotheses.push({ key: "jnana", score: scoreJnana, reasons: rJnana });
+        }
+
+        // 11. Palmas Arriba / Abajo / Varada / Abhaya
+        {
+            let scoreUp = 0, scoreDown = 0, scoreVarada = 0, scoreAbhaya = 0;
+            const rUp = [], rDown = [], rVarada = [], rAbhaya = [];
+
+            if (f.count >= 4) {
+                scoreUp += 0.3; scoreDown += 0.3; scoreVarada += 0.3; scoreAbhaya += 0.3;
+                const m = "mano abierta o extendida";
+                rUp.push(m); rDown.push(m); rVarada.push(m); rAbhaya.push(m);
+            }
+
+            const facingUp = n.y < -0.45;
+            const facingDown = n.y > 0.45;
+            const facingCamera = Math.abs(n.z) > Math.abs(n.x) && Math.abs(n.z) > Math.abs(n.y) * 0.6;
+
+            if (facingUp) {
+                scoreUp += 0.5; rUp.push("palma hacia arriba");
+            }
+            if (facingDown) {
+                scoreDown += 0.4; scoreVarada += 0.4;
+                rDown.push("palma hacia abajo"); rVarada.push("palma hacia abajo");
+            }
+            if (facingCamera) {
+                scoreAbhaya += 0.4; rAbhaya.push("palma orientada a cámara");
+            }
+
+            if (mudraMode) {
+                scoreVarada += 0.3; scoreAbhaya += 0.3;
+                rVarada.push("modo mudra activo"); rAbhaya.push("modo mudra activo");
+            } else {
+                scoreUp += 0.2; scoreDown += 0.2;
+                rUp.push("modo gestos activo"); rDown.push("modo gestos activo");
+            }
+
+            hypotheses.push({ key: "palma_arriba", score: scoreUp, reasons: rUp });
+            hypotheses.push({ key: "palma_abajo", score: scoreDown, reasons: rDown });
+            hypotheses.push({ key: "varada", score: scoreVarada, reasons: rVarada });
+            hypotheses.push({ key: "abhaya", score: scoreAbhaya, reasons: rAbhaya });
+        }
+
+        // 12. Karana (Mudra)
+        {
+            let score = 0;
+            const reasons = [];
+            if (f.index && f.pinky) { score += 0.5; reasons.push("índice y meñique extendidos"); }
+            if (!f.middle && !f.ring) { score += 0.3; reasons.push("medio y anular fuertemente doblados"); }
+            if (mudraMode) { score += 0.2; reasons.push("modo mudra activo"); }
+            hypotheses.push({ key: "karana", score, reasons });
+        }
+
+        hypotheses.forEach(h => h.score = Math.min(1.0, Math.max(0.0, h.score)));
+        hypotheses.sort((a, b) => b.score - a.score);
+        return hypotheses;
+    }
+
+    /* --- Historial de movimiento por mano --- */
+    const HISTORY_LEN = 24;
+    function newHandTracker() {
+        return { positions: [], sizes: [], normals: [], lastStaticShape: null, stableFrames: 0, lastGestureKey: null, lastGestureFrames: 0 };
+    }
+    const trackers = [newHandTracker(), newHandTracker()];
+
+    function pushHistory(tracker, l) {
+        const centroid = l[9];
+        tracker.positions.push({x: centroid.x, y: centroid.y, t: performance.now()});
+        tracker.sizes.push(handSize(l));
+        tracker.normals.push(palmNormal(l));
+        if (tracker.positions.length > HISTORY_LEN) {
+            tracker.positions.shift();
+            tracker.sizes.shift();
+            tracker.normals.shift();
+        }
+    }
+
+    function classifyMovement(tracker) {
+        const P = tracker.positions;
+        if (P.length < HISTORY_LEN) return null;
+
+        const first = P[0], last = P[P.length-1];
+        const dx = last.x - first.x, dy = last.y - first.y;
+        const net = Math.hypot(dx, dy);
+
+        let pathLen = 0;
+        for (let i=1; i<P.length; i++) pathLen += Math.hypot(P[i].x-P[i-1].x, P[i].y-P[i-1].y);
+        const straightness = pathLen > 1e-6 ? net / pathLen : 1;
+
+        if (pathLen < 0.02) return 'quietud';
+
+        const S = tracker.sizes;
+        const sizeStart = S.slice(0, Math.floor(S.length/2)).reduce((a,b)=>a+b,0) / Math.floor(S.length/2);
+        const sizeEnd   = S.slice(Math.floor(S.length/2)).reduce((a,b)=>a+b,0) / Math.ceil(S.length/2);
+        const sizeDelta = sizeEnd - sizeStart;
+
+        let signChangesX = 0, signChangesY = 0, totalAngle = 0, angleSignFlips = 0, prevAngleSign = 0;
+        const cx = P.reduce((a,p)=>a+p.x,0)/P.length, cy = P.reduce((a,p)=>a+p.y,0)/P.length;
+        let prevVX = null, prevVY = null, prevTheta = null;
+        for (let i=1; i<P.length; i++) {
+            const vx = P[i].x - P[i-1].x, vy = P[i].y - P[i-1].y;
+            if (prevVX !== null) {
+                if (Math.sign(vx) !== 0 && Math.sign(prevVX) !== 0 && Math.sign(vx) !== Math.sign(prevVX)) signChangesX++;
+                if (Math.sign(vy) !== 0 && Math.sign(prevVY) !== 0 && Math.sign(vy) !== Math.sign(prevVY)) signChangesY++;
+            }
+            prevVX = vx; prevVY = vy;
+
+            const theta = Math.atan2(P[i].y-cy, P[i].x-cx);
+            if (prevTheta !== null) {
+                let dtheta = theta - prevTheta;
+                if (dtheta > Math.PI) dtheta -= 2*Math.PI;
+                if (dtheta < -Math.PI) dtheta += 2*Math.PI;
+                totalAngle += dtheta;
+                const s = Math.sign(dtheta);
+                if (prevAngleSign !== 0 && s !== 0 && s !== prevAngleSign) angleSignFlips++;
+                if (s !== 0) prevAngleSign = s;
+            }
+            prevTheta = theta;
+        }
+        const totalReversals = signChangesX + signChangesY;
+        const rotations = Math.abs(totalAngle) / (2*Math.PI);
+
+        const radii = P.map(p => Math.hypot(p.x-cx, p.y-cy));
+        const rStart = radii.slice(0, Math.floor(radii.length/2)).reduce((a,b)=>a+b,0)/Math.floor(radii.length/2);
+        const rEnd   = radii.slice(Math.floor(radii.length/2)).reduce((a,b)=>a+b,0)/Math.ceil(radii.length/2);
+
+        if (straightness < 0.4 && rotations > 0.7 && pathLen > 0.15) {
+            if (rEnd < rStart * 0.65) return 'espiral';
+            if (angleSignFlips >= 1) return 'infinito';
+            return 'circulo';
+        }
+
+        if (totalReversals >= 4 && pathLen > 0.1) return 'zigzag';
+
+        const N = tracker.normals;
+        const nStart = N[0], nEnd = N[N.length-1];
+        const normalAngleChange = Math.acos(Math.max(-1, Math.min(1, dot(nStart, nEnd)))) * 180/Math.PI;
+        if (pathLen < 0.08 && normalAngleChange > 45) return 'giro_muneca';
+
+        if (Math.abs(sizeDelta) > 0.04 && Math.abs(sizeDelta) > net * 0.6) {
+            return sizeDelta > 0 ? 'acercar' : 'alejar';
+        }
+
+        if (straightness > 0.75 && pathLen > 0.12) {
+            const angleDeg = Math.atan2(dy, dx) * 180/Math.PI;
+            const adeg = ((angleDeg % 360) + 360) % 360;
+            const diagonal = (adeg > 20 && adeg < 70) || (adeg > 110 && adeg < 160) || (adeg > 200 && adeg < 250) || (adeg > 290 && adeg < 340);
+            if (diagonal) return 'linea_recta';
+            if (adeg >= 315 || adeg < 45)  return 'derecha';
+            if (adeg >= 45  && adeg < 135) return 'bajar';
+            if (adeg >= 135 && adeg < 225) return 'izquierda';
+            return 'subir';
+        }
+
+        return null;
+    }
+
+    function classifyTwoHands(l0, l1, tr0, tr1, mudraMode) {
+        const c0 = l0[9], c1 = l1[9];
+        const handDist = dist(c0, c1);
+        const n0 = palmNormal(l0), n1 = palmNormal(l1);
+        const facingEachOther = dot(n0, n1) < -0.4;
+
+        const scale = (handSize(l0) + handSize(l1)) / 2;
+        const normDist = handDist / Math.max(scale, 1e-3);
+
+        const P0 = tr0.positions, P1 = tr1.positions;
+        if (P0.length === HISTORY_LEN && P1.length === HISTORY_LEN) {
+            const move0 = Math.hypot(P0[P0.length-1].x-P0[0].x, P0[P0.length-1].y-P0[0].y);
+            const move1 = Math.hypot(P1[P1.length-1].x-P1[0].x, P1[P1.length-1].y-P1[0].y);
+            const bothMovingCurvy = move0 > 0.05 && move1 > 0.05;
+            if (bothMovingCurvy) {
+                const g0 = classifyMovement(tr0), g1 = classifyMovement(tr1);
+                if ((g0 === 'circulo' || g1 === 'circulo')) return 'circulo_conjunto';
+            }
+        }
+
+        if (normDist < 0.9 && facingEachOther) {
+            if (mudraMode) {
+                const verticalOffset = Math.abs(c0.y - c1.y);
+                return verticalOffset > 0.08 ? 'dhyana' : 'anjali';
+            }
+            return 'palmas_enfrentadas';
+        }
+
+        if (normDist < 0.9 && !facingEachOther) {
+            return 'mano_sobre_mano';
+        }
+
+        if (P0.length === HISTORY_LEN && P1.length === HISTORY_LEN) {
+            const distStart = dist(P0[0], P1[0]);
+            const distEnd = dist(P0[P0.length-1], P1[P1.length-1]);
+            const delta = distEnd - distStart;
+            if (Math.abs(delta) > 0.06) return delta > 0 ? 'alejar_manos' : 'acercar_manos';
+        }
+
+        return null;
+    }
+
+    /* ======================================================================
+       DIBUJO VECTORIAL DEL CROQUIS (SENSADO DE MANO CALIBRACIÓN CENSURADO)
+       ====================================================================== */
+    const croquisCanvas = document.getElementById('croquisCanvas');
+    
+    function resizeCroquisCanvas() {
+        if (!croquisCanvas || !croquisCanvas.parentElement) return;
+        const rect = croquisCanvas.parentElement.getBoundingClientRect();
+        croquisCanvas.width = rect.width;
+        croquisCanvas.height = rect.height;
+    }
+    window.addEventListener('resize', resizeCroquisCanvas);
+    resizeCroquisCanvas();
+
+    function drawCroquis(landmarks) {
+        const ctx = croquisCanvas.getContext('2d');
+        const w = croquisCanvas.width;
+        const h = croquisCanvas.height;
+
+        ctx.clearRect(0, 0, w, h);
+
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.1)';
+        ctx.lineWidth = 1;
+
+        for (let x = 0; x < w; x += 25) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 25) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        ctx.strokeStyle = 'rgba(170, 85, 255, 0.15)';
+        ctx.beginPath();
+        ctx.arc(w / 2, h / 2, Math.min(w, h) * 0.35, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (!landmarks || landmarks.length === 0) {
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.03)';
+            ctx.beginPath();
+            ctx.arc(w / 2, h / 2, 12 + Math.sin(performance.now() * 0.005) * 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            return;
+        }
+
+        const pts = landmarks.map(p => ({
+            x: (1 - p.x) * w, 
+            y: p.y * h
+        }));
+
+        ctx.strokeStyle = 'rgba(170, 85, 255, 0.5)';
+        ctx.lineWidth = 2;
+        CONNECTIONS.forEach(c => {
+            const p1 = pts[c[0]];
+            const p2 = pts[c[1]];
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+        });
+
+        pts.forEach((p, idx) => {
+            let size = 3;
+            let color = '#7CFC98'; 
+
+            if (idx === 0) {
+                size = 5;
+                color = '#d4af37'; 
+            } else if ([4, 8, 12, 16, 20].includes(idx)) {
+                size = 4;
+                color = '#ffe58f'; 
+            }
+
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    /* ======================================================================
+       MOTOR DE SINTETIZADOR DE VOZ ROBÓTICA ALQUÍMICA
+       ====================================================================== */
+    function speakRoboticVoice(callback) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+
+            const text = "Hola, soy PanteraSama Studio. Si no sabes Alquimia, este es tu lugar. Experimenta con tus manos. Adios, me ire a otra dimension pero puedes hablar con mi sirviente Constanza Victoria Tubio, en Ciudad Autónoma de Buenos Aires. Hasta luego";
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            const voices = window.speechSynthesis.getVoices();
+            const esVoice = voices.find(v => v.lang.includes('es-AR')) || voices.find(v => v.lang.includes('es'));
+            if (esVoice) {
+                utterance.voice = esVoice;
+            }
+            
+            utterance.pitch = 0.5; 
+            utterance.rate = 0.95;  
+            
+            utterance.onend = () => {
+                if (callback) callback();
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        } else {
+            setTimeout(callback, 3000);
+        }
+    }
+
+    /* ======================================================================
+       TRANSICIÓN DE VIAJE ESPACIAL (CINEMATIC WARP SECTOR)
+       ====================================================================== */
+    function startJourney() {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        
+        const introOverlay = document.getElementById('introOverlay');
+        const startBtn = document.getElementById('startBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        
+        startBtn.style.transform = 'scale(0.1)';
+        startBtn.style.opacity = '0';
+        exitBtn.style.transform = 'scale(0.1)';
+        exitBtn.style.opacity = '0';
+        introOverlay.style.pointerEvents = 'none';
+
+        splashMaterial.opacity = 1.0;
+
+        let startTime = performance.now();
+        const duration = 3500;
+
+        function transitionStep() {
+            let elapsed = performance.now() - startTime;
+            let progress = Math.min(elapsed / duration, 1.0);
+
+            currentGalaxySpeed = baseGalaxySpeed + Math.pow(progress, 3) * 0.18;
+            camera.position.z = 11 - Math.pow(progress, 2.5) * 16.5;
+
+            const splashPosArr = splashParticles.geometry.attributes.position.array;
+            for (let i = 0; i < splashCount; i++) {
+                splashPosArr[i * 3] += splashVelocities[i].x * (1 + progress * 2);
+                splashPosArr[i * 3 + 1] += splashVelocities[i].y * (1 + progress * 2);
+                splashPosArr[i * 3 + 2] += splashVelocities[i].z * (1 + progress * 4);
+                
+                splashVelocities[i].life -= splashVelocities[i].decay;
+            }
+            splashParticles.geometry.attributes.position.needsUpdate = true;
+            splashMaterial.opacity = Math.max(0, 1.0 - progress);
+
+            if (progress < 1.0) {
+                requestAnimationFrame(transitionStep);
+            } else {
+                inIntroMode = false;
+                introOverlay.style.display = 'none';
+                statsStartTime = Date.now();
+                
+                let returnStart = performance.now();
+                let returnDuration = 1200;
+
+                function returnCamera() {
+                    let retElapsed = performance.now() - returnStart;
+                    let retProgress = Math.min(retElapsed / returnDuration, 1.0);
+                    let t = 1 - Math.pow(1 - retProgress, 3);
+                    camera.position.z = -5.5 + t * 12.5;
+
+                    if (retProgress < 1.0) {
+                        requestAnimationFrame(returnCamera);
+                    } else {
+                        updateResponsiveCamera();
+                    }
+                }
+                returnCamera();
+
+                document.getElementById('ui').style.opacity = '1';
+                document.getElementById('topBar').style.opacity = '1';
+                document.getElementById('debugPanel').style.opacity = '1';
+                document.getElementById('rightSidebarPanel').style.opacity = '1';
+                document.getElementById('toggleDock').style.opacity = '1';
+                
+                document.getElementById('topBar').style.pointerEvents = 'auto';
+                document.getElementById('holdTimeControl').style.pointerEvents = 'auto';
+                document.getElementById('skinToneControl').style.pointerEvents = 'auto';
+                document.getElementById('toggleDock').style.pointerEvents = 'auto';
+            }
+        }
+        
+        requestAnimationFrame(transitionStep);
+    }
+
+    /* ======================================================================
+       FUNCIÓN DE SALIDA GENERAL (SAFE EXPORT WARP)
+       ====================================================================== */
+    function triggerPortalExit() {
+        const topBar = document.getElementById('topBar');
+        const ui = document.getElementById('ui');
+        const debugPanel = document.getElementById('debugPanel');
+        const rightSidebarPanel = document.getElementById('rightSidebarPanel');
+        const toggleDock = document.getElementById('toggleDock');
+        const introOverlay = document.getElementById('introOverlay');
+
+        if (topBar) topBar.style.opacity = '0';
+        if (ui) ui.style.opacity = '0';
+        if (debugPanel) debugPanel.style.opacity = '0';
+        if (rightSidebarPanel) rightSidebarPanel.style.opacity = '0';
+        if (toggleDock) toggleDock.style.opacity = '0';
+        if (introOverlay) {
+            introOverlay.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            introOverlay.style.opacity = '0';
+            introOverlay.style.transform = 'scale(0.85)';
+        }
+
+        let startTime = performance.now();
+        function fadeAndExit() {
+            let elapsed = performance.now() - startTime;
+            let progress = Math.min(elapsed / 600, 1.0);
+            starMaterial.opacity = 0.85 * (1.0 - progress);
+            if (progress < 1.0) {
+                requestAnimationFrame(fadeAndExit);
+            } else {
+                try {
+                    window.location.href = 'index.html';
+                } catch (e) {
+                    console.warn("Portal redirect sandboxed. Fallback activated.");
+                    document.body.innerHTML = `
+                        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#04020a; color:#d4af37; font-family:'Cinzel', serif; text-align:center; padding:20px; box-sizing:border-box;">
+                            <h1 style="font-size:2.8em; margin-bottom:15px; text-shadow:0 0 25px rgba(212,175,55,0.45); letter-spacing:3px;">Portal Cerrado</h1>
+                            <p style="color:#a1a1aa; font-family:'Inter', sans-serif; font-size:1.1em; max-width:550px; line-height:1.7; margin-bottom:40px; font-weight:300;">
+                                Has completado con éxito tu transmutación estelar en PanteraSama Studio. Has regresado del metaverso alquímico de manera segura.
+                            </p>
+                            <button onclick="window.location.reload()" style="background:rgba(20,10,30,0.85); border:1px solid #d4af37; color:#d4af37; font-family:'Inter', sans-serif; font-size:0.95em; font-weight:600; letter-spacing:2px; padding:16px 36px; border-radius:12px; cursor:pointer; box-shadow:0 0 20px rgba(212,175,55,0.2); transition:all 0.3s; text-transform:uppercase;">
+                                🔄 Reiniciar portal
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+        fadeAndExit();
+    }
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+        const startBtn = document.getElementById('startBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        startBtn.style.pointerEvents = 'none';
+        exitBtn.style.pointerEvents = 'none';
+        startBtn.textContent = "✨ Cargando portal...";
+        speakRoboticVoice(() => {
+            startJourney();
+        });
+    });
+
+    document.getElementById('exitBtn').addEventListener('click', triggerPortalExit);
+    document.getElementById('activeExitBtn').addEventListener('click', triggerPortalExit);
+
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+    }
+
+    /* ======================================================================
+       BUCLE PRINCIPAL DE MEDIAPIPE Y PROCESAMIENTO GESTUAL
+       ====================================================================== */
+    const hands = new Hands({ locateFile: (f) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
+    hands.setOptions({ maxNumHands: 2, modelComplexity: 1, minDetectionConfidence: 0.6, minTrackingConfidence: 0.6 });
+
+    let mudraMode = false;
+    const modeBtn = document.getElementById('modeToggle');
+    modeBtn.addEventListener('click', () => {
+        mudraMode = !mudraMode;
+        modeBtn.textContent = mudraMode ? 'Modo: Mudras 🙏' : 'Modo: Gestos ✋';
+    });
+
+    document.querySelectorAll('.skinSwatch').forEach(swatch => {
+        swatch.addEventListener('click', () => {
+            document.querySelectorAll('.skinSwatch').forEach(s => s.classList.remove('active', 'border-amber-400', 'scale-110'));
+            swatch.classList.add('active', 'border-amber-400', 'scale-110');
+            setSkinTone(parseInt(swatch.dataset.tone, 16));
+        });
+    });
+
+    const symbolDisplay = document.getElementById('symbolDisplay');
+    const infoDisplay = document.getElementById('infoDisplay');
+    const actionDisplay = document.getElementById('actionDisplay');
+    const debugPanel = document.getElementById('debugPanel');
+    const holdProgressFill = document.getElementById('holdProgressFill');
+    const holdLabel = document.getElementById('holdLabel');
+    const holdTimeSlider = document.getElementById('holdTimeSlider');
+    const holdTimeValue = document.getElementById('holdTimeValue');
+
+    let GESTURE_HOLD_MS = 700;
+    holdTimeSlider.addEventListener('input', () => {
+        GESTURE_HOLD_MS = parseInt(holdTimeSlider.value, 10);
+        holdTimeValue.textContent = GESTURE_HOLD_MS;
+    });
+
+    let displayedKey = null;
+
+    function updateStatsDashboard(key) {
+        if (!key || key === 'ausencia') return;
+        
+        const gesture = GESTURE_TABLE[key];
+        if (!gesture) return;
+
+        if (!statsConfirmedSet.has(key)) {
+            statsConfirmedSet.add(key);
+            statsTotalConfirmed = statsConfirmedSet.size;
+            document.getElementById('statsTotalConfirmed').textContent = statsTotalConfirmed;
+        }
+
+        const cat = gesture.categoria;
+        if (cat === 'Mano') statsElementsCount.Tierra++;
+        else if (cat === 'Movimiento') statsElementsCount.Aire++;
+        else if (cat === 'Dos manos') statsElementsCount.Fuego++;
+        else if (cat === 'Mudra') statsElementsCount.Éter++;
+
+        const totalPoints = Object.values(statsElementsCount).reduce((a, b) => a + b, 0) || 1;
+        
+        const tPct = Math.round((statsElementsCount.Tierra / totalPoints) * 100);
+        const aPct = Math.round((statsElementsCount.Aire / totalPoints) * 100);
+        const fPct = Math.round((statsElementsCount.Fuego / totalPoints) * 100);
+        const ePct = Math.round((statsElementsCount.Éter / totalPoints) * 100);
+
+        document.getElementById('elemTierraPct').textContent = tPct + '%';
+        document.getElementById('elemTierraBar').style.width = tPct + '%';
+
+        document.getElementById('elemAirePct').textContent = aPct + '%';
+        document.getElementById('elemAireBar').style.width = aPct + '%';
+
+        document.getElementById('elemFuegoPct').textContent = fPct + '%';
+        document.getElementById('elemFuegoBar').style.width = fPct + '%';
+
+        document.getElementById('elemEterPct').textContent = ePct + '%';
+        document.getElementById('elemEterBar').style.width = ePct + '%';
+    }
+
+    function updateUI(key) {
+        if (key === displayedKey) return;
+        displayedKey = key;
+        const g = GESTURE_TABLE[key];
+        if (!g) return;
+        symbolDisplay.textContent = g.simbolo;
+        infoDisplay.textContent = `${g.nombre.toUpperCase()} — ${g.significado.toUpperCase()}`;
+        actionDisplay.textContent = g.accion;
+
+        updateStatsDashboard(key);
+    }
+
+    const holdState = { key: null, since: 0 };
+
+    function considerGesture(key) {
+        const now = performance.now();
+
+        if (key !== holdState.key) {
+            holdState.key = key;
+            holdState.since = now;
+        }
+
+        if (!key || !GESTURE_TABLE[key]) {
+            holdProgressFill.style.width = '0%';
+            holdLabel.textContent = '';
+            return;
+        }
+
+        const elapsed = now - holdState.since;
+        const pct = Math.min(100, (elapsed / GESTURE_HOLD_MS) * 100);
+        holdProgressFill.style.width = pct.toFixed(0) + '%';
+
+        if (elapsed >= GESTURE_HOLD_MS) {
+            updateUI(key);
+            holdLabel.textContent = `${GESTURE_TABLE[key].nombre.toUpperCase()} CONFIRMADO`;
+        } else {
+            holdLabel.textContent = `SOSTENIENDO: ${GESTURE_TABLE[key].nombre.toUpperCase()}...`;
+        }
+    }
+
+    const handGuideBox = document.getElementById('handGuideBox');
+
+    hands.onResults(r => {
+        const list = r.multiHandLandmarks || [];
+        
+        skeletons[0].group.visible = false;
+        skeletons[1].group.visible = false;
+
+        drawCroquis(list[0]);
+
+        if (list.length > 0) {
+            const primaryHand = list[0];
+            const cen = primaryHand[9];
+            
+            handInteractionCenter.set((cen.x - 0.5) * -12, (cen.y - 0.5) * -9, 0);
+            handInteractionStrength = THREE.MathUtils.lerp(handInteractionStrength, 1.0, 0.1);
+
+            if (inIntroMode && !isTransitioning) {
+                const dstCenter = Math.hypot(cen.x - 0.5, cen.y - 0.5);
+                if (dstCenter < 0.08) {
+                    startJourney();
+                }
+            }
+        } else {
+            handInteractionStrength = THREE.MathUtils.lerp(handInteractionStrength, 0, 0.15);
+        }
+
+        if (inIntroMode) {
+            return;
+        }
+
+        if (list.length === 0) {
+            trackers[0] = newHandTracker();
+            trackers[1] = newHandTracker();
+            considerGesture('ausencia');
+            debugPanel.innerHTML = `
+                <div class="text-[#d4af37] font-semibold tracking-widest border-b border-amber-500/20 pb-2 uppercase text-xs alchemy-title mb-2">
+                    Diagnóstico de Sensado
+                </div>
+                <div class="bg-rose-950/20 border border-rose-500/30 rounded-xl p-3 flex flex-col gap-1.5">
+                    <span class="text-rose-400 font-bold tracking-wider uppercase text-[10px] flex items-center gap-1.5">
+                        <span class="h-2 w-2 rounded-full bg-rose-500 animate-pulse"></span> SENSOR INACTIVO
+                    </span>
+                    <p class="text-gray-300 leading-normal text-[11px]">
+                        Coloque su mano en el ángulo de lectura de su cámara web. Protegiendo su privacidad, ningún dato de imagen abandona su máquina.
+                    </p>
+                </div>
+            `;
+            handGuideBox.classList.remove('border-emerald-500', 'bg-emerald-500/5');
+            return;
+        }
+        handGuideBox.classList.add('border-emerald-500', 'bg-emerald-500/5');
+
+        list.forEach((l, i) => {
+            if (i < 2) {
+                renderSkeleton(skeletons[i], l);
+                pushHistory(trackers[i], l);
+            }
+        });
+
+        let chosenKey = null;
+        let rankingListHTML = '';
+        let debugBottomHTML = '';
+
+        if (list.length === 2) {
+            const twoHandKey = classifyTwoHands(list[0], list[1], trackers[0], trackers[1], mudraMode);
+            if (twoHandKey) {
+                chosenKey = twoHandKey;
+            } else {
+                const hypotheses0 = classifyStaticShape(list[0], mudraMode);
+                const moveKey = classifyMovement(trackers[0]);
+                chosenKey = moveKey || (hypotheses0[0] ? hypotheses0[0].key : null);
+            }
+
+            rankingListHTML = `
+                <div class="text-[#d4af37] font-semibold tracking-widest border-b border-amber-500/20 pb-1.5 uppercase text-[11px] alchemy-title mb-2">
+                    Análisis de Doble Mano
+                </div>
+                <div class="bg-purple-950/20 border border-purple-500/30 rounded-xl p-2.5 flex flex-col gap-1 text-[10px] text-purple-200">
+                    <span class="font-bold">CONFLUENCIA DETECTADA</span>
+                    Gesto activo: <strong class="text-white">${chosenKey ? GESTURE_TABLE[chosenKey].nombre : 'Ninguno'}</strong>
+                </div>
+            `;
+            
+            debugBottomHTML = `
+                <div class="flex justify-between items-center text-[9px] text-gray-400 mt-1.5">
+                    <span>Separación Kinética:</span>
+                    <span class="code-font text-white">${dist(list[0][9], list[1][9]).toFixed(3)} px</span>
+                </div>
+            `;
+
+        } else {
+            const l = list[0];
+            const hypotheses = classifyStaticShape(l, mudraMode);
+            const moveKey = classifyMovement(trackers[0]);
+
+            let candidateStaticKey = hypotheses[0] ? hypotheses[0].key : null;
+            if (candidateStaticKey === 'palma_frontal' && moveKey === 'giro_muneca') {
+                chosenKey = 'mano_costado';
+            } else {
+                chosenKey = moveKey || candidateStaticKey;
+            }
+
+            rankingListHTML = `
+                <div class="text-[#d4af37] font-semibold tracking-widest border-b border-amber-500/20 pb-1.5 uppercase text-[11px] alchemy-title mb-2">
+                    Coincidencias Estáticas
+                </div>
+                <div class="flex flex-col gap-2">
+            `;
+            
+            const topHypotheses = hypotheses.slice(0, 3);
+            topHypotheses.forEach((hyp) => {
+                const percent = Math.round(hyp.score * 100);
+                let badgeClass = 'bg-rose-500/10 text-rose-400 border border-rose-500/30';
+                
+                if (percent >= 92) {
+                    badgeClass = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+                } else if (percent >= 80) {
+                    badgeClass = 'bg-amber-500/10 text-amber-400 border border-amber-500/30';
+                }
+
+                const gInfo = GESTURE_TABLE[hyp.key];
+                const name = gInfo ? gInfo.nombre : hyp.key;
+
+                rankingListHTML += `
+                    <div class="bg-black/30 border border-purple-500/10 rounded-xl p-2 flex flex-col gap-0.5">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-gray-200 text-[11px]">${name}</span>
+                            <span class="px-1.5 py-0.5 rounded text-[8px] font-bold code-font ${badgeClass}">${percent}%</span>
+                        </div>
+                        <div class="text-[9px] text-gray-400 font-light">• ${hyp.reasons.join(', ')}</div>
+                    </div>
+                `;
+            });
+            rankingListHTML += '</div>';
+
+            if (topHypotheses.length >= 2) {
+                const first = topHypotheses[0];
+                const second = topHypotheses[1];
+                const diff = (first.score - second.score) * 100;
+
+                if (diff < 15) {
+                    const name1 = GESTURE_TABLE[first.key] ? GESTURE_TABLE[first.key].nombre : first.key;
+                    const name2 = GESTURE_TABLE[second.key] ? GESTURE_TABLE[second.key].nombre : second.key;
+                    
+                    rankingListHTML += `
+                        <div class="mt-2 p-2 bg-amber-500/5 border border-amber-500/30 rounded-xl text-[9px] text-amber-200">
+                            <span class="font-bold flex items-center gap-1">⚠️ AMBIGÜEDAD DETECTADA (${Math.round(diff)}% diff)</span>
+                            <div class="text-gray-300 mt-0.5 leading-tight">Coexisten <strong>${name1}</strong> y <strong>${name2}</strong>. Desempata el modelo rotando tu muñeca.</div>
+                        </div>
+                    `;
+                }
+            }
+
+            debugBottomHTML = `
+                <div class="flex justify-between items-center text-[9px] text-gray-400 mt-1.5">
+                    <span>Dedos Extendidos:</span>
+                    <span class="code-font text-white">${fingerStates(l).count} / 5</span>
+                </div>
+                <div class="flex justify-between items-center text-[9px] text-gray-400 mt-0.5">
+                    <span>Cinemática Activa:</span>
+                    <span class="code-font text-cyan-400 uppercase font-semibold">${moveKey ? moveKey : 'Estática'}</span>
+                </div>
+            `;
+        }
+
+        considerGesture(chosenKey);
+
+        const currentActiveName = chosenKey && GESTURE_TABLE[chosenKey] ? GESTURE_TABLE[chosenKey].nombre : 'Ninguno';
+        const confirmedName = displayedKey && GESTURE_TABLE[displayedKey] ? GESTURE_TABLE[displayedKey].nombre : '—';
+
+        debugPanel.innerHTML = `
+            ${rankingListHTML}
+            <div class="mt-auto pt-2 border-t border-purple-500/20 space-y-1">
+                <div class="flex justify-between items-center text-[9px] text-gray-400">
+                    <span>Candidato Activo:</span>
+                    <span class="text-emerald-400 font-semibold">${currentActiveName}</span>
+                </div>
+                <div class="flex justify-between items-center text-[9px] text-gray-400">
+                    <span>Fórmula Confirmada:</span>
+                    <span class="text-purple-400 font-semibold">${confirmedName}</span>
+                </div>
+                ${debugBottomHTML}
+            </div>
+        `;
+    });
+
+    const video = document.getElementById('videoElement');
+    new Camera(video, { onFrame: async () => await hands.send({image: video}) }).start();
+
+    /* ======================================================================
+       BUCLE DE ANIMACIÓN Y FÍSICA ESTELAR
+       ===================================================================== */
+    const clock = new THREE.Clock();
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        const delta = clock.getDelta();
+        const time = clock.getElapsedTime();
+
+        const posAttr = starField.geometry.attributes.position;
+        const positions = posAttr.array;
+
+        // Actualizar velocidad en el HUD
+        const displaySpeed = (currentGalaxySpeed / baseGalaxySpeed).toFixed(1);
+        const statsGalaxySpeedEl = document.getElementById('statsGalaxySpeed');
+        if (statsGalaxySpeedEl) {
+            statsGalaxySpeedEl.textContent = displaySpeed + 'x';
+        }
+
+        // Actualizar temporizador de sesión
+        if (statsStartTime) {
+            const diffSec = Math.floor((Date.now() - statsStartTime) / 1000);
+            const minutes = String(Math.floor(diffSec / 60)).padStart(2, '0');
+            const seconds = String(diffSec % 60).padStart(2, '0');
+            const timerEl = document.getElementById('sessionTimer');
+            if (timerEl) {
+                timerEl.textContent = `${minutes}:${seconds}`;
+            }
+        }
+
+        for (let i = 0; i < starCount; i++) {
+            const meta = starMetadata[i];
+            
+            meta.currentAngle += meta.angleSpeed * (currentGalaxySpeed / baseGalaxySpeed);
+
+            let targetX = Math.cos(meta.currentAngle) * meta.radius;
+            let targetY = meta.offsetY;
+            let targetZ = Math.sin(meta.currentAngle) * meta.radius;
+
+            if (handInteractionStrength > 0.01) {
+                const currentPos = new THREE.Vector3(
+                    positions[i * 3],
+                    positions[i * 3 + 1],
+                    positions[i * 3 + 2]
+                );
+                
+                const distanceToHand = currentPos.distanceTo(handInteractionCenter);
+                
+                if (distanceToHand < 6.0) {
+                    const pullFactor = (1.0 - (distanceToHand / 6.0)) * 0.15 * handInteractionStrength * meta.gravityInfluence;
+                    
+                    targetX = THREE.MathUtils.lerp(targetX, handInteractionCenter.x, pullFactor);
+                    targetY = THREE.MathUtils.lerp(targetY, handInteractionCenter.y, pullFactor);
+                    targetZ = THREE.MathUtils.lerp(targetZ, handInteractionCenter.z, pullFactor);
+                }
+            }
+
+            positions[i * 3] = THREE.MathUtils.lerp(positions[i * 3], targetX, 0.1);
+            positions[i * 3 + 1] = THREE.MathUtils.lerp(positions[i * 3 + 1], targetY, 0.1);
+            positions[i * 3 + 2] = THREE.MathUtils.lerp(positions[i * 3 + 2], targetZ, 0.1);
+        }
+        posAttr.needsUpdate = true;
+
+        starField.rotation.y += currentGalaxySpeed;
+
+        if (inIntroMode) {
+            starField.position.x = Math.sin(time * 0.5) * 0.15;
+            starField.position.y = Math.cos(time * 0.3) * 0.1;
+        } else {
+            starField.position.set(0, 0, 0);
+        }
+
+        renderer.render(scene, camera);
+    }
+    animate();
+    </script>
+</body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ28T4NC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+</html>
+```
+eof
+
+### Resumen de optimizaciones responsivas aplicadas:
+1. **Ajuste de FOV Inteligente:** El script 3D ahora calcula el aspect ratio del viewport. En teléfonos móviles cambia automáticamente a un campo de visión de `85°` y aleja la cámara a `Z=13` para que toda la escultura de partículas encaje sin recortarse lateralmente.
+2. **Dashboard Pestañizado (Tabbed Cards):** Hemos reordenado el panel de la derecha unificando las tarjetas mediante pestañas interactivas, reduciendo la altura total requerida de `1300px` a solo `350px` de altura máxima adaptable.
+3. **Control de Desbordamiento de Scrollbar:** Cada card de la consola tiene límites específicos de viewport (`max-h-[calc(100vh-140px)]`) para evitar que el contenido desborde el dispositivo del usuario.
+4. **Dock Desplegable para Móviles/Tablets:** Hemos programado triggers translúcidos en la parte superior que permiten deslizar los paneles suavemente con transiciones CSS animadas (`duration-500`) para liberar el viewport y mantener una jugabilidad excelente.
