@@ -112,7 +112,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     document.body.style.paddingTop = '0';
   }
 </script>
-    <!-- Navegación Original -->
+    <!-- Navegación Original
     <nav class="nav-pantera sticky top-50 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
@@ -132,7 +132,59 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
-    </nav>
+    </nav>--> <nav class="nav-pantera sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1C1C1C] w-full">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+        <!-- Logo -->
+        <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
+            PANTERA<span class="text-[#E4007C]">SAMA</span> 
+            <span class="text-sm font-normal text-gray-500 ml-2">ClayHand 3D</span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+            <li><a href="index.html" class="hover:text-[#E4007C] transition">Inicio</a></li>
+            <li><a href="simulador.html" class="hover:text-[#E4007C] transition">Simulador</a></li>
+            <li><a href="#proceso" class="hover:text-[#E4007C] transition">El Proceso</a></li>
+            <li><a href="blog_alquimia_y_mudras.html" class="hover:text-[#E4007C] transition">Blog</a></li>
+            <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
+            <li><a href="https://www.constanzatubio.com" class="bg-[#E4007C] px-5 py-2 rounded-lg text-sm font-bold text-white hover:opacity-90 transition" target="_blank">Estudio</a></li>
+        </ul>
+
+        <!-- Mobile Toggle Button -->
+        <button id="menuBtn" class="md:hidden text-white p-2 focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu (Encapsulado y estilizado) -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#0a0a0a] border-t border-[#1C1C1C] px-6 py-4 flex flex-col gap-2">
+        <a href="index.html" class="text-white hover:text-[#E4007C] py-3 border-b border-[#1C1C1C] block">Inicio</a>
+        <a href="simulador.html" class="text-white hover:text-[#E4007C] py-3 border-b border-[#1C1C1C] block">Simulador</a>
+        <a href="#proceso" class="text-white hover:text-[#E4007C] py-3 border-b border-[#1C1C1C] block">El Proceso</a>
+        <a href="blog_alquimia_y_mudras.html" class="text-white hover:text-[#E4007C] py-3 border-b border-[#1C1C1C] block">Blog</a>
+        <a href="metododepago.html" class="text-white hover:text-[#E4007C] py-3 border-b border-[#1C1C1C] block">Medios de Pago</a>
+        <a href="https://www.constanzatubio.com" class="bg-[#E4007C] text-center text-white py-3 rounded-lg font-bold mt-4 block">Estudio</a>
+    </div>
+</nav>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn.addEventListener('click', () => {
+        // Alternar la clase 'hidden' para mostrar/ocultar
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Cerrar automáticamente al hacer clic en un enlace del menú móvil
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    });
+</script>
 
     <main>
         <!-- Hero Original -->
