@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5W4LY7V9RL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5W4LY7V9RL');
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WQ28T4NC');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClayHand 3D · Pantera Sama Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "xmuf6w4umn");
+    </script>
+    <style>
+        :root { 
+            --fucsia: #E4007C; 
+            --violeta: #6C2483; 
+            --bg: #0a0a0a; 
+            --text: #D9D9D9; 
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: #e5e5e5; 
+            padding-top: 80px; /* Ajuste para el nav persistente */
+        }
+        .text-fucsia { color: var(--fucsia); }
+        .bg-fucsia { background-color: var(--fucsia); }
+        .glass { 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .cta-button { 
+            background-color: var(--fucsia); 
+            color: white !important; 
+            padding: 14px 28px; 
+            border-radius: 12px; 
+            font-weight: 600; 
+            transition: all 0.3s ease; 
+            display: inline-block;
+            text-decoration: none;
+        }
+        .cta-button:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 20px rgba(228, 0, 124, 0.3); 
+        }
+        .nav-pantera .text-fucsia-custom { color: var(--fucsia); }
+        .nav-pantera .cta-button-custom { 
+            background-color: var(--fucsia); 
+            color: white !important; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            transition: opacity 0.3s; 
+        }
+        .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
+        .modal { transition: opacity 0.3s ease; }
+        .flex-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Banner de Notificación Fijo Superior */
+        .ch-notification-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #ffffff;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            font-family: sans-serif;
+            font-size: 13px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 10000;
+        }
+        .ch-close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 15px;
+            line-height: 1;
+            color: #555;
+            transition: color 0.2s;
+        }
+        .ch-close-btn:hover { color: #000; }
+
+        /* Estilos de animación para el Blob místico */
+        @keyframes morph {
+            0%, 100% { border-radius: 42% 56% 72% 28% / 46% 38% 62% 54%; }
+            33% { border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; }
+            66% { border-radius: 28% 72% 38% 62% / 42% 58% 42% 58%; }
+        }
+        .mystic-blob {
+            animation: morph 8s ease-in-out infinite;
+            background: linear-gradient(45deg, var(--fucsia), var(--violeta), #3b0066);
+            filter: blur(1px);
+            box-shadow: 0 0 40px rgba(228, 0, 124, 0.4);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Banner de Notificación -->
+    <div id="ch-notification" class="ch-notification-banner">
+        <span class="ch-notification-text">
+            <strong>ClayHand 3D:</strong> Esta app usa tu cámara para simular tus manos en 3D. Habilita los permisos; si no carga, recarga la página.
+        </span>
+        <button class="ch-close-btn" onclick="closeNotification()">×</button>
+    </div>
+
+    <!-- Navegación Fija y Compacta -->
+    <nav class="nav-pantera fixed top-[40px] left-0 w-full z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-3 transition-all duration-300" id="main-nav">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
+                PANTERA<span class="text-fucsia-custom">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2">ClayHand 3D</span>
+            </div>
+            <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+                <li><a href="#" class="hover:text-[#E4007C] transition">Inicio</a></li>
+                <li><a href="#proceso" class="hover:text-[#E4007C] transition">El Proceso</a></li>
+                <li><a href="#galeria" class="hover:text-[#E4007C] transition">Colección</a></li>
+                <li><a href="#simulador-seccion" class="hover:text-[#E4007C] transition text-fucsia font-semibold">Laboratorio Virtual</a></li>
+                <li><a href="#checkout-seccion" class="hover:text-[#E4007C] transition">Adquirir Obra</a></li>
+                <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+            </ul>
+            <button id="menuBtn" class="md:hidden text-white focus:outline-none" aria-label="Toggle Menu">
+                <svg id="menuIconOpen" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <svg id="menuIconClose" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <!-- Menú Mobile -->
+        <ul id="mobileMenu" class="hidden md:hidden flex flex-col items-center gap-2 font-medium text-white mt-4 pb-2">
+            <li class="w-full text-center"><a href="#" class="block py-3 hover:text-[#E4007C] transition">Inicio</a></li>
+            <li class="w-full text-center"><a href="#proceso" class="block py-3 hover:text-[#E4007C] transition">El Proceso</a></li>
+            <li class="w-full text-center"><a href="#galeria" class="block py-3 hover:text-[#E4007C] transition">Colección</a></li>
+            <li class="w-full text-center"><a href="#simulador-seccion" class="block py-3 text-fucsia font-semibold hover:text-[#E4007C] transition">Laboratorio Virtual</a></li>
+            <li class="w-full text-center"><a href="#checkout-seccion" class="block py-3 hover:text-[#E4007C] transition">Adquirir Obra</a></li>
+            <li class="w-full text-center"><a href="https://www.constanzatubio.com" class="cta-button-custom inline-block" target="_blank">Estudio</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="min-h-[75vh] flex flex-col justify-center items-center text-center p-6 relative overflow-hidden">
+            <!-- Ambient glows -->
+            <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-violeta/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-fucsia/10 rounded-full filter blur-[120px] pointer-events-none"></div>
+
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-white tracking-tight">
+                Diseñá tu mano.<br><span class="text-fucsia italic font-light">Recibí arte físico.</span>
+            </h1>
+            <p class="max-w-xl text-[#D9D9D9] text-lg mb-10 leading-relaxed font-light">
+                Una transformación donde tu identidad digital se funde con la materia. Obra de arcilla única, certificada y modelada mediante algoritmos generativos.
+            </p>
+            <div class="flex-container">
+                <a href="#simulador-seccion" class="cta-button cursor-pointer">✨ Iniciar Laboratorio Virtual</a>
+                <a href="#proceso" class="glass px-6 py-3.5 rounded-xl border border-white/10 text-white font-medium hover:bg-white/5 transition flex items-center justify-center gap-2">
+                    Descubrir Proceso
+                </a>
+            </div>
+        </section>
+
+        <!-- Sección de Proceso -->
+        <section id="proceso" class="py-24 px-6 bg-[#0d0d0d] border-t border-white/5">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">¿Cómo funciona el <span class="text-fucsia">simulador?</span></h2>
+                    <p class="text-gray-400">Seguí estos 6 pasos para materializar tu identidad digital.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Paso 1 -->
+                    <div class="glass p-8 rounded-2xl border border-white/5 hover:border-fucsia/40 transition-all group duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl">🕯️</span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">01</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2 group-hover:text-fucsia transition">Carga & Onboarding</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Accedé al Laboratorio e iniciá el ritual de alineación de cámara con iluminación adecuada.</p>
+                    </div>
+
+                    <!-- Paso 2 -->
+                    <div class="glass p-8 rounded-2xl border border-white/5 hover:border-fucsia/40 transition-all group duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl">🖐</span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">02</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2 group-hover:text-fucsia transition">Escaneo Algorítmico</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">El software detecta los puntos de articulación de tu mano y genera un croquis simbólico.</p>
+                    </div>
+
+                    <!-- Paso 3 -->
+                    <div class="glass p-8 rounded-2xl border border-white/5 hover:border-fucsia/40 transition-all group duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl">🔮</span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">03</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2 group-hover:text-fucsia transition">Personalización Blob</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Incliná, rotá y modificá la tensión arcillosa del modelo 3D usando los controladores místicos.</p>
+                    </div>
+
+                    <!-- Paso 4 -->
+                    <div class="glass p-8 rounded-2xl border border-white/5 hover:border-fucsia/40 transition-all group duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl">⚗️</span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">04</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2 group-hover:text-fucsia transition">Fusión del Código</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Generá tu código alquímico único que encripta la geometría exacta de tu escultura interactiva.</p>
+                    </div>
+
+                    <!-- Paso 5 -->
+                    <div class="glass p-8 rounded-2xl border border-white/5 hover:border-fucsia/40 transition-all group duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl">📝</span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">05</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2 group-hover:text-fucsia transition">Reserva Directa</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Vinculá tu configuración generada en nuestro formulario sin salir del sitio para congelar tu cupo.</p>
+                    </div>
+
+                    <!-- Paso 6 -->
+                    <div class="glass p-8 rounded-2xl border border-white/5 hover:border-fucsia/40 transition-all group duration-300">
+                        <div class="flex items-center gap-4 mb-4">
+                            <span class="text-3xl">📦</span>
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-fucsia border border-fucsia/30">06</div>
+                        </div>
+                        <h3 class="font-bold text-white text-lg mb-2 group-hover:text-fucsia transition">Materialización</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Modelamos la arcilla pura a mano siguiendo el código exacto y te la enviamos en un plazo de 7 días.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: LABORATORIO VIRTUAL (SIMULADOR DE BLOB/CÁMARA CON SKELETON, ONBOARDING Y FALLBACK) -->
+        <section id="simulador-seccion" class="py-24 px-6 relative">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-bold uppercase tracking-widest text-fucsia bg-fucsia/10 px-3 py-1 rounded-full">Espacio Generativo</span>
+                    <h2 class="text-4xl font-bold text-white mt-3">Laboratorio Alquímico 3D</h2>
+                    <p class="text-gray-400 max-w-xl mx-auto mt-2 text-sm">Escaneá tu mano o interactuá con el orbe de arcilla líquida para capturar tu huella simbólica.</p>
+                </div>
+
+                <div class="glass rounded-3xl overflow-hidden border border-white/10 relative shadow-2xl">
+                    <!-- CONTENEDOR DEL SIMULADOR -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 min-h-[500px]">
+                        
+                        <!-- Panel de Control Izquierdo (Místico/Alquimia) -->
+                        <div class="p-8 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between bg-black/40">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                                    <span>⚙️</span> Parámetros del Croquis
+                                </h3>
+                                
+                                <div class="space-y-6">
+                                    <div>
+                                        <div class="flex justify-between text-xs text-gray-400 mb-2">
+                                            <span>Materia (Fusión de Arcilla)</span>
+                                            <span id="viscosidad-val">65%</span>
+                                        </div>
+                                        <input type="range" id="slider-viscosidad" min="10" max="100" value="65" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#E4007C]">
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between text-xs text-gray-400 mb-2">
+                                            <span>Complejidad Simbólica</span>
+                                            <span id="simbologia-val">40%</span>
+                                        </div>
+                                        <input type="range" id="slider-simbologia" min="10" max="100" value="40" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#6C2483]">
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between text-xs text-gray-400 mb-2">
+                                            <span>Frecuencia Algorítmica</span>
+                                            <span id="frecuencia-val">1.2Hz</span>
+                                        </div>
+                                        <input type="range" id="slider-frecuencia" min="1" max="50" value="12" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#E4007C]">
+                                    </div>
+
+                                    <div>
+                                        <label class="text-xs text-gray-400 block mb-2">Elemento de Consistencia</label>
+                                        <select id="material-select" class="w-full bg-[#141414] border border-white/10 text-white text-xs rounded-lg p-3 outline-none focus:border-fucsia">
+                                            <option value="arcilla-humeda">Arcilla Húmeda Primordial</option>
+                                            <option value="obsidiana-liquida">Obsidiana Fluida</option>
+                                            <option value="ceramica-esmaltada">Cerámica Vitrificada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 pt-6 border-t border-white/5 space-y-3">
+                                <button id="btn-generar-codigo" class="w-full py-3 bg-fucsia hover:bg-[#c3006a] text-white text-xs font-bold rounded-xl transition duration-300 flex items-center justify-center gap-2">
+                                    🔮 Registrar Configuración
+                                </button>
+                                <p class="text-[10px] text-gray-500 text-center">Registrá tus parámetros para precargarlos en tu orden física.</p>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Central / Visor 3D y Cámara -->
+                        <div class="col-span-2 relative min-h-[400px] flex items-center justify-center bg-[#070707]">
+                            
+                            <!-- 1. SKELETON LOADER TEMÁTICO MÍSTICO -->
+                            <div id="mystic-loader" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-[#0a0a0a] transition-opacity duration-500">
+                                <div class="relative w-24 h-24 mb-6">
+                                    <div class="absolute inset-0 rounded-full border-2 border-fucsia/20 animate-ping"></div>
+                                    <div class="absolute top-1 left-1 right-1 bottom-1 rounded-full border-t-2 border-r-2 border-fucsia animate-spin"></div>
+                                    <div class="absolute inset-4 rounded-full bg-[#111] flex items-center justify-center text-xl">⚗️</div>
+                                </div>
+                                <h4 class="text-sm font-semibold text-white tracking-widest uppercase">Canalizando el Laboratorio...</h4>
+                                <p class="text-xs text-gray-500 mt-2 italic font-light">Iniciando interfaz y matrices generativas</p>
+                            </div>
+
+                            <!-- 2. ONBOARDING EXPRESS OVERLAY -->
+                            <div id="onboarding-overlay" class="absolute inset-0 z-20 hidden flex-col items-center justify-center bg-black/90 p-8 text-center transition-opacity duration-300">
+                                <div class="max-w-md space-y-6">
+                                    <span class="text-4xl">🕯️</span>
+                                    <h4 class="text-xl font-bold text-white">Preparación del Ritual Digital</h4>
+                                    <p class="text-sm text-gray-300 leading-relaxed">
+                                        El laboratorio interpretará los símbolos de tu mano. Asegúrate de tener buena luz para una detección óptima del croquis.
+                                    </p>
+                                    <div class="flex gap-4 justify-center pt-2">
+                                        <button id="btn-accept-camera" class="px-5 py-2.5 bg-fucsia text-white text-xs font-bold rounded-lg hover:bg-[#c3006a] transition">
+                                            Activar Cámara
+                                        </button>
+                                        <button id="btn-skip-camera" class="px-5 py-2.5 bg-white/5 text-white text-xs font-bold rounded-lg hover:bg-white/10 border border-white/10 transition">
+                                            Usar Orbe Alternativo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. FEEDBACK VISUAL CAMERA / CANVAS -->
+                            <video id="webcam-video" autoplay playsinline muted class="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none hidden"></video>
+                            
+                            <!-- Canvas para renderizar la mano simulada o el Blob interactivo -->
+                            <div class="relative w-full h-full min-h-[400px] flex items-center justify-center p-4">
+                                <div id="interactive-canvas-container" class="w-64 h-64 flex items-center justify-center cursor-pointer relative">
+                                    <!-- El Orbe Blob Interactivo -->
+                                    <div id="mystic-blob-element" class="mystic-blob w-52 h-52 transition-all duration-300 transform hover:scale-105"></div>
+                                    <span id="fallback-helper-text" class="absolute bottom-[-40px] text-[11px] text-gray-500 text-center tracking-wider pointer-events-none">
+                                        Arrastrá el mouse sobre el orbe para modelar tu energía
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Marca de agua / UI simulada -->
+                            <div class="absolute top-4 right-4 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-full border border-white/10">
+                                <div id="status-indicator" class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></div>
+                                <span id="status-text" class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Cargando Módulo...</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Galería Colección -->
+        <section id="galeria" class="py-20 px-6 bg-[#0c0c0c] border-t border-white/5">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-2">Esculturas de Arcilla Finalizadas</h2>
+                    <p class="text-sm text-gray-400">Ejemplos reales materializados a partir del croquis digital del simulador.</p>
+                </div>
+
+                <!-- Contenedor Flex Wrap Centrado -->
+                <div class="flex flex-wrap gap-6 justify-center items-center">
+                    <!-- Imágenes -->
+                    <div class="relative group cursor-pointer overflow-hidden rounded-xl shadow-lg border border-white/5 hover:border-fucsia/30 transition-all duration-300 w-48 h-48">
+                        <img src="imagen14.png" alt="Diseño de Mano 1" class="w-full h-full object-cover group-hover:opacity-80 transition duration-300" onclick="openModal(this.src)">
+                    </div>
+                    <div class="relative group cursor-pointer overflow-hidden rounded-xl shadow-lg border border-white/5 hover:border-fucsia/30 transition-all duration-300 w-48 h-48">
+                        <img src="imagen13.png" alt="Diseño de Mano 2" class="w-full h-full object-cover group-hover:opacity-80 transition duration-300" onclick="openModal(this.src)">
+                    </div>
+                    <div class="relative group cursor-pointer overflow-hidden rounded-xl shadow-lg border border-white/5 hover:border-fucsia/30 transition-all duration-300 w-48 h-48">
+                        <img src="imagen5.jpeg" alt="Diseño de Mano 3" class="w-full h-full object-cover group-hover:opacity-80 transition duration-300" onclick="openModal(this.src)">
+                    </div>
+                    <div class="relative group cursor-pointer overflow-hidden rounded-xl shadow-lg border border-white/5 hover:border-fucsia/30 transition-all duration-300 w-48 h-48">
+                        <img src="imagen12.png" alt="Diseño de Mano 4" class="w-full h-full object-cover group-hover:opacity-80 transition duration-300" onclick="openModal(this.src)">
+                    </div>
+                </div>
+
+                <!-- Modal de Imágenes de la Galería -->
+                <div id="imageModal" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-[11000] modal p-4">
+                    <button id="closeModalBtn" class="absolute top-6 right-6 text-white text-4xl font-light hover:text-fucsia transition-colors">&times;</button>
+                    <img id="modalImage" src="" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl border border-white/10" alt="Vista Ampliada">
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: EMBUDO DE ADQUISICIÓN INTEGRADO (CHECKOUT & REEMPLAZO DE MAILTO) -->
+        <section id="checkout-seccion" class="py-24 bg-[#111111] border-t border-white/5 px-6 relative">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-bold uppercase tracking-widest text-fucsia bg-fucsia/10 px-3 py-1 rounded-full">Checkout Directo</span>
+                    <h2 class="text-4xl font-bold mt-3">Materializá tu Configuración</h2>
+                    <p class="text-[#D9D9D9] mt-2 font-light text-sm">Completá los detalles y asegura tu pieza única numerada de Panterasama Studio.</p>
+                </div>
+
+                <!-- Formulario de Pedido Directo Integrado -->
+                <form id="directCheckoutForm" class="glass p-8 rounded-2xl border border-white/10 space-y-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-fucsia"></div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Nombre del Alquimista *</label>
+                            <input type="text" id="checkoutName" required placeholder="Tu nombre completo" class="w-full bg-black/60 p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia text-sm transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Email de Contacto *</label>
+                            <input type="email" id="checkoutEmail" required placeholder="tu@email.com" class="w-full bg-black/60 p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia text-sm transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Código Alquímico Generado</label>
+                            <input type="text" id="configCode" placeholder="Ninguno registrado - Hacé clic en 'Registrar' en el simulador" class="w-full bg-[#1b1b1b] p-4 rounded-lg border border-white/5 text-gray-400 outline-none text-sm font-mono" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Material Seleccionado</label>
+                            <input type="text" id="selectedMaterialDisplay" value="Arcilla Húmeda Primordial" class="w-full bg-[#1b1b1b] p-4 rounded-lg border border-white/5 text-gray-400 outline-none text-sm" readonly>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">Costo de Reserva y Configuración</span>
+                            <span class="font-semibold text-white">ARS $25.000 / USD $25</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs text-fucsia">
+                            <span>Cupos disponibles para este mes</span>
+                            <span class="font-bold">4 de 15</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full cta-button py-4 text-sm font-bold tracking-wider uppercase text-center flex items-center justify-center gap-2">
+                        🔒 Reservar y proceder al Pago de Seña
+                    </button>
+                </form>
+
+                <!-- Modal de Pago Simulado Integrado (Stripe / MercadoPago Concept) -->
+                <div id="paymentModal" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-[12000] modal p-4">
+                    <div class="bg-[#141414] border border-white/10 max-w-md w-full p-8 rounded-2xl relative shadow-2xl">
+                        <button id="closePaymentModalBtn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl font-light">&times;</button>
+                        
+                        <div class="text-center mb-6">
+                            <div class="w-12 h-12 bg-fucsia/10 rounded-full flex items-center justify-center text-fucsia mx-auto text-xl mb-3">💳</div>
+                            <h4 class="text-xl font-bold text-white">Pasarela Segura Simbolizada</h4>
+                            <p class="text-xs text-gray-400 mt-1">Completa tu pago de seña para confirmar la fundición física.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] uppercase text-gray-400 mb-1">Número de Tarjeta</label>
+                                <div class="bg-black/40 p-3.5 rounded-lg border border-white/10 text-white text-sm tracking-widest flex justify-between items-center">
+                                    <span class="text-gray-500 font-mono">••••  ••••  ••••  ••••</span>
+                                    <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-400">VISA / MP</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] uppercase text-gray-400 mb-1">Expiración</label>
+                                    <div class="bg-black/40 p-3.5 rounded-lg border border-white/10 text-white text-sm font-mono text-gray-500">MM / AA</div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase text-gray-400 mb-1">CVC</label>
+                                    <div class="bg-black/40 p-3.5 rounded-lg border border-white/10 text-white text-sm font-mono text-gray-500">•••</div>
+                                </div>
+                            </div>
+
+                            <button id="btn-confirm-payment" class="w-full py-3 bg-fucsia hover:bg-[#c3006a] text-white text-xs font-bold rounded-xl transition duration-300 mt-4 tracking-wider uppercase">
+                                Confirmar Pago de Seña
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Éxito Alquímico -->
+                <div id="successModal" class="fixed inset-0 bg-black/95 hidden flex items-center justify-center z-[13000] modal p-4">
+                    <div class="glass max-w-sm w-full p-8 rounded-2xl text-center border border-fucsia/40">
+                        <div class="w-16 h-16 bg-fucsia/20 rounded-full flex items-center justify-center text-fucsia mx-auto text-3xl mb-4 animate-bounce">✨</div>
+                        <h4 class="text-2xl font-bold text-white mb-2">Ritual Iniciado</h4>
+                        <p class="text-sm text-gray-300 mb-6 leading-relaxed">
+                            Tu código ha sido vinculado y tu cupo reservado. Un maestro de Panterasama Studio se pondrá en contacto contigo para verificar los detalles del envío.
+                        </p>
+                        <button id="btn-close-success" class="cta-button w-full py-3 text-xs">
+                            Volver al Laboratorio
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Newsletter / Cupos Especiales -->
+        <section id="waitlist" class="py-24 bg-[#1C1C1C]/40 text-center px-6 border-t border-white/5">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold mb-4">Escasez Programada - <span class="text-fucsia">solicita prioridad</span></h2>
+                <p class="text-[#D9D9D9] mb-10 font-light text-sm">Limitamos nuestros cupos mensuales para garantizar la excelencia artesanal de cada mudra y escultura.</p>
+                <form id="waitlistForm" class="glass p-8 rounded-2xl border border-white/10">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <input type="email" id="userEmail" required placeholder="tu@email.com" class="flex-1 bg-black p-4 rounded-lg border border-white/10 text-white outline-none focus:border-fucsia text-sm">
+                        <button type="submit" class="cta-button">Suscribirse al Newsletter</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <footer class="text-center p-8 border-t border-white/5 bg-[#070707]">
+            <p class="text-xs font-light text-[#a5a5a5]">2026 © PanteraSama. Todos los derechos reservados. Fusionando arcilla primordial con código generativo.</p>
+        </footer>
+    </main>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ28T4NC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <script>
+        // Manejador seguro para Banner de Notificación
+        function closeNotification() {
+            const banner = document.getElementById('ch-notification');
+            const mainNav = document.getElementById('main-nav');
+            if (banner) {
+                banner.style.display = 'none';
+            }
+            if (mainNav) {
+                mainNav.style.top = '0px';
+            }
+            document.body.style.paddingTop = '60px';
+        }
+
+        // Ejecutar manipulación del DOM de manera 100% segura al terminar de renderizar
+        window.addEventListener('DOMContentLoaded', () => {
+
+            // === 1. MENÚ MÓVIL SEGURO ===
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+
+            if (menuBtn && mobileMenu && menuIconOpen && menuIconClose) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                    });
+                });
+            }
+
+            // === 2. MODAL DE GALERÍA DE IMÁGENES SEGURO ===
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            window.openModal = function(src) {
+                if (modal && modalImage) {
+                    modalImage.src = src;
+                    modal.classList.remove('hidden');
+                }
+            }
+
+            if (modal) {
+                const closeModal = () => {
+                    modal.classList.add('hidden');
+                };
+
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', closeModal);
+                }
+
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            }
+
+            // === 3. CONTROLADORES DEL SIMULADOR 3D / BLOB MÍSTICO ===
+            const mysticLoader = document.getElementById('mystic-loader');
+            const onboardingOverlay = document.getElementById('onboarding-overlay');
+            const btnAcceptCamera = document.getElementById('btn-accept-camera');
+            const btnSkipCamera = document.getElementById('btn-skip-camera');
+            const webcamVideo = document.getElementById('webcam-video');
+            const statusIndicator = document.getElementById('status-indicator');
+            const statusText = document.getElementById('status-text');
+            const mysticBlob = document.getElementById('mystic-blob-element');
+            const sliderViscosidad = document.getElementById('slider-viscosidad');
+            const sliderSimbologia = document.getElementById('slider-simbologia');
+            const sliderFrecuencia = document.getElementById('slider-frecuencia');
+
+            // Actualizadores de texto interactivo para los Sliders
+            const valViscosidad = document.getElementById('viscosidad-val');
+            const valSimbologia = document.getElementById('simbologia-val');
+            const valFrecuencia = document.getElementById('frecuencia-val');
+
+            // Simulación del Skeleton Loader inicial
+            setTimeout(() => {
+                if (mysticLoader) {
+                    mysticLoader.classList.add('opacity-0');
+                    setTimeout(() => {
+                        mysticLoader.style.display = 'none';
+                        if (onboardingOverlay) {
+                            onboardingOverlay.classList.remove('hidden');
+                        }
+                    }, 500);
+                }
+            }, 1800);
+
+            // Control de Onboarding de Cámara
+            if (btnAcceptCamera) {
+                btnAcceptCamera.addEventListener('click', async () => {
+                    if (onboardingOverlay) onboardingOverlay.style.display = 'none';
+                    if (statusText) statusText.innerText = "Sincronizando Sensor...";
+                    if (statusIndicator) {
+                        statusIndicator.classList.remove('bg-yellow-500');
+                        statusIndicator.classList.add('bg-blue-500');
+                    }
+
+                    // Intentar abrir cámara real
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                        if (webcamVideo) {
+                            webcamVideo.srcObject = stream;
+                            webcamVideo.classList.remove('hidden');
+                        }
+                        if (statusText) statusText.innerText = "Ritual Activo (Cámara)";
+                        if (statusIndicator) {
+                            statusIndicator.classList.remove('bg-blue-500');
+                            statusIndicator.classList.add('bg-green-500');
+                        }
+                    } catch (err) {
+                        console.warn("Permiso de cámara denegado o no disponible. Iniciando fallback interactivo.");
+                        activateFallbackMode();
+                    }
+                });
+            }
+
+            if (btnSkipCamera) {
+                btnSkipCamera.addEventListener('click', () => {
+                    if (onboardingOverlay) onboardingOverlay.style.display = 'none';
+                    activateFallbackMode();
+                });
+            }
+
+            function activateFallbackMode() {
+                if (statusText) statusText.innerText = "Orbe Alquímico Activo";
+                if (statusIndicator) {
+                    statusIndicator.classList.remove('bg-yellow-500', 'bg-blue-500');
+                    statusIndicator.classList.add('bg-fucsia');
+                }
+            }
+
+            // Manipulaciones dinámicas del Blob/Mudra basados en los parámetros místico-técnicos
+            function updateBlobStyles() {
+                if (!mysticBlob) return;
+                const visc = sliderViscosidad ? sliderViscosidad.value : 65;
+                const simb = sliderSimbologia ? sliderSimbologia.value : 40;
+                const freq = sliderFrecuencia ? sliderFrecuencia.value : 12;
+
+                if (valViscosidad) valViscosidad.innerText = `${visc}%`;
+                if (valSimbologia) valSimbologia.innerText = `${simb}%`;
+                if (valFrecuencia) valFrecuencia.innerText = `${(freq/10).toFixed(1)}Hz`;
+
+                // Transformamos visualmente el blob usando los valores
+                const scale = 0.8 + (visc / 300);
+                const blur = Math.max(0, 5 - (simb / 20));
+                const speed = 10 - (freq / 6);
+
+                mysticBlob.style.transform = `scale(${scale})`;
+                mysticBlob.style.filter = `blur(${blur}px)`;
+                mysticBlob.style.animationDuration = `${speed}s`;
+            }
+
+            if (sliderViscosidad) sliderViscosidad.addEventListener('input', updateBlobStyles);
+            if (sliderSimbologia) sliderSimbologia.addEventListener('input', updateBlobStyles);
+            if (sliderFrecuencia) sliderFrecuencia.addEventListener('input', updateBlobStyles);
+
+            // Interacción táctil / arrastre sobre el Blob para simular modelado 3D
+            const container = document.getElementById('interactive-canvas-container');
+            if (container && mysticBlob) {
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left - (rect.width / 2);
+                    const y = e.clientY - rect.top - (rect.height / 2);
+                    mysticBlob.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(${1.0 + Math.abs(x)/800})`;
+                });
+                container.addEventListener('mouseleave', () => {
+                    mysticBlob.style.transform = 'translate(0px, 0px) scale(1)';
+                });
+            }
+
+            // Registrar configuración (Fusión con Formulario)
+            const btnGenerarCodigo = document.getElementById('btn-generar-codigo');
+            const configCodeInput = document.getElementById('configCode');
+            const selectedMaterialInput = document.getElementById('selectedMaterialDisplay');
+            const materialSelect = document.getElementById('material-select');
+
+            if (btnGenerarCodigo && configCodeInput) {
+                btnGenerarCodigo.addEventListener('click', () => {
+                    const visc = sliderViscosidad ? sliderViscosidad.value : 50;
+                    const simb = sliderSimbologia ? sliderSimbologia.value : 50;
+                    const matCode = materialSelect ? materialSelect.value.substring(0, 3).toUpperCase() : "ARC";
+                    const randomHex = Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+                    
+                    const code = `CLAY-${matCode}-${visc}-${simb}-${randomHex}`;
+                    configCodeInput.value = code;
+
+                    if (selectedMaterialInput && materialSelect) {
+                        selectedMaterialInput.value = materialSelect.options[materialSelect.selectedIndex].text;
+                    }
+
+                    // Feedback visual suave de éxito al registrar
+                    const originalText = btnGenerarCodigo.innerHTML;
+                    btnGenerarCodigo.innerHTML = "✨ ¡Código Registrado!";
+                    btnGenerarCodigo.classList.remove('bg-fucsia');
+                    btnGenerarCodigo.classList.add('bg-green-600');
+                    
+                    // Hacer scroll suave directo hacia el checkout para conversión rápida
+                    setTimeout(() => {
+                        btnGenerarCodigo.innerHTML = originalText;
+                        btnGenerarCodigo.classList.add('bg-fucsia');
+                        btnGenerarCodigo.classList.remove('bg-green-600');
+                        
+                        const checkoutSection = document.getElementById('checkout-seccion');
+                        if (checkoutSection) {
+                            checkoutSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 1200);
+                });
+            }
+
+            // === 4. EMBUDO DE ADQUISICIÓN INTEGRADO (CHECKOUT SIMULADO Y MERCADOPAGO/STRIPE) ===
+            const directCheckoutForm = document.getElementById('directCheckoutForm');
+            const paymentModal = document.getElementById('paymentModal');
+            const closePaymentModalBtn = document.getElementById('closePaymentModalBtn');
+            const btnConfirmPayment = document.getElementById('btn-confirm-payment');
+            const successModal = document.getElementById('successModal');
+            const btnCloseSuccess = document.getElementById('btn-close-success');
+
+            if (directCheckoutForm) {
+                directCheckoutForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (paymentModal) {
+                        paymentModal.classList.remove('hidden');
+                    }
+                });
+            }
+
+            if (closePaymentModalBtn && paymentModal) {
+                closePaymentModalBtn.addEventListener('click', () => {
+                    paymentModal.classList.add('hidden');
+                });
+            }
+
+            if (btnConfirmPayment) {
+                btnConfirmPayment.addEventListener('click', () => {
+                    if (paymentModal) paymentModal.classList.add('hidden');
+                    if (successModal) successModal.classList.remove('hidden');
+                });
+            }
+
+            if (btnCloseSuccess) {
+                btnCloseSuccess.addEventListener('click', () => {
+                    if (successModal) successModal.classList.add('hidden');
+                    if (directCheckoutForm) directCheckoutForm.reset();
+                    if (configCodeInput) configCodeInput.value = '';
+                });
+            }
+
+            // === 5. FORMULARIO SECUNDARIO DE WAITLIST (NEWSLETTER) ===
+            const waitlistForm = document.getElementById('waitlistForm');
+            if (waitlistForm) {
+                waitlistForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const userEmail = document.getElementById('userEmail')?.value;
+                    alert(`¡Gracias! Has sido registrado prioritariamente con el correo: ${userEmail}`);
+                    waitlistForm.reset();
+                });
+            }
+
+        });
+    </script>
+</body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ28T4NC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+</html>
