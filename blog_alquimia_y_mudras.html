@@ -19,7 +19,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClayHand 3D · Pantera Sama Studio</title>
+    <title>ClayHand 3D · Códice de las Manos · Pantera Sama Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
@@ -41,9 +41,15 @@
         .filter-btn.active { background-color: var(--fucsia); border-color: var(--fucsia); color: white; }
         .filter-btn:hover:not(.active) { border-color: var(--violeta); color: white; }
         
-        .article-content h2 { color: white; font-size: 1.5rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; }
-        .article-content p { margin-bottom: 1rem; line-height: 1.7; color: #b3b3b3; }
-        .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #b3b3b3; }
+        .article-content h2 { color: white; font-size: 1.5rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; border-left: 4px solid var(--fucsia); padding-left: 0.75rem; }
+        .article-content p { margin-bottom: 1.25rem; line-height: 1.8; color: #d1d5db; }
+        .article-content ul, .article-content ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: #d1d5db; }
+        .article-content ul { list-style-type: disc; }
+        .article-content ol { list-style-type: decimal; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .article-content blockquote { border-left: 4px solid var(--violeta); padding-left: 1rem; font-style: italic; color: #9ca3af; margin: 1.5rem 0; }
+        .hashtag-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+        .hashtag { background-color: #1f1f1f; color: var(--fucsia); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.85rem; border: 1px solid #333; }
     </style>
 </head>
 <body class="antialiased">
@@ -53,20 +59,42 @@
         <button class="ch-close-btn" onclick="closeNotification()">×</button>
     </div>
 
-    <nav class="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-[#1C1C1C] px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <nav class="sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#1C1C1C]">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="font-bold text-xl tracking-tighter text-white cursor-pointer" onclick="window.location.reload()">
                 PANTERA<span class="text-fucsia-custom">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2 hidden sm:inline-block">ClayHand 3D</span>
             </div>
-    <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+
+            <!-- Menú Escritorio -->
+            <ul class="hidden md:flex items-center gap-8 font-medium text-white">
                 <li><a href="index.html" class="hover:text-[#E4007C] transition">Inicio</a></li>
-                              
                 <li><a href="simulador.html" class="hover:text-[#E4007C] transition">Simulador de croquis</a></li>
                 <li><a href="#proceso" class="hover:text-[#E4007C] transition">El Proceso</a></li>
                 <li><a href="blog_alquimia_y_mudras.html" class="hover:text-[#E4007C] transition">Blog</a></li>
-
                 <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
                 <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+            </ul>
+
+            <!-- Botón Hamburguesa Móvil -->
+            <button id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Abrir Menú" class="md:hidden text-white p-2 rounded-lg hover:bg-zinc-800 transition focus:outline-none">
+                <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0a] border-b border-[#1C1C1C] px-6 py-6 transition-all duration-300">
+            <ul class="flex flex-col gap-5 text-lg font-medium text-white">
+                <li><a href="index.html" class="hover:text-[#E4007C] block transition" onclick="toggleMobileMenu()">Inicio</a></li>
+                <li><a href="simulador.html" class="hover:text-[#E4007C] block transition" onclick="toggleMobileMenu()">Simulador de croquis</a></li>
+                <li><a href="#proceso" class="hover:text-[#E4007C] block transition" onclick="toggleMobileMenu()">El Proceso</a></li>
+                <li><a href="blog_alquimia_y_mudras.html" class="hover:text-[#E4007C] block transition" onclick="toggleMobileMenu()">Blog</a></li>
+                <li><a href="metododepago.html" class="hover:text-[#E4007C] block transition" onclick="toggleMobileMenu()">Medios de Pago</a></li>
+                <li class="pt-2"><a href="https://www.constanzatubio.com" class="cta-button-custom inline-block w-full text-center" target="_blank" onclick="toggleMobileMenu()">Estudio</a></li>
             </ul>
         </div>
     </nav>
@@ -77,16 +105,19 @@
         <div id="blog-list-container" class="transition-opacity duration-500">
             <header class="text-center mb-12">
                 <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">El Códice de las Manos</h1>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explora el simbolismo místico: Mudras antiguos, los misterios de la Alquimia del siglo I, y el poder de los gestos.</p>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">50 Tratados sobre Alquimia del Siglo I, Alejandría, Mudras Profundos, Escultura, Arcilla y Aromaterapia Herbaria.</p>
             </header>
 
             <!-- Filtros -->
             <div class="flex flex-wrap justify-center gap-3 mb-10" id="filter-container">
-                <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Todos">Todos</button>
+                <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Todos">Todos (50)</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Alejandría">Alejandría y S.I</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Simbología">Simbología & Manos</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Arcilla">Arcilla & Alquimia</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Escultura">Escultura & Gestos</button>
                 <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Mudras">Mudras</button>
-                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Gestos">Gestos Alquímicos</button>
-                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Elementos">Elementos</button>
-                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Maria">María la Judía</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Aromaterapia">Aromaterapia</button>
+                <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium text-gray-300" data-filter="Artistas">Artistas Alquímicos</button>
             </div>
 
             <!-- Grid de Artículos -->
@@ -117,6 +148,9 @@
                 <div id="article-body" class="article-content text-lg">
                     <!-- Contenido del artículo inyectado por JS -->
                 </div>
+                <div id="article-hashtags" class="hashtag-container">
+                    <!-- Hashtags inyectados por JS -->
+                </div>
             </article>
         </div>
 
@@ -133,116 +167,492 @@
             document.body.style.paddingTop = '0';
         }
 
-        // Generador de la base de datos de 50 artículos
-        const generateArticles = () => {
-            const db = [];
-            let idCounter = 1;
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-icon-open');
+            const closeIcon = document.getElementById('menu-icon-close');
+            
+            const isHidden = menu.classList.contains('hidden');
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                openIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                openIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        }
 
-            // Categoría: Mudras (15 artículos)
-            const mudras = [
-                { t: "Gyan Mudra", s: "El gesto del conocimiento y la sabiduría." },
-                { t: "Shuni Mudra", s: "El sello de la paciencia y el compromiso." },
-                { t: "Surya Mudra", s: "Activando el fuego interno y la energía." },
-                { t: "Buddhi Mudra", s: "Conectando con la comunicación clara." },
-                { t: "Prana Mudra", s: "El gesto de la fuerza vital." },
-                { t: "Apana Mudra", s: "Purificación y eliminación de toxinas." },
-                { t: "Vayu Mudra", s: "Controlando el aire en el cuerpo." },
-                { t: "Akash Mudra", s: "El sello del éter y el espacio." },
-                { t: "Prithvi Mudra", s: "Sanación y conexión con la tierra." },
-                { t: "Varun Mudra", s: "Equilibrando el elemento agua." },
-                { t: "Hakini Mudra", s: "Potenciando la concentración cerebral." },
-                { t: "Kalesvara Mudra", s: "Calmando la mente ansiosa." },
-                { t: "Tse Mudra", s: "El antídoto contra la tristeza." },
-                { t: "Ling Mudra", s: "Generando calor y resistencia." },
-                { t: "Dharmachakra Mudra", s: "La rueda del dharma y la transformación." }
-            ];
+        // Base de datos de los 50 artículos completos
+        const articlesData = [
+            // EJE 1: Alejandría y Siglo I
+            {
+                id: 1,
+                title: "La cuna de la Alquimia: Alejandría, Siglo I",
+                category: "Alejandría",
+                readTime: "3 min de lectura",
+                summary: "En el cruce entre la filosofía griega, la tecnología egipcia y el misticismo oriental nació la alquimia helenística.",
+                content: `<p>En el cruce entre la filosofía griega, la tecnología metalúrgica egipcia y el misticismo oriental nació la alquimia helenística. Alejandría no solo era una biblioteca majestuosa; era un crisol geográfico donde la materia comenzó a verse como un espejo del alma.</p><p>La <em>Transmutatio</em> no era simplemente la ambición de cambiar plomo por oro: era el intento de acelerar y perfeccionar la naturaleza mediante la conciencia del operador. En este contexto, el estudio de los elementos se convirtió en una vía de iluminación espiritual.</p>`,
+                hashtags: ["#Alquimia", "#Historia", "#Alejandria", "#Filosofia"]
+            },
+            {
+                id: 2,
+                title: "María la Judía: La matriarca de la química experimental",
+                category: "Alejandría",
+                readTime: "4 min de lectura",
+                summary: "Vivió en el siglo I d.C. e inventó aparatos de laboratorio cruciales como el Bañomaría.",
+                content: `<p>Vivió en el siglo I d.C. en Alejandría y es considerada la primera alquimista real de la historia occidental. Inventó aparatos de laboratorio que seguimos utilizando hoy en día en la química moderna, como el <em>Tribikos</em> (un alambique de tres brazos) y el <em>Kerotakis</em>.</p><p>Sin embargo, su invento más famoso sigue siendo el <em>Bañomaría</em>. Para María, la materia poseía género y alma, y la transformación requería paciencia, contención térmica y una devoción mística al proceso de destilación.</p>`,
+                hashtags: ["#MariaLaJudia", "#Alquimia", "#HistoriaDeLaCiencia", "#MujeresEnLaHistoria"]
+            },
+            {
+                id: 3,
+                title: "Zósimo de Panópolis y el arte hermético",
+                category: "Alejandría",
+                readTime: "4 min de lectura",
+                summary: "Rescató las enseñanzas del siglo I, definiendo la alquimia como la liberación de la psique.",
+                content: `<p>Aunque escribió en los siglos III-IV d.C., Zósimo sistematizó y rescató las valiosas enseñanzas de los primeros alquimistas alejandrinos del siglo I. Definió la <em>Jymia</em> (alquimia) como la liberación de la psique atrapada en la densidad de la materia.</p><p>Sus célebres textos combinan precisas recetas de aleaciones metalúrgicas con profundas visiones oníricas de cuerpos que se descuartizan, se queman y renacen purificados en el crisol interior.</p>`,
+                hashtags: ["#Zosimo", "#Hermetismo", "#Alquimia", "#Simbolismo"]
+            },
+            {
+                id: 4,
+                title: "El Chrysopeya de Cleopatra la Alquimista",
+                category: "Alejandría",
+                readTime: "3 min de lectura",
+                summary: "El mítico papiro Chrysopoeia y el famoso dibujo del Ouroboros con el axioma 'Hen to Pan'.",
+                content: `<p>No debe confundirse con la afamada reina de Egipto. Cleopatra la Alquimista fue una sabia de Alejandría que escribió el célebre papiro <em>Chrysopoeia</em> (La fabricación del oro).</p><p>En sus folios dibujó el legendario <em>Ouroboros</em> —la serpiente que se muerde la cola— acompañado de la máxima «Hen to Pan» (<em>El Uno es el Todo</em>). Su tratado enseña que la materia no se crea ni se destruye: se transfigura en un ciclo perpetuo de muerte y resurrección.</p>`,
+                hashtags: ["#Ouroboros", "#HenToPan", "#CleopatraLaAlquimista", "#Simbologia"]
+            },
+            {
+                id: 5,
+                title: "El crisol greco-egipcio: Técnica + Magia",
+                category: "Alejandría",
+                readTime: "3 min de lectura",
+                summary: "Por qué el Imperio Romano y Alejandría permitieron el nacimiento de la alquimia.",
+                content: `<p>¿Por qué la alquimia floreció precisamente en el siglo I d.C.? La expansión del Imperio Romano unificó las rutas comerciales de todo el Mediterráneo, permitiendo que la milenaria orfebrería de Menfis se encontrara directamente con la metafísica aristotélica de los sabios de Alejandría.</p><p>Convertir metales no se consideraba un truco ni una ilusión: era una liturgia técnica donde la precisión práctica y el estado mental sagrado eran inseparables.</p>`,
+                hashtags: ["#ImperioRomano", "#Alejandria", "#HistoriaAntigua"]
+            },
+            {
+                id: 6,
+                title: "Bolos de Mendes y el Physika kai Mystika",
+                category: "Alejandría",
+                readTime: "3 min de lectura",
+                summary: "El axioma sagrado: 'La naturaleza se deleita en la naturaleza'.",
+                content: `<p>Asentado y expandido durante el siglo I, el texto <em>Physika kai Mystika</em> atribuido a Bolos de Mendes estableció el axioma más venerado de la tradición hermética:</p><blockquote>«La naturaleza se deleita en la naturaleza, la naturaleza vence a la naturaleza, la naturaleza domina a la naturaleza».</blockquote><p>Este concepto implicaba que la materia no puede ser forzada de forma artificial; sólo reacciona y se eleva a través de las leyes ocultas de su propia esencia elemental.</p>`,
+                hashtags: ["#TextosHermeticos", "#Mysterium", "#Naturaleza"]
+            },
+            {
+                id: 7,
+                title: "La diferencia entre química moderna y alquimia alejandrina",
+                category: "Alejandría",
+                readTime: "4 min de lectura",
+                summary: "La ciencia moderna aisla el sujeto del objeto; para los antiguos, la mente influía en el crisol.",
+                content: `<p>La química moderna opera bajo el paradigma de aislar al observador del experimento. Para el alquimista alejandrino del siglo I, esto era un absurdo. La pureza moral, el estado meditativo y la intención psíquica del operador influían de forma directa en la reacción del crisol.</p><p>No se podía purificar el plomo en oro si la propia mente del artesano permanecía encadenada a la codicia o a la ignorancia.</p>`,
+                hashtags: ["#Conciencia", "#FilosofiaAntigua", "#Transformacion"]
+            },
 
-            // Categoría: Gestos Alquímicos (10 artículos)
-            const gestos = [
-                { t: "La Mano de los Misterios", s: "Símbolo maestro de transformación." },
-                { t: "Gesto Solve et Coagula", s: "Disolver y coagular mediante las manos." },
-                { t: "El Toque del Mercurio", s: "Transfiriendo energía fluida." },
-                { t: "La Mano Filosofal", s: "Herramienta simbólica del adepto." },
-                { t: "Señal de Bendición Hermética", s: "Canalización cósmica." },
-                { t: "El Sello del Ouroboros", s: "Las manos entrelazadas en el infinito." },
-                { t: "Apertura del Crisol", s: "Gesto de receptividad térmica." },
-                { t: "El Cierre Retortiano", s: "Sellando la energía espiritual." },
-                { t: "Gestualidad de la Rubedo", s: "Invocando la obra en rojo." },
-                { t: "El Gesto de la Nigredo", s: "Las manos en el caos primordial." }
-            ];
+            // EJE 2: Simbología de las Manos
+            {
+                id: 8,
+                title: "La Mano de los Filósofos (Manus Philosophica)",
+                category: "Simbología",
+                readTime: "4 min de lectura",
+                summary: "Un mapa secreto grabado en la palma y los dedos para guiar la Gran Obra.",
+                content: `<p>En la rica iconografía alquímica, la mano humana es un mapa viviente de la transmutación. Cada dedo está coronado por un elemento, una sal o un metal planetario: el pulgar representa el Salitre y el Fuego; el índice, el Vitriolo; el medio, la Sal de Amoníaco; el anular, el Azufre; y el meñique, el Mercurio Filosófico.</p><p>Quien domina los impulsos transmitidos por sus dedos, sostiene la llave para culminar la Gran Obra.</p>`,
+                hashtags: ["#ManusPhilosophica", "#SimbolismoAlquimico", "#Ocultismo"]
+            },
+            {
+                id: 9,
+                title: "La mano como puente entre microcosmos y macrocosmos",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "Aristóteles la definió como 'el instrumento de los instrumentos'.",
+                content: `<p>La mano es la manifestación física del pensamiento abstracto. Aristóteles la definió bellamente como «el instrumento de los instrumentos». En la visión hermética, la mano izquierda es receptora de las frecuencias cósmicas (principio <em>Solve</em> o disolución).</p><p>Por su parte, la mano derecha proyecta, moldea y condensa dicha fuerza en la densidad de la materia (principio <em>Coagula</em> o fijación).</p>`,
+                hashtags: ["#Microcosmos", "#Macrocosmos", "#Aristoteles"]
+            },
+            {
+                id: 10,
+                title: "¿Por qué la mano era sagrada para los antiguos?",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "El pulgar oponible como el rasgo divino de los co-creadores de la realidad.",
+                content: `<p>El pulgar oponible revolucionó nuestra especie, pero para los antiguos sabios esto no era un simple accidente evolutivo. Era la huella sagrada que demostraba que el ser humano fue concebido para ser un co-creador de la realidad, no un mero espectador.</p><p>A través de las manos, el espíritu invisible encarna formas tangibles, transformando el barro informe en templos y herramientas.</p>`,
+                hashtags: ["#Evolucion", "#Creacion", "#Misticismo"]
+            },
+            {
+                id: 11,
+                title: "La Mano de Jamsa (Hamsa) y su raíz alquímica",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "Mucho más que un amuleto: la armonía de los 5 elementos y el ojo de la conciencia.",
+                content: `<p>Mucho antes de ser un popular amuleto comercial, la mano abierta representada en el Hamsa simbolizaba la contención armónica de los cinco elementos primordiales. El ojo ubicado en el centro de la palma representa la visión del corazón (el <em>Nus</em> hermético).</p><p>Esta mirada interior es la que debe dirigir cada acción física para evitar la dispersión de la energía vital.</p>`,
+                hashtags: ["#Hamsa", "#GeometriaSagrada", "#Proteccion"]
+            },
+            {
+                id: 12,
+                title: "Mano izquierda vs. Mano derecha en la Gran Obra",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "El equilibrio entre la receptividad lunar e intuitiva y la acción solar y técnica.",
+                content: `<p>En la tradición hermética se enfatiza el trabajo coordinado de ambas polaridades. La mano izquierda conecta con la receptividad lunar, el subconsciente y la intuición sutil.</p><p>La mano derecha representa el polo solar, activo, racional y transformador. Sanar la dualidad humana requiere aprender a crear utilizando ambas manos en absoluta sincronía.</p>`,
+                hashtags: ["#Polaridad", "#Dualidad", "#Hermetismo"]
+            },
+            {
+                id: 13,
+                title: "Los surcos de la palma: El mapa del Fuego Interior",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "La quiromancia antigua vista como la huella del Fuego Filosófico en la carne.",
+                content: `<p>La quiromancia y la alquimia caminaron juntas durante siglos. Las líneas impresas en las palmas de las manos no eran interpretadas como un destino fatalista e inmutable, sino como los canales por donde fluye el fuego interior y las marcas de las fuerzas astrológicas al nacer.</p><p>A medida que la conciencia del individuo se transfigura, la tensión de las manos y sus micro-líneas también cambian.</p>`,
+                hashtags: ["#Quiromancia", "#Astrologia", "#Manos"]
+            },
 
-            // Categoría: Elementos (15 artículos)
-            const elementos = [
-                { t: "La Sal Alquímica", s: "El principio del cuerpo y la solidez." },
-                { t: "El Azufre", s: "El alma, la pasión y el fuego." },
-                { t: "El Mercurio", s: "El espíritu fluido y conector." },
-                { t: "El Fuego Secreto", s: "El motor de la transmutación." },
-                { t: "El Agua Celestial", s: "El solvente universal." },
-                { t: "La Tierra Virgen", s: "La materia prima no corrompida." },
-                { t: "El Aire Filosófico", s: "El mediador entre lo sutil y lo denso." },
-                { t: "La Quintaesencia (Éter)", s: "El quinto elemento perfecto." },
-                { t: "El Plomo (Saturno)", s: "El inicio de la Gran Obra." },
-                { t: "El Estaño (Júpiter)", s: "Expansión y crecimiento espiritual." },
-                { t: "El Hierro (Marte)", s: "La fuerza purificadora y cortante." },
-                { t: "El Cobre (Venus)", s: "Atracción y magnetismo alquímico." },
-                { t: "La Plata (Luna)", s: "Albedo, purificación e intuición." },
-                { t: "El Oro (Sol)", s: "La perfección, Rubedo y la meta final." },
-                { t: "El Antimonio", s: "El lobo de los metales." }
-            ];
+            // EJE 3: Arcilla en la Alquimia
+            {
+                id: 14,
+                title: "La Arcilla: El Prima Materia al alcance de tus dedos",
+                category: "Arcilla",
+                readTime: "4 min de lectura",
+                summary: "Materia informe que contiene los cuatro elementos en perfecto equilibrio.",
+                content: `<p>De todos los materiales sobre la Tierra, la arcilla representa la masa informe primordial (*Chaos* o *Prima Materia*). Requiere agua para adquirir plasticidad, aire para secarse sin fisuras y el fuego abrasador del horno para consolidar su estructura definitiva.</p><p>Es el único medio plástico donde los cuatro elementos de la naturaleza interactúan de manera directa bajo la guía de la mano humana.</p>`,
+                hashtags: ["#Arcilla", "#PrimaMateria", "#CuatroElementos", "#Arteynaturaleza"]
+            },
+            {
+                id: 15,
+                title: "Moldear arcilla como meditación alquímica",
+                category: "Arcilla",
+                readTime: "3 min de lectura",
+                summary: "Un diálogo térmico y táctil donde la mente escucha a la tierra.",
+                content: `<p>Cuando las palmas de las manos entran en contacto con la tierra húmeda, ocurre una transferencia inmediata de temperatura y energía. Esculpir no consiste en imponer tiránicamente una forma a la arcilla, sino en aprender a escuchar dónde la materia cede de forma natural.</p><p>Es un diálogo silencioso en el cual la mente se calma y el cuerpo entra en el tiempo geológico.</p>`,
+                hashtags: ["#Ceramica", "#CeramicaEscultorica", "#Mindfulness"]
+            },
+            {
+                id: 16,
+                title: "El Mito del Golem y la Arcilla Alquímica",
+                category: "Arcilla",
+                readTime: "4 min de lectura",
+                summary: "Infundir vida a la materia inerte mediante el verbo y la intención del artesano.",
+                content: `<p>En las tradiciones místicas de Praga y la alquimia medieval, dar vida a una figura de arcilla (el *Golem*) exigía grabar en su frente la palabra *Emet* (Verdad). El verdadero artesano comprende que al moldear barro no crea vida biológica, sino que impregna el objeto con su propia impronta psíquica e intención espiritual.</p>`,
+                hashtags: ["#Mitos", "#Golem", "#Simbolismo"]
+            },
+            {
+                id: 17,
+                title: "De barro a cerámica: El Nigredo, Albedo y Rubedo en el taller",
+                category: "Arcilla",
+                readTime: "4 min de lectura",
+                summary: "Las tres grandes fases alquímicas reflejadas en el proceso cerámico.",
+                content: `<p>El proceso cerámico tradicional es la transmutación alquímica en tres actos perfectamente definidos:</p><ul><li><strong>Nigredo:</strong> La arcilla húmeda, plástica y oscura sacada de la tierra.</li><li><strong>Albedo:</strong> La pieza seca, pálida y frágil que aguarda el fuego.</li><li><strong>Rubedo:</strong> Tras superar los 1000 °C en el horno, la obra emerge vitrificada, roja o resonante, invulnerable al paso del tiempo.</li></ul>`,
+                hashtags: ["#AlquimiaOperativa", "#Fuego", "#Ceramica"]
+            },
+            {
+                id: 18,
+                title: "El agua en la arcilla: El solvente de la memoria",
+                category: "Arcilla",
+                readTime: "3 min de lectura",
+                summary: "El principio mercurial que unifica el polvo inerte para recibir la forma.",
+                content: `<p>Sin el agua, la arcilla no es más que polvo inerte disperso por el viento. El agua aporta el principio receptivo y fluido (*Mercurio*). Al amasar rítmicamente con los talones de las manos, expulsamos las burbujas de aire —simbolizando la eliminación de los pensamientos dispersos— preparando la masa para resistir la prueba del fuego.</p>`,
+                hashtags: ["#Escultura", "#ProcesoCreativo", "#TierraYAgua"]
+            },
 
-            // Categoría: María la Judía (10 artículos)
-            const maria = [
-                { t: "María Prophetissima", s: "La primera alquimista documentada." },
-                { t: "El Baño María", s: "La invención del calor suave." },
-                { t: "El Tribikos", s: "El destilador de tres brazos." },
-                { t: "La Kerotakis", s: "El vaso sellado para metales." },
-                { t: "El Axioma de María", s: "El uno se convierte en dos." },
-                { t: "Alquimia en el Siglo I", s: "Contexto histórico en Alejandría." },
-                { t: "El Fuego Oculto de María", s: "Técnicas de temperatura." },
-                { t: "Transmutación del Cobre", s: "El proceso de ennegrecimiento." },
-                { t: "Vasos Herméticos Antiguos", s: "La importancia del sellado." },
-                { t: "El Legado Femenino en Alquimia", s: "La influencia de María en Zósimo." }
-            ];
+            // EJE 4: Escultura y Gestos
+            {
+                id: 19,
+                title: "¿Por qué la posición de las manos en una escultura nos conmueve?",
+                category: "Escultura",
+                readTime: "4 min de lectura",
+                summary: "El cerebro dedica gran parte de su corteza motora a la lectura de las manos.",
+                content: `<p>El cerebro humano dedica una proporción gigantesca de su corteza motora y somatosensorial al procesamiento de las manos. En las artes plásticas, una mano ligeramente abierta evoca vulnerabilidad o receptividad, mientras que un puño contraído transmite tensión acumulada o resistencia.</p><p>Las manos en la escultura revelan la verdad emocional que el rostro busca disimular.</p>`,
+                hashtags: ["#Escultura", "#LenguajeCorporal", "#PsicologiaDelArte"]
+            },
+            {
+                id: 20,
+                title: "El Miguel Ángel alquímico: La Creación de Adán",
+                category: "Escultura",
+                readTime: "4 min de lectura",
+                summary: "La chispa de la conciencia suspendida en la brecha entre dos dedos.",
+                content: `<p>El minúsculo espacio milimétrico que separa el dedo del Creador y el de Adán en la Capilla Sixtina es el lugar exacto donde habita la chispa divina. La mano divina no necesita tocar físicamente para transmitir la conciencia; proyecta la fuerza vital a través del gesto.</p><p>Es el modelo definitivo de la mano que otorga frente a la mano que despierta.</p>`,
+                hashtags: ["#MiguelAngel", "#HistoriaDelArte", "#AnalisisDeArte"]
+            },
+            {
+                id: 21,
+                title: "Auguste Rodin y La Mano de Dios",
+                category: "Escultura",
+                readTime: "3 min de lectura",
+                summary: "La forma ya existe en la piedra; la mano del artista solo remueve lo superfluo.",
+                content: `<p>Auguste Rodin esculpió una imponente mano emergiendo del bloque de mármol bruto, sosteniendo con extrema delicadeza a un hombre y una mujer. Rodin comprendía a la perfección el principio alquímico: la obra perfecta ya habita latente dentro de la piedra informe; el trabajo del escultor consiste únicamente en retirar los excesos de la materia.</p>`,
+                hashtags: ["#Rodin", "#EsculturaModerna", "#Arteytierra"]
+            },
+            {
+                id: 22,
+                title: "Gestos de poder en la escultura clásica: El Adlocutio",
+                category: "Escultura",
+                readTime: "3 min de lectura",
+                summary: "El brazo extendido y la mano abierta como emisarios de la autoridad divina.",
+                content: `<p>En la estatuaria del mundo greco-romano (como el Augusto de Prima Porta), la postura con el brazo derecho elevado y la mano extendida hacia la multitud (el gesto <em>Adlocutio</em>) denotaba autoridad, apaciguamiento y bendición.</p><p>El escultor utilizaba la geometría del brazo para proyectar la fuerza del gobernante sobre el espacio circundante.</p>`,
+                hashtags: ["#ArteRomano", "#Retorica", "#Simbologia"]
+            },
+            {
+                id: 23,
+                title: "Manos en contorsión: El sufrimiento y la catarsis en el Barroco",
+                category: "Escultura",
+                readTime: "4 min de lectura",
+                summary: "Cómo Bernini logró convertir el mármol en piel blanda mediante la presión táctil.",
+                content: `<p>Gian Lorenzo Bernini desafió los límites del mármol al otorgarle la apariencia de piel blanda y elástica. En «El Rapto de Proserpina», los dedos de Plutón hundiéndose visiblemente en el muslo de mármol inmortalizan la fuerza física y la resistencia pasional.</p><p>Demuestra cómo la posición precisa de los dedos puede congelar la emoción humana para siempre.</p>`,
+                hashtags: ["#Bernini", "#Barroco", "#EsculturaEnMarmol"]
+            },
+            {
+                id: 24,
+                title: "La mano extendida: La postura del Solve",
+                category: "Escultura",
+                readTime: "3 min de lectura",
+                summary: "El abandono del ego y la recepción del conocimiento sutil a través de la palma abierta.",
+                content: `<p>En el código simbólico del arte, una escultura representada con la mano vuelta hacia arriba y los dedos relajados encarna el principio de la disolución (*Solve*). Es el gesto del abandono del ego, la rendición de la rigidez mental y la apertura total para recibir la gracia o la inspiración.</p>`,
+                hashtags: ["#Simbolismo", "#ArteVisioanrio"]
+            },
+            {
+                id: 25,
+                title: "El puño contraído: La fuerza del Coagula",
+                category: "Escultura",
+                readTime: "3 min de lectura",
+                summary: "La concentración de la voluntad para cristalizar ideas en el mundo físico.",
+                content: `<p>Por el contrario, el puño cerrado fija y condensa la energía dispersa. En la escultura, esta posición denota la densidad de la materia, la contención del fuego interno y la concentración de la voluntad necesaria para manifestar proyectos tangibles en el plano material (*Coagula*).</p>`,
+                hashtags: ["#PoderInterior", "#Escultura"]
+            },
 
-            const createContent = (title, category) => {
-                let content = `<p>El concepto de <strong>${title}</strong> representa una de las piedras angulares dentro del estudio del esoterismo, la simbología y las prácticas milenarias del cuerpo y el espíritu.</p>`;
-                
-                if(category === "Mudras") {
-                    content += `<h2>El Significado Oculto</h2><p>Los mudras son gestos, a menudo realizados con las manos, que guían el flujo de energía hacia el cerebro. Cada área de la mano conecta con una parte distinta del cerebro, y al aplicar presión en puntos específicos, se generan reacciones neurológicas y energéticas.</p><p>En el caso del <strong>${title}</strong>, su práctica regular está diseñada para redirigir la fuerza vital.</p><h2>Cómo realizarlo</h2><ul><li>Encuentra una postura cómoda y erguida.</li><li>Conecta los dedos correspondientes de forma suave pero firme.</li><li>Descansa las manos sobre las rodillas.</li><li>Mantén la postura mientras respiras profundamente durante 5 a 15 minutos.</li></ul><p>El uso combinado del ${title} en alquimia interna ayuda a transmutar la energía densa en luz (conciencia).</p>`;
-                } else if (category === "Gestos") {
-                    content += `<h2>La Anatomía del Gesto Alquímico</h2><p>En la iconografía medieval y renacentista, las manos no solo sostienen instrumentos, sino que *son* instrumentos. El <strong>${title}</strong> es un arquetipo gestual.</p><p>Se creía que las posturas físicas del Adepto influían magnéticamente en el crisol. La geometría formada por los dedos actuaba como una antena para atraer influencias planetarias.</p><h2>Simbología</h2><ul><li>El pulgar representa la voluntad (El Rey).</li><li>El índice representa la dirección y el mercurio.</li><li>El gesto en sí mismo es un espejo de lo que ocurre en la Retorta.</li></ul><p>Aplicar el ${title} no es solo una acción teatral, es una técnica de enfoque mental para facilitar el Solve et Coagula.</p>`;
-                } else if (category === "Elementos") {
-                    content += `<h2>La Naturaleza de ${title}</h2><p>Para los alquimistas, los elementos no eran la tabla periódica que conocemos hoy, sino principios filosóficos y vibratorios de la materia y el espíritu. <strong>${title}</strong> encierra un secreto profundo.</p><h2>Operación en la Gran Obra</h2><p>En el laboratorio interior y exterior, ${title} debe ser purificado. El fuego extrae sus impurezas, el agua lava sus cenizas, y el aire eleva su espíritu.</p><ul><li>Estado inicial: Oscuridad y densidad.</li><li>Proceso: Sublimación y purificación.</li><li>Estado final: Elevación a su forma filosófica pura.</li></ul><p>Quien comprende la verdadera naturaleza del ${title}, tiene la llave para avanzar hacia la piedra filosofal.</p>`;
-                } else if (category === "Maria") {
-                    content += `<h2>El Genio de Alejandría</h2><p>En el siglo I d.C., en la vibrante y multicultural Alejandría, surgió una figura clave: <strong>${title}</strong>. A través de los escritos de Zósimo de Panópolis, conocemos sus extraordinarios inventos y axiomas que fundaron la alquimia occidental.</p><h2>Innovación y Legado</h2><p>María no solo teorizaba; era una inventora práctica de equipos de laboratorio. Su comprensión de cómo el calor afecta a la materia cambió la ciencia para siempre.</p><ul><li>Desarrolló aparatos herméticos perfectos.</li><li>Comprendió la sublimación de los metales base.</li><li>Unificó la mística judía, la filosofía griega y las técnicas egipcias.</li></ul><p>Su famosa frase: <em>"Uno se convierte en dos, dos se convierte en tres, y del tercero viene el uno como el cuarto"</em> sigue siendo el axioma más misterioso e influyente de la historia alquímica.</p>`;
-                }
+            // EJE 5: Mudras
+            {
+                id: 26,
+                title: "¿Qué es un Mudra? La alquimia gestual del cuerpo",
+                category: "Mudras",
+                readTime: "4 min de lectura",
+                summary: "Circuitos electromagnéticos que dirigen el flujo vital a través de las manos.",
+                content: `<p>La palabra sánscrita <em>Mudra</em> se traduce como «sello» o «gozo». Son configuraciones geométricas de las manos que actúan como verdaderos circuitos electromagnéticos en el sistema nervioso. Al unir puntos reflejos específicos en los dedos, redirigimos el flujo de la fuerza vital (Prana) hacia áreas concretas de la mente y el cuerpo.</p>`,
+                hashtags: ["#Mudras", "#Energia", "#Sanskrit", "#GeometriaSagrada"]
+            },
+            {
+                id: 27,
+                title: "Gyan Mudra: El sello de la sabiduría y el enfoque",
+                category: "Mudras",
+                readTime: "3 min de lectura",
+                summary: "La unión del Fuego (pulgar) y el Aire (índice) para calmar la mente.",
+                content: `<p>Se realiza uniendo suavemente las yemas del pulgar (elemento Fuego / Conciencia divina) y del dedo índice (elemento Aire / Ego individual). Al cerrar este circuito, estimulamos la memoria, calmamos el parloteo mental y favorecemos estados de concentración profunda durante el trabajo creativo.</p>`,
+                hashtags: ["#GyanMudra", "#Meditacion", "#Enfoque"]
+            },
+            {
+                id: 28,
+                title: "Prana Mudra: La activación de la fuerza vital",
+                category: "Mudras",
+                readTime: "3 min de lectura",
+                summary: "Enciende la energía latente y combate el agotamiento físico y mental.",
+                content: `<p>Para ejecutarlo, une las yemas del pulgar, el anular y el meñique, manteniendo los dedos índice y medio completamente extendidos. Este sello despierta la energía vital adormecida en la base del cuerpo, mejora la vitalidad de la vista y revitaliza el organismo en momentos de cansancio.</p>`,
+                hashtags: ["#PranaMudra", "#Vitalidad", "#Bienestar"]
+            },
+            {
+                id: 29,
+                title: "Shunya Mudra: El sello del vacío sanador",
+                category: "Mudras",
+                readTime: "3 min de lectura",
+                summary: "Presionar el dedo medio para conectar con el silencio primordial.",
+                content: `<p>Flexiona el dedo medio (elemento Espacio/Éter) hasta tocar la base del pulgar y presiónalo ligeramente con este. Shunya Mudra disipa el exceso de ruido mental, reduce la sensación de mareo y nos reconecta con el silencio fértil de donde brotan las grandes ideas.</p>`,
+                hashtags: ["#ShunyaMudra", "#SilencioInterior", "#Eter"]
+            },
+            {
+                id: 30,
+                title: "Apana Mudra: La alquimia de la purificación interna",
+                category: "Mudras",
+                readTime: "3 min de lectura",
+                summary: "El gesto del desecho consciente de toxinas físicas y emocionales.",
+                content: `<p>Conecta la yema del pulgar con los dedos medio y anular, dejando el meñique e índice libres. Este gesto estimula la eliminación de toxinas metabólicas y pesadez mental. Alquímicamente, representa la purificación de la materia para dejarla limpia ante un nuevo ciclo.</p>`,
+                hashtags: ["#Detox", "#ApanaMudra", "#Desapego"]
+            },
+            {
+                id: 31,
+                title: "Dhyana Mudra: La copa receptora del Athanor",
+                category: "Mudras",
+                readTime: "3 min de lectura",
+                summary: "Las manos superpuestas formando el recipiente vacío para la contemplación.",
+                content: `<p>Las manos descansan en el regazo, la derecha sobre la izquierda, con las yemas de los pulgares tocándose suavemente para formar un triángulo. Esta vasija sagrada representa el *Athanor* alquímico completamente libre de perturbaciones, listo para recibir la luz de la contemplación.</p>`,
+                hashtags: ["#DhyanaMudra", "#Zen", "#Athanor"]
+            },
+            {
+                id: 32,
+                title: "Anjali Mudra: La unificación sagrada de los opuestos",
+                category: "Mudras",
+                readTime: "3 min de lectura",
+                summary: "Juntar las palmas en el pecho para encontrar el punto neutro de la mente.",
+                content: `<p>Consiste en unir ambas palmas frente al centro del pecho. Alquímicamente, equilibra de forma instantánea los hemisferios cerebrales, la energía femenina y masculina, y el aspecto lunar y solar. Nos posiciona en el punto cero (*Bindu*) desde el cual podemos tomar decisiones sabias.</p>`,
+                hashtags: ["#AnjaliMudra", "#Equilibrio", "#Namaste"]
+            },
 
-                return content;
-            };
+            // EJE 6: Aromaterapia
+            {
+                id: 33,
+                title: "Botánica Alquímica (Espagiria): Las plantas y sus tres principios",
+                category: "Aromaterapia",
+                readTime: "4 min de lectura",
+                summary: "Azufre, Mercurio y Sal en el reino vegetal para activar el tacto divino.",
+                content: `<p>La Espagiria es el arte de aplicar los principios alquímicos a las plantas medicinales. Toda especie vegetal contiene tres principios fundamentales:</p><ul><li><strong>Azufre:</strong> El aceite esencial (el alma y el aroma).</li><li><strong>Mercurio:</strong> El alcohol de destilación (el espíritu conector).</li><li><strong>Sal:</strong> Las cenizas minerales del vegetal quemado (el cuerpo físico).</li></ul><p>Usar aceites espagíricos en las manos potencia dramáticamente la sensibilidad táctil.</p>`,
+                hashtags: ["#Espagiria", "#Aromaterapia", "#PlantasMedicinales"]
+            },
+            {
+                id: 34,
+                title: "Incienso (Boswellia carterii) + Gyan Mudra: Conexión Solar",
+                category: "Aromaterapia",
+                readTime: "3 min de lectura",
+                summary: "Eleva la frecuencia vibratoria y prepara las yemas de los dedos.",
+                content: `<p>Antes de comenzar una sesión de modelado o meditación, aplica una gota de aceite esencial de incienso puro diluido en las yemas de tus dedos. Su elevado perfil químico calma la respiración e induce ondas cerebrales alfa, permitiendo que las manos trabajen con una precisión casi devocional.</p>`,
+                hashtags: ["#Incienso", "#AceitesEspeciales", "#Espiritualidad"]
+            },
+            {
+                id: 35,
+                title: "Lavanda + Dhyana Mudra: La relajación de las fascias",
+                category: "Aromaterapia",
+                readTime: "3 min de lectura",
+                summary: "Liberar la tensión acumulada en los músculos interdigitales.",
+                content: `<p>Frotar las palmas con aceite vehicular y dos gotas de lavanda pura ayuda a liberar el estrés mecánico acumulado en las fascias y tendones de las manos. Al entrar en estado meditativo, la fragancia actúa directamente sobre el sistema límbico facilitando el soltar el control riguroso.</p>`,
+                hashtags: ["#Lavanda", "#CalmaMente", "#Aromaterapia"]
+            },
+            {
+                id: 36,
+                title: "Romero + Prana Mudra: Fuego solar y circulación en las palmas",
+                category: "Aromaterapia",
+                readTime: "3 min de lectura",
+                summary: "Activar la microcirculación de las manos para el trabajo de esculpido.",
+                content: `<p>El romero está regido tradicionalmente por el Sol y el elemento Fuego. Frotar unas gotas en las palmas activa inmediatamente la circulación sanguínea periférica, calentando los dedos fríos y preparándolos para amasar arcilla o concentrarse intensamente en tareas minuciosas.</p>`,
+                hashtags: ["#Romero", "#Vitalidad", "#Creatividad"]
+            },
+            {
+                id: 37,
+                title: "Mirra + Apana Mudra: La resina para enraizar en el plano físico",
+                category: "Aromaterapia",
+                readTime: "3 min de lectura",
+                summary: "Densificar las ideas volátiles para traerlas a la realidad material.",
+                content: `<p>La mirra es la resina conectada con la Tierra y la coagulación de la forma. Si sientes que tus proyectos artísticos o ideas permanecen demasiado tiempo volando en la mente sin concretarse, ungir tus manos con mirra te ayudará a traer la intención hacia la realidad física.</p>`,
+                hashtags: ["#Mirra", "#Enraizamiento", "#Tierra"]
+            },
+            {
+                id: 38,
+                title: "Aceite de Salvia Sclarea: Limpieza del campo somático de las manos",
+                category: "Aromaterapia",
+                readTime: "3 min de lectura",
+                summary: "Despejar la memoria de la materia antes de crear un nuevo objeto.",
+                content: `<p>Las manos acumulan memorias energéticas de todo lo que tocan a lo largo del día. Lavarse las manos con agua templada e hidrolato de Salvia Sclarea despeja las sobrecargas sensoriales, dejando el sentido del tacto neutral y listo para esculpir sin condicionamientos pasados.</p>`,
+                hashtags: ["#Salvia", "#Intuicion", "#ArteInspirado"]
+            },
+            {
+                id: 39,
+                title: "Ritual de Unción de Manos para Creadores y Escultores",
+                category: "Aromaterapia",
+                readTime: "4 min de lectura",
+                summary: "Un protocolo de 4 pasos para preparar tus herramientas creadoras.",
+                content: `<p>Antes de tocar tu material de trabajo, realiza este sencillo protocolo alquímico:</p><ol><li>Lava tus manos con agua fresca y una pizca de sal marina purificadora.</li><li>Aplica 2 gotas de aceite de Sándalo o Cedro mezcladas en aceite de jojoba.</li><li>Frota suavemente activando el calor interdigital y la palma.</li><li>Inhala el aroma con 3 respiraciones profundas. Tus manos son ahora canales conscientes.</li></ol>`,
+                hashtags: ["#Rituales", "#Creadores", "#ProcesoArtistico"]
+            },
 
-            const addArticles = (arr, category) => {
-                arr.forEach(item => {
-                    db.push({
-                        id: idCounter++,
-                        title: item.t,
-                        category: category,
-                        summary: item.s,
-                        readTime: Math.floor(Math.random() * 4) + 3 + " min de lectura",
-                        content: createContent(item.t, category)
-                    });
-                });
-            };
+            // EJE 7: Artistas Alquímicos
+            {
+                id: 40,
+                title: "Leonardo da Vinci: El observador de la geometría de las manos",
+                category: "Artistas",
+                readTime: "4 min de lectura",
+                summary: "Estudios anatómicos buscando la proporción divina en músculos y tendones.",
+                content: `<p>Leonardo no dibujaba manos únicamente por estética; diseccionaba y estudiaba su anatomía con rigor sagrado. Sus cuadernos demuestran que buscaba comprender la proporción áurea y los vectores de fuerza geométrica que permiten a la mente mover la materia con perfecta gracia.</p>`,
+                hashtags: ["#LeonardoDaVinci", "#Anatomia", "#Renacimiento"]
+            },
+            {
+                id: 41,
+                title: "Remedios Varo: La pintura como laboratorio hermético",
+                category: "Artistas",
+                readTime: "4 min de lectura",
+                summary: "Personajes de manos alargadas tejedoras de luz y materia sutil.",
+                content: `<p>La genial pintora surrealista plasmó en sus lienzos verdaderas operaciones alquímicas. Sus personajes suelen poseer manos estilizadas que hilan la luz de las estrellas, operan complejos aparatos de destilación o crean seres vivos a partir de pigmentos mágicos.</p>`,
+                hashtags: ["#RemediosVaro", "#Surrealismo", "#AlquimiaEnElArte"]
+            },
+            {
+                id: 42,
+                title: "Leonora Carrington: La cocción sagrada del arte",
+                category: "Artistas",
+                readTime: "4 min de lectura",
+                summary: "Amasar pan o mezclar pigmentos: el mismo principio de transmutación.",
+                content: `<p>Para Carrington, la cocina y el estudio de pintura eran dos estancias de un mismo laboratorio alquímico. Sostenía que la preparación de los alimentos mediante las manos compartía la misma magia transformadora que la mezcla de pigmentos sobre la tela.</p>`,
+                hashtags: ["#LeonoraCarrington", "#ArteSurrealista", "#Misticismo"]
+            },
+            {
+                id: 43,
+                title: "Hilma af Klint: La mano como canal del mundo sutil",
+                category: "Artistas",
+                readTime: "4 min de lectura",
+                summary: "Pintura automática donde la mano es guiada por fuerzas superiores.",
+                content: `<p>Hilma af Klint fue una de las verdaderas pioneras del arte abstracto. En sus sesiones, permitía que su mano actuara como un medio fluido que canalizaba complejas geometrías y diagramas espirituales sin que su razón interfiriera en el trazo.</p>`,
+                hashtags: ["#HilmaAfKlint", "#ArteAbstracto", "#Pionera"]
+            },
+            {
+                id: 44,
+                title: "Joseph Beuys: El artista como alquimista social",
+                category: "Artistas",
+                readTime: "4 min de lectura",
+                summary: "Grasa, fieltro y miel: la materia como transformador de la conciencia.",
+                content: `<p>Beuys utilizaba materiales orgánicos cargados de simbolismo como la grasa y el fieltro. Aseguraba que el trabajo manual consciente no es solo una labor técnica, sino una fuerza capaz de sanar las heridas emocionales de la sociedad contemporánea.</p>`,
+                hashtags: ["#JosephBeuys", "#ArteContemporaneo", "#AlquimiaSocial"]
+            },
 
-            addArticles(mudras, "Mudras");
-            addArticles(gestos, "Gestos");
-            addArticles(elementos, "Elementos");
-            addArticles(maria, "Maria");
+            // EJE 8: Conclusión
+            {
+                id: 45,
+                title: "Tus manos son las antenas de tu campo magnético",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "Alta densidad de terminaciones nerviosas que imbuyen intención en la materia.",
+                content: `<p>Las yemas de los dedos albergan miles de terminaciones nerviosas y biocampos magnéticos. Cualquier objeto que moldeas o tocas recibe no solo la fuerza física de tu cuerpo, sino la impronta energética de tu estado emocional e intención presente.</p>`,
+                hashtags: ["#FisicaCuantica", "#EnergiaVital", "#Conciencia"]
+            },
+            {
+                id: 46,
+                title: "La mano que destruye vs. la mano que moldea",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "La alquimia es la decisión consciente del destino de nuestra fuerza motora.",
+                content: `<p>La misma mano humana capaz de cerrarse en un puño destructivo puede aprender a abrirse para dar forma a la arcilla, curar una herida o brindar sostén. La alquimia es, por encima de todo, la elección deliberada de encaminar nuestra fuerza hacia la creación.</p>`,
+                hashtags: ["#Reflexion", "#Transmutacion", "#EvolucionPersonal"]
+            },
+            {
+                id: 47,
+                title: "¿Por qué hemos olvidado el trabajo manual en la era digital?",
+                category: "Arcilla",
+                readTime: "4 min de lectura",
+                summary: "Recuperar la riqueza táctil frente al cristal plano de las pantallas.",
+                content: `<p>Pasar horas deslizando los dedos sobre pantallas planas de cristal ha privado a nuestro cerebro de la rica estimulación táctil que impulsó nuestra evolución. Volver a hundir las manos en barro es un acto de soberanía, reconexión y salud mental.</p>`,
+                hashtags: ["#DesconexiónDigital", "#Oficios", "#Artesanal"]
+            },
+            {
+                id: 48,
+                title: "La escultura como espejo directo del inconsciente",
+                category: "Escultura",
+                readTime: "3 min de lectura",
+                summary: "El barro revela complejos y estados internos antes de que la razón los filtre.",
+                content: `<p>Al esculpir de manera intuitiva y sin un diseño rígido predeterminado, las manos expresan tensiones, miedos y deseos del subconsciente mucho antes de que la mente racional pueda analizarlos o censurarlos.</p>`,
+                hashtags: ["#PsicologiaJunguiana", "#Arteterapia", "#Inconsciente"]
+            },
+            {
+                id: 49,
+                title: "El Magnum Opus no es un fin; es el proceso de transformar la materia",
+                category: "Alejandría",
+                readTime: "3 min de lectura",
+                summary: "El objetivo nunca fue el oro físico, sino la elevación del alquimista.",
+                content: `<p>Los sabios de la antigüedad pasaban vidas enteras frente a sus hornos no por codicia de metal precioso, sino porque sabían que la verdadera Piedra Filosofal era la paciencia, sabiduría y paz alcanzadas durante el proceso de trabajo constante.</p>`,
+                hashtags: ["#MagnumOpus", "#GranObra", "#CrecimientoPersonal"]
+            },
+            {
+                id: 50,
+                title: "Manos de Alquimista: Una invitación directa a la creación",
+                category: "Simbología",
+                readTime: "3 min de lectura",
+                summary: "Llevas milenios de evolución en tus palmas: ¿qué vas a crear hoy?",
+                content: `<p>Detente un segundo y observa detenidamente tus palmas. Llevan la herencia biológica y espiritual de milenios de historia humana. Tienen el potencial ilimitado de tomar lo informe y convertirlo en belleza. ¿Qué vas a crear hoy con ellas?</p>`,
+                hashtags: ["#Creacion", "#Manos", "#AlquimiaHoy", "#Inspiracion"]
+            }
+        ];
 
-            return db;
-        };
-
-        const articlesData = generateArticles(); // Total 50
-        
         let currentPage = 1;
         const itemsPerPage = 9;
         let currentFilter = 'Todos';
@@ -263,7 +673,7 @@
             const paginatedItems = filteredData.slice(start, end);
 
             if(paginatedItems.length === 0) {
-                gridEl.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">No se encontraron artículos.</p>';
+                gridEl.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">No se encontraron artículos en esta categoría.</p>';
                 return;
             }
 
@@ -272,20 +682,18 @@
                 card.className = 'blog-card rounded-xl p-6 cursor-pointer flex flex-col h-full';
                 card.onclick = () => openArticle(article.id);
                 
-                // Imágenes placeholders temáticas basadas en id
-                const bgHue = (article.id * 15) % 360;
-                const imgUrl = `https://placehold.co/400x250/111111/E4007C?text=${article.category}`;
+                const imgUrl = `https://placehold.co/400x250/141414/E4007C?text=${encodeURIComponent(article.category)}`;
 
                 card.innerHTML = `
-                    <div class="h-40 w-full mb-4 rounded-lg overflow-hidden relative">
-                        <img src="${imgUrl}" alt="${article.category}" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition duration-300">
+                    <div class="h-40 w-full mb-4 rounded-lg overflow-hidden relative border border-[#222]">
+                        <img src="${imgUrl}" alt="${article.category}" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition duration-300">
                         <span class="absolute top-2 right-2 bg-fucsia-custom text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">${article.category}</span>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">${article.title}</h3>
                     <p class="text-sm text-gray-400 mb-4 flex-grow line-clamp-3">${article.summary}</p>
                     <div class="mt-auto pt-4 border-t border-[#2a2a2a] flex justify-between items-center">
                         <span class="text-xs text-gray-500">${article.readTime}</span>
-                        <span class="text-fucsia-custom text-sm font-semibold hover:text-white transition">Leer más →</span>
+                        <span class="text-fucsia-custom text-sm font-semibold hover:text-white transition">Leer tratado →</span>
                     </div>
                 `;
                 gridEl.appendChild(card);
@@ -298,29 +706,29 @@
 
             if(totalPages <= 1) return;
 
-            // Botón Prev
+            // Botón Anterior
             const prevBtn = document.createElement('button');
             prevBtn.innerHTML = '←';
             prevBtn.className = `px-3 py-1 rounded border border-[#2a2a2a] ${currentPage === 1 ? 'text-gray-600 cursor-not-allowed' : 'text-white hover:border-fucsia-custom'}`;
             prevBtn.disabled = currentPage === 1;
-            prevBtn.onclick = () => { currentPage--; updateView(); window.scrollTo(0, 0); };
+            prevBtn.onclick = () => { currentPage--; updateView(); window.scrollTo({ top: 100, behavior: 'smooth' }); };
             paginationEl.appendChild(prevBtn);
 
-            // Números
+            // Números de Página
             for (let i = 1; i <= totalPages; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = i;
                 btn.className = `w-8 h-8 flex items-center justify-center rounded-full text-sm transition ${i === currentPage ? 'bg-fucsia-custom text-white font-bold' : 'text-gray-400 hover:text-white border border-transparent hover:border-[#2a2a2a]'}`;
-                btn.onclick = () => { currentPage = i; updateView(); window.scrollTo(0, 0); };
+                btn.onclick = () => { currentPage = i; updateView(); window.scrollTo({ top: 100, behavior: 'smooth' }); };
                 paginationEl.appendChild(btn);
             }
 
-            // Botón Next
+            // Botón Siguiente
             const nextBtn = document.createElement('button');
             nextBtn.innerHTML = '→';
             nextBtn.className = `px-3 py-1 rounded border border-[#2a2a2a] ${currentPage === totalPages ? 'text-gray-600 cursor-not-allowed' : 'text-white hover:border-fucsia-custom'}`;
             nextBtn.disabled = currentPage === totalPages;
-            nextBtn.onclick = () => { currentPage++; updateView(); window.scrollTo(0, 0); };
+            nextBtn.onclick = () => { currentPage++; updateView(); window.scrollTo({ top: 100, behavior: 'smooth' }); };
             paginationEl.appendChild(nextBtn);
         }
 
@@ -331,11 +739,9 @@
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Actualizar UI de botones
                 filterBtns.forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
 
-                // Filtrar datos
                 currentFilter = e.target.getAttribute('data-filter');
                 if(currentFilter === 'Todos') {
                     filteredData = [...articlesData];
@@ -343,7 +749,6 @@
                     filteredData = articlesData.filter(item => item.category === currentFilter);
                 }
 
-                // Reset página y renderizar
                 currentPage = 1;
                 updateView();
             });
@@ -353,25 +758,33 @@
             const article = articlesData.find(a => a.id === id);
             if(!article) return;
 
-            // Llenar datos
             document.getElementById('article-title').innerText = article.title;
             document.getElementById('article-category-badge').innerText = article.category.toUpperCase();
             document.getElementById('article-read-time').innerText = article.readTime;
             document.getElementById('article-body').innerHTML = article.content;
 
-            // Transiciones CSS
+            const hashtagsContainer = document.getElementById('article-hashtags');
+            hashtagsContainer.innerHTML = '';
+            if(article.hashtags) {
+                article.hashtags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'hashtag';
+                    span.innerText = tag;
+                    hashtagsContainer.appendChild(span);
+                });
+            }
+
             listContainer.classList.add('opacity-0');
             
             setTimeout(() => {
                 listContainer.classList.add('hidden');
                 articleContainer.classList.remove('hidden');
                 
-                // Permitir que el display block tome efecto antes de animar opacidad
                 setTimeout(() => {
                     articleContainer.classList.remove('opacity-0');
                     window.scrollTo({ top: 100, behavior: 'smooth' });
                 }, 50);
-            }, 300); // 300ms es la duración de transition-opacity
+            }, 300);
         }
 
         function backToList() {
@@ -388,10 +801,11 @@
             }, 300);
         }
 
-        // Inicializar
+        // Inicialización
         updateView();
     </script>
     
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ28T4NC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </body>
 </html>
+
