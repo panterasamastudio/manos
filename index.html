@@ -93,8 +93,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .ch-close-btn:hover { color: #000; }
 
-
-
     </style>
 </head>
 <body class="antialiased">
@@ -118,26 +116,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="font-bold text-xl tracking-tighter text-white whitespace-nowrap">
                 PANTERA<span class="text-fucsia-custom">SAMA</span> <span class="text-sm font-normal text-gray-500 ml-2">ClayHand 3D</span>
             </div>
-            <ul class="hidden md:flex items-center gap-8 font-medium text-white">
+            <ul class="hidden lg:flex items-center gap-6 font-medium text-white text-sm">
                 <li><a href="index.html" class="hover:text-[#E4007C] transition">Inicio</a></li>
-                              
                 <li><a href="simulador.html" class="hover:text-[#E4007C] transition">Simulador de croquis</a></li>
+                <li><a href="laboratorioalquimia.html" class="hover:text-[#E4007C] transition">Iniciar sesión de alquimia</a></li>
                 <li><a href="#proceso" class="hover:text-[#E4007C] transition">El Proceso</a></li>
                 <li><a href="blog_alquimia_y_mudras.html" class="hover:text-[#E4007C] transition">Blog</a></li>
-
                 <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
                 <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
             </ul>
-            <button id="menuBtn" class="md:hidden text-white focus:outline-none">
+            <button id="menuBtn" class="lg:hidden text-white focus:outline-none">
                 <svg id="menuIconOpen" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 <svg id="menuIconClose" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
 
         <!-- Menú Mobile -->
-        <ul id="mobileMenu" class="hidden md:hidden flex flex-col items-center gap-2 font-medium text-white mt-4 pb-2">
+        <ul id="mobileMenu" class="hidden lg:hidden flex flex-col items-center gap-2 font-medium text-white mt-4 pb-2">
             <li class="w-full text-center"><a href="index.html" class="block py-3 hover:text-[#E4007C] transition">Inicio</a></li>
             <li class="w-full text-center"><a href="simulador.html" class="block py-3 hover:text-[#E4007C] transition">Simulador de croquis</a></li>
+            <li class="w-full text-center"><a href="laboratorioalquimia.html" class="block py-3 hover:text-[#E4007C] transition">Iniciar sesión de alquimia</a></li>
             <li class="w-full text-center"><a href="#proceso" class="block py-3 hover:text-[#E4007C] transition">El Proceso</a></li>
             <li class="w-full text-center"><a href="blog_alquimia_y_mudras.html" class="block py-3 hover:text-[#E4007C] transition">Blog</a></li>
             <li class="w-full text-center"><a href="metododepago.html" class="block py-3 hover:text-[#E4007C] transition">Medios de Pago</a></li>
@@ -228,35 +226,49 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 </div>
             </div>
         </section>
-        <!--css-->
-     <div class="bg-gray-100 p-8">
 
-    <!-- Encabezado con título y enlace -->
-    <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Piezas coleccionables realizadas con croquis del Simulador</h1>
-        <a href="simulador.html" class="text-blue-600 hover:underline font-semibold">Ir al Simulador</a>
-    </div>
+        <!-- Galería de Piezas -->
+        <div class="bg-gray-100 p-8">
+            <!-- Encabezado con título y enlace -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Piezas coleccionables realizadas con croquis del Simulador</h1>
+                <a href="simulador.html" class="text-blue-600 hover:underline font-semibold">Ir al Simulador</a>
+            </div>
 
-    <!-- Contenedor Wrap centrado -->
-    <div class="flex flex-wrap gap-6 justify-center items-center max-w-4xl mx-auto">
-        <!-- Imágenes (imagen3.png a imagen6.png) -->
-        <img src="imagen14.png" alt="Imagen 3" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
-        <img src="imagen13.png" alt="Imagen 4" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
-        <img src="imagen5.jpeg" alt="Imagen 5" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
-        <img src="imagen12.png" alt="Imagen 6" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
-    </div>
+            <!-- Contenedor Wrap centrado -->
+            <div class="flex flex-wrap gap-6 justify-center items-center max-w-4xl mx-auto">
+                <!-- Imágenes -->
+                <img src="imagen14.png" alt="Imagen 3" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
+                <img src="imagen13.png" alt="Imagen 4" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
+                <img src="imagen5.jpeg" alt="Imagen 5" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
+                <img src="imagen12.png" alt="Imagen 6" class="w-48 h-48 object-cover rounded-lg cursor-pointer hover:opacity-80 transition shadow-md" onclick="openModal(this.src)">
+            </div>
 
-    <!-- Modal -->
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 modal">
-        <button onclick="closeModal()" class="absolute top-5 right-5 text-white text-4xl font-bold">&times;</button>
-        <img id="modalImage" src="" class="max-w-[90%] max-h-[90%] rounded shadow-2xl">
-    </div>
+            <!-- Modal -->
+            <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-50 modal">
+                <button onclick="closeModal()" class="absolute top-5 right-5 text-white text-4xl font-bold">&times;</button>
+                <img id="modalImage" src="" class="max-w-[90%] max-h-[90%] rounded shadow-2xl">
+            </div>
+        </div>
 
+        <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-</div>
+        <!-- Nueva Sección: Investigación de Procesos Artísticos -->
+        <section id="investigacion" class="py-16 bg-[#0a0a0a] text-center px-6 border-t border-[#1C1C1C]">
+            <div class="max-w-3xl mx-auto glass p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-white">
+                    👋 ¿Cómo estás? Te robo solo un minutito.
+                </h2>
+                <p class="text-[#D9D9D9] text-base md:text-lg mb-8 leading-relaxed font-light">
+                    🧠✨ Si estás haciendo producción artística, me ayudás completándolo, me hacés un favor enorme. Investigamos procesos artísticos psicológicamente.
+                </p>
+                <a href="https://forms.gle/eZ8ZCPXYVJZwGsdr9" target="_blank" class="cta-button inline-block text-lg shadow-lg">
+                    Completar Encuesta 📋
+                </a>
+            </div>
+        </section>
 
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <!-- Newsletter Original -->
+        <!-- Newsletter Original / Cupos Limitados -->
         <section id="waitlist" class="py-24 bg-[#1C1C1C] text-center px-6">
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-3xl font-bold mb-6">Escasez Programada - <span class="text-fucsia">solicita prioridad</span></h2>
