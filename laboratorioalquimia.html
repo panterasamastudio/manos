@@ -18,7 +18,7 @@
     <!-- End Google Tag Manager -->
     
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laboratorio Alquímico Gestual - HUD Premium Adaptativo</title>
     
     <!-- Librerías de MediaPipe, ThreeJS y Tailwind CSS para diseño de primer nivel -->
@@ -125,6 +125,15 @@
             background: linear-gradient(to top, rgba(10, 6, 18, 0.8), transparent);
             pointer-events: none;
         }
+
+        button:focus-visible, input:focus-visible {
+            outline: 2px solid #ffe58f;
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
     </style>
 </head>
 <body class="select-none h-full w-full flex flex-col justify-between">
@@ -162,9 +171,13 @@
                     <button id="startBtn" class="w-full py-3.5 px-4 rounded-xl font-semibold tracking-wider text-xs text-[#d4af37] border border-amber-500/60 bg-amber-500/10 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 transform active:scale-95 shadow-[0_0_20px_rgba(212,175,55,0.15)] hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]">
                         ✨ EMPEZAR EL VIAJE
                     </button>
+                    <button id="demoBtn" class="w-full py-2 px-4 rounded-xl font-semibold tracking-wider text-[10px] text-purple-200 border border-purple-500/40 bg-purple-950/20 hover:bg-purple-500/10 hover:border-purple-300 transition-all duration-300 transform active:scale-95">
+                        🖱️ EXPLORAR SIN CÁMARA
+                    </button>
                     <button id="exitBtn" class="w-full py-2 px-4 rounded-xl font-semibold tracking-wider text-[10px] text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 hover:bg-cyan-500/10 hover:border-cyan-300 transition-all duration-300 transform active:scale-95">
                         🚪 SALIR DEL PORTAL
                     </button>
+                    <p id="startStatus" class="min-h-4 text-[10px] leading-snug text-gray-400" role="status" aria-live="polite"></p>
                 </div>
             </div>
         </div>
@@ -175,7 +188,7 @@
         <div class="flex items-center gap-2 pointer-events-auto">
             <div class="px-2.5 py-1 glass-card rounded-lg flex items-center gap-1.5">
                 <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span class="text-[10px] font-semibold tracking-wider text-emerald-400 code-font uppercase">SENSADO ONLINE</span>
+                <span id="sensorStatusLabel" class="text-[10px] font-semibold tracking-wider text-emerald-400 code-font uppercase">SENSADO LISTO</span>
             </div>
             <div class="hidden sm:flex px-2.5 py-1 glass-card rounded-lg text-[10px] font-medium text-gray-300 tracking-wide uppercase">
                 Cronología: <span id="sessionTimer" class="ml-1 text-amber-400 font-bold code-font">00:00</span>
@@ -188,6 +201,14 @@
             </button>
         </div>
     </div>
+
+    <!-- GUÍA DE INICIACIÓN: visible sólo durante los primeros descubrimientos -->
+    <aside id="tutorialCard" class="hidden absolute top-20 left-1/2 -translate-x-1/2 z-40 w-[min(92vw,360px)] glass-card rounded-xl p-3 text-center" aria-live="polite">
+        <div class="text-[9px] tracking-[0.18em] text-amber-400 font-semibold uppercase">Rito de iniciación</div>
+        <p id="tutorialText" class="mt-1 text-xs text-gray-100">Muestra tu mano abierta dentro de la guía.</p>
+        <div class="mt-2 h-1 rounded-full overflow-hidden bg-purple-950/60"><div id="tutorialProgress" class="h-full w-0 bg-gradient-to-r from-purple-500 to-amber-400 transition-all duration-500"></div></div>
+        <div id="tutorialCount" class="mt-1 text-[9px] text-gray-400">0 de 3 fórmulas descubiertas</div>
+    </aside>
 
     <!-- BOTONES DE NAVEGACIÓN RÁPIDA (Responsive Docking) -->
     <div id="toggleDock" class="absolute top-16 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 lg:hidden pointer-events-auto">
@@ -214,14 +235,14 @@
     <div id="rightSidebarPanel" class="absolute right-4 top-28 lg:top-20 bottom-24 lg:bottom-4 w-[280px] sm:w-[320px] md:w-[340px] z-20 flex flex-col glass-card border-amber-500/20 rounded-2xl overflow-hidden transform translate-x-[120%] lg:translate-x-0 transition-transform duration-500 ease-out">
         
         <!-- Tab Bar Premium -->
-        <div class="flex border-b border-amber-500/20 bg-black/40 text-[10px] uppercase font-bold tracking-wider text-gray-400">
-            <button id="tabControlBtn" class="flex-1 py-3 text-center border-b-2 border-amber-500 text-amber-400 bg-amber-500/5 transition-all" onclick="switchTab('control')">
+        <div class="flex border-b border-amber-500/20 bg-black/40 text-[10px] uppercase font-bold tracking-wider text-gray-400" role="tablist" aria-label="Consola del laboratorio">
+            <button id="tabControlBtn" role="tab" aria-selected="true" aria-controls="tabContentControl" class="flex-1 py-3 text-center border-b-2 border-amber-500 text-amber-400 bg-amber-500/5 transition-all" onclick="switchTab('control')">
                 🎛️ Ritual
             </button>
-            <button id="tabStatsBtn" class="flex-1 py-3 text-center border-b-2 border-transparent hover:text-white transition-all" onclick="switchTab('stats')">
+            <button id="tabStatsBtn" role="tab" aria-selected="false" aria-controls="tabContentStats" class="flex-1 py-3 text-center border-b-2 border-transparent hover:text-white transition-all" onclick="switchTab('stats')">
                 📊 Métricas
             </button>
-            <button id="tabSensorBtn" class="flex-1 py-3 text-center border-b-2 border-transparent hover:text-white transition-all" onclick="switchTab('sensor')">
+            <button id="tabSensorBtn" role="tab" aria-selected="false" aria-controls="tabContentSensor" class="flex-1 py-3 text-center border-b-2 border-transparent hover:text-white transition-all" onclick="switchTab('sensor')">
                 📷 Lidar
             </button>
             <button class="lg:hidden px-3 text-gray-400 hover:text-white border-l border-amber-500/10" onclick="toggleSidebar('right')">
@@ -233,7 +254,7 @@
         <div class="flex-1 overflow-y-auto p-4 scroller-fade text-xs flex flex-col gap-4">
             
             <!-- CONTENIDO TAB 1: CONTROLADORES DE RITUAL -->
-            <div id="tabContentControl" class="space-y-4">
+            <div id="tabContentControl" role="tabpanel" class="space-y-4">
                 <div class="flex flex-col gap-1.5">
                     <span class="text-[9px] tracking-wider text-gray-400 uppercase font-semibold">Configuración de Lectura</span>
                     <button id="modeToggle" class="w-full bg-purple-950/30 hover:bg-purple-900/40 border border-purple-500/30 hover:border-purple-400 text-purple-300 font-semibold py-2 px-3 rounded-xl text-[11px] tracking-wider transition-all duration-300">
@@ -263,7 +284,7 @@
             </div>
 
             <!-- CONTENIDO TAB 2: ESTADÍSTICAS REAL-TIME -->
-            <div id="tabContentStats" class="space-y-4 hidden">
+            <div id="tabContentStats" role="tabpanel" class="space-y-4 hidden">
                 <div class="grid grid-cols-2 gap-2">
                     <div class="bg-black/30 border border-purple-500/10 rounded-xl p-2.5 flex flex-col justify-between">
                         <span class="text-[8px] font-semibold text-purple-400 tracking-wider uppercase">Fórmulas Invocadas</span>
@@ -325,7 +346,7 @@
             </div>
 
             <!-- CONTENIDO TAB 3: CÁMARA & SENSADO -->
-            <div id="tabContentSensor" class="space-y-3 hidden flex flex-col items-center">
+            <div id="tabContentSensor" role="tabpanel" class="space-y-3 hidden flex flex-col items-center">
                 <div class="w-full flex justify-between items-center border-b border-amber-500/10 pb-1.5 mb-1">
                     <span class="text-[9px] font-semibold tracking-widest text-[#d4af37] uppercase">SENSADO ARQUITECTÓNICO</span>
                     <span class="px-1.5 py-0.5 bg-amber-500/10 border border-amber-500/30 rounded text-[8px] font-bold text-[#d4af37] code-font">LIDAR 2D</span>
@@ -376,6 +397,10 @@
         document.getElementById('tabControlBtn').classList.add('border-transparent');
         document.getElementById('tabStatsBtn').classList.add('border-transparent');
         document.getElementById('tabSensorBtn').classList.add('border-transparent');
+
+        ['control', 'stats', 'sensor'].forEach(name => {
+            document.getElementById(`tab${name[0].toUpperCase() + name.slice(1)}Btn`).setAttribute('aria-selected', String(name === tabName));
+        });
 
         if (tabName === 'control') {
             document.getElementById('tabContentControl').classList.remove('hidden');
@@ -435,6 +460,30 @@
     let isTransitioning = false;
     let handInteractionCenter = new THREE.Vector3(0, 0, 0);
     let handInteractionStrength = 0;
+    let demoMode = false;
+    let cameraController = null;
+    let demoTimeouts = [];
+    const tutorialDiscoveries = new Set();
+
+    function trackEvent(name, params = {}) {
+        if (typeof window.gtag === 'function') window.gtag('event', name, params);
+    }
+
+    function updateTutorial(key) {
+        if (!key || key === 'ausencia' || tutorialDiscoveries.has(key)) return;
+        tutorialDiscoveries.add(key);
+        const count = Math.min(tutorialDiscoveries.size, 3);
+        document.getElementById('tutorialProgress').style.width = `${count * 100 / 3}%`;
+        document.getElementById('tutorialCount').textContent = `${count} de 3 fórmulas descubiertas`;
+        const text = document.getElementById('tutorialText');
+        if (count === 1) text.textContent = '¡Primera fórmula! Prueba un movimiento amplio con la mano.';
+        else if (count === 2) text.textContent = '¡Casi! Invoca una tercera fórmula para completar el rito.';
+        else {
+            text.textContent = 'Rito completado: ya puedes explorar libremente.';
+            trackEvent('tutorial_completed');
+            setTimeout(() => document.getElementById('tutorialCard').classList.add('hidden'), 2800);
+        }
+    }
 
     // Métricas analíticas agregadas para las tarjetas
     let statsTotalConfirmed = 0;
@@ -1339,6 +1388,8 @@
                 inIntroMode = false;
                 introOverlay.style.display = 'none';
                 statsStartTime = Date.now();
+                document.getElementById('tutorialCard').classList.remove('hidden');
+                trackEvent('experience_started', { mode: demoMode ? 'demo' : 'camera' });
                 
                 let returnStart = performance.now();
                 let returnDuration = 1200;
@@ -1377,6 +1428,14 @@
        FUNCIÓN DE SALIDA GENERAL (SAFE EXPORT WARP)
        ====================================================================== */
     function triggerPortalExit() {
+        cameraProcessing = false;
+        demoTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+        demoTimeouts = [];
+        if (cameraController) {
+            cameraController.getTracks().forEach(track => track.stop());
+            cameraController = null;
+        }
+        trackEvent('experience_exited');
         const topBar = document.getElementById('topBar');
         const ui = document.getElementById('ui');
         const debugPanel = document.getElementById('debugPanel');
@@ -1424,16 +1483,54 @@
         fadeAndExit();
     }
 
-    document.getElementById('startBtn').addEventListener('click', () => {
+    async function startCameraExperience() {
         const startBtn = document.getElementById('startBtn');
+        const demoBtn = document.getElementById('demoBtn');
         const exitBtn = document.getElementById('exitBtn');
+        const status = document.getElementById('startStatus');
         startBtn.style.pointerEvents = 'none';
+        demoBtn.style.pointerEvents = 'none';
         exitBtn.style.pointerEvents = 'none';
-        startBtn.textContent = "✨ Cargando portal...";
-        speakRoboticVoice(() => {
+        startBtn.textContent = "📷 Activando cámara...";
+        status.textContent = 'Autoriza la cámara para detectar tus manos. El procesamiento ocurre en este dispositivo.';
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+            video.srcObject = stream;
+            await video.play();
+            cameraController = stream;
+            startCameraProcessing();
+            document.getElementById('sensorStatusLabel').textContent = 'CÁMARA ACTIVA';
+            trackEvent('camera_permission_granted');
             startJourney();
+        } catch (error) {
+            const denied = error && (error.name === 'NotAllowedError' || error.name === 'SecurityError');
+            status.textContent = denied
+                ? 'No se habilitó la cámara. Puedes permitirla en el navegador o explorar sin cámara.'
+                : 'No pudimos iniciar la cámara. Comprueba que esté disponible o explora sin cámara.';
+            trackEvent('camera_permission_failed', { reason: error && error.name ? error.name : 'unknown' });
+            startBtn.textContent = '✨ REINTENTAR CON CÁMARA';
+            startBtn.style.pointerEvents = 'auto';
+            demoBtn.style.pointerEvents = 'auto';
+            exitBtn.style.pointerEvents = 'auto';
+        }
+    }
+
+    function startDemoExperience() {
+        demoMode = true;
+        document.getElementById('startBtn').style.pointerEvents = 'none';
+        document.getElementById('demoBtn').style.pointerEvents = 'none';
+        document.getElementById('exitBtn').style.pointerEvents = 'none';
+        document.getElementById('startStatus').textContent = 'Modo exploración: usa la consola y descubre cómo funcionará el ritual con cámara.';
+        document.getElementById('sensorStatusLabel').textContent = 'MODO DEMO';
+        trackEvent('demo_started');
+        startJourney();
+        ['mano_abierta', 'puno_cerrado', 'pulgar_arriba'].forEach((gesture, index) => {
+            demoTimeouts.push(setTimeout(() => updateUI(gesture), 4600 + index * 2400));
         });
-    });
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startCameraExperience);
+    document.getElementById('demoBtn').addEventListener('click', startDemoExperience);
 
     document.getElementById('exitBtn').addEventListener('click', triggerPortalExit);
     document.getElementById('activeExitBtn').addEventListener('click', triggerPortalExit);
@@ -1528,6 +1625,8 @@
         actionDisplay.textContent = g.accion;
 
         updateStatsDashboard(key);
+        updateTutorial(key);
+        trackEvent('gesture_confirmed', { gesture: key, category: g.categoria });
     }
 
     const holdState = { key: null, since: 0 };
@@ -1746,7 +1845,28 @@
     });
 
     const video = document.getElementById('videoElement');
-    new Camera(video, { onFrame: async () => await hands.send({image: video}) }).start();
+    let cameraProcessing = false;
+    let frameInFlight = false;
+
+    function startCameraProcessing() {
+        if (cameraProcessing) return;
+        cameraProcessing = true;
+        const processFrame = async () => {
+            if (!cameraProcessing) return;
+            if (!frameInFlight && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+                frameInFlight = true;
+                try {
+                    await hands.send({ image: video });
+                } catch (error) {
+                    console.warn('No se pudo procesar un fotograma de cámara.', error);
+                } finally {
+                    frameInFlight = false;
+                }
+            }
+            requestAnimationFrame(processFrame);
+        };
+        requestAnimationFrame(processFrame);
+    }
 
     /* ======================================================================
        BUCLE DE ANIMACIÓN Y FÍSICA ESTELAR
@@ -1826,17 +1946,9 @@
     }
     animate();
     </script>
-</body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ28T4NC"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+</body>
 </html>
-```
-eof
-
-### Resumen de optimizaciones responsivas aplicadas:
-1. **Ajuste de FOV Inteligente:** El script 3D ahora calcula el aspect ratio del viewport. En teléfonos móviles cambia automáticamente a un campo de visión de `85°` y aleja la cámara a `Z=13` para que toda la escultura de partículas encaje sin recortarse lateralmente.
-2. **Dashboard Pestañizado (Tabbed Cards):** Hemos reordenado el panel de la derecha unificando las tarjetas mediante pestañas interactivas, reduciendo la altura total requerida de `1300px` a solo `350px` de altura máxima adaptable.
-3. **Control de Desbordamiento de Scrollbar:** Cada card de la consola tiene límites específicos de viewport (`max-h-[calc(100vh-140px)]`) para evitar que el contenido desborde el dispositivo del usuario.
-4. **Dock Desplegable para Móviles/Tablets:** Hemos programado triggers translúcidos en la parte superior que permiten deslizar los paneles suavemente con transiciones CSS animadas (`duration-500`) para liberar el viewport y mantener una jugabilidad excelente.
