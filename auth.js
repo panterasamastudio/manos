@@ -92,6 +92,12 @@ window.ClayHandAuth = {
       if (user?.picture) { el.src = user.picture; el.classList.remove("hidden"); }
       else el.classList.add("hidden");
     });
+    // Avisa a cada página (perfil.html, simulador.html, etc.) que la sesión o
+    // el perfil cambiaron, para que puedan re-renderizar su propia UI sin
+    // depender de un recargado manual de la página.
+    document.dispatchEvent(new CustomEvent("ch:authchange", {
+      detail: { user, profile: this.getProfile() }
+    }));
   },
   renderGoogleButton() {
     const container = document.getElementById("google-signin-button");
