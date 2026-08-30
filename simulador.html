@@ -419,23 +419,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <i data-lucide="check-square" class="w-4 h-4"></i> ¿Cómo concretar tu pedido?
                     </h5>
                     <ol class="text-xs text-stone-300 space-y-2 list-decimal list-inside pl-1">
-                        <li>Elegí cómo querés avanzar: <span class="text-pink-300 font-semibold">reserva 50%</span> o consulta personalizada.</li>
+                        <li>Aboná la <span class="text-pink-300 font-semibold">seña del 50%: AR$ 175.000</span>, o elegí una consulta personalizada.</li>
                         <li>Confirmá tu pedido: guardaremos el nombre de tu diseño en este dispositivo.</li>
                         <li>Pagá de forma segura con Mercado Pago.</li>
+                        <li>Al finalizar la escultura, el estudio solicita los otros AR$ 175.000 como valor final. Total: AR$ 350.000.</li>
+                        <li>Realizamos envíos dentro de Argentina. Para envíos internacionales, consultá mediante cita.</li>
                         <li>Después del pago, coordinamos los detalles por WhatsApp. La imagen es opcional.</li>
                     </ol>
-                </div>
-
-                <div class="bg-stone-950/80 p-4 rounded-xl border border-stone-800 space-y-1.5">
-                    <h5 class="text-xs font-semibold text-pink-500 uppercase tracking-wider flex items-center gap-1.5">
-                        <i data-lucide="package" class="w-4 h-4"></i> Valores y envío
-                    </h5>
-                    <p class="text-[11px] text-stone-300 leading-relaxed">
-                        El botón de abajo abona la <span class="text-stone-100 font-medium">seña del 50% (AR$ 175.000)</span>. Al finalizar la escultura se solicita el <span class="text-stone-100 font-medium">saldo final de AR$ 175.000</span>, es decir <span class="text-stone-100 font-medium">AR$ 350.000 en total</span>.
-                    </p>
-                    <p class="text-[11px] text-stone-500 leading-relaxed">
-                        Envío incluido dentro de Argentina. Para envíos internacionales, escribinos y lo coordinamos por WhatsApp o videollamada.
-                    </p>
                 </div>
 
                 <div class="flex items-center gap-3 pt-1">
@@ -449,7 +439,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <!-- Acciones Modal -->
             <div class="p-6 pt-2 border-t border-stone-800 bg-stone-950/40 flex flex-col gap-2">
                 <a id="btn-checkout" href="https://mpago.la/2xWiBBK" target="_blank" rel="noopener" class="w-full py-3 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-stone-950 font-bold rounded-xl shadow-lg text-sm transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="credit-card" class="w-4.5 h-4.5"></i> Pagar reserva · AR$ 175.000
+                    <i data-lucide="credit-card" class="w-4.5 h-4.5"></i> Pagar seña 50% · AR$ 175.000
                 </a>
                 <a id="btn-whatsapp-order" href="https://wa.me/5491166545235" target="_blank" rel="noopener" class="w-full py-2 border border-stone-700 hover:border-pink-500 text-stone-200 text-xs font-semibold rounded-lg transition text-center">
                     Confirmar mi diseño por WhatsApp
@@ -508,6 +498,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         const cameraGuidelines = document.getElementById('camera-guidelines');
         const scannerEffect = document.getElementById('scanner-effect');
         const cameraError = document.getElementById('camera-error');
+        const cameraErrorMessage = cameraError.querySelector('p');
         const cameraDot = document.getElementById('camera-dot');
         const cameraStatusText = document.getElementById('camera-status');
         const canvas3DContainer = document.getElementById('canvas-3d-container');
@@ -557,6 +548,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         // --- VARIABLES DE ESTADO ---
         let stream = null;
+        let cameraStartQueue = Promise.resolve();
+        let cameraFrameRequestId = null;
+        let cameraSessionId = 0;
+        let lastCameraDeviceId = null;
         let useFacingMode = "user"; 
         let isCaptured = false;
         let currentClayColor = 0xb06c4d; // Terracota por defecto (mismo color que el barro húmedo)
@@ -971,44 +966,149 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
 
         // --- STREAMING_CHUNK: Managing camera state and hardware access...
-        async function startCamera() {
-            cameraError.classList.add('hidden');
+        const CAMERA_RETRY_DELAYS = [350, 900];
+
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function isCameraBusyError(error) {
+            return error && (error.name === 'NotReadableError' || error.name === 'TrackStartError');
+        }
+
+        function stopActiveCamera() {
+            // Invalida cualquier bucle de análisis anterior antes de soltar el hardware.
+            cameraSessionId += 1;
+            if (cameraFrameRequestId !== null) {
+                cancelAnimationFrame(cameraFrameRequestId);
+                cameraFrameRequestId = null;
+            }
+
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
+                stream = null;
             }
+
+            video.pause();
+            video.srcObject = null;
+        }
+
+        async function getCameraStream(facingMode) {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error('La API de cámara no está disponible en este navegador.');
+            }
+
+            const preferredVideo = {
+                facingMode: { ideal: facingMode },
+                width: { ideal: 640 },
+                height: { ideal: 480 }
+            };
+            const candidates = [
+                { video: preferredVideo, audio: false },
+                // Algunos equipos ignoran facingMode: este intento relaja esa condición.
+                { video: { width: { ideal: 640 }, height: { ideal: 480 } }, audio: false }
+            ];
+
+            // Tras conceder permisos, intentar otro dispositivo físico si se conoce uno.
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const alternative = devices.find(device =>
+                    device.kind === 'videoinput' && device.deviceId && device.deviceId !== lastCameraDeviceId
+                );
+                if (alternative) {
+                    candidates.push({
+                        video: { deviceId: { exact: alternative.deviceId }, width: { ideal: 640 }, height: { ideal: 480 } },
+                        audio: false
+                    });
+                }
+            } catch (error) {
+                // La enumeración es opcional; getUserMedia conserva los fallbacks anteriores.
+                console.warn('No se pudo enumerar cámaras:', error);
+            }
+
+            let lastError;
+            // Un intento por alternativa (máximo tres solicitudes). Repetir la misma
+            // solicitud tras un error de dispositivo ocupado puede reabrir el permiso
+            // del navegador una y otra vez sin liberar la cámara.
+            for (let attempt = 0; attempt < candidates.length; attempt += 1) {
+                try {
+                    return await navigator.mediaDevices.getUserMedia(candidates[attempt]);
+                } catch (error) {
+                    lastError = error;
+                    if (!isCameraBusyError(error) || attempt === candidates.length - 1) break;
+                    cameraStatusText.textContent = 'Cámara ocupada. Probando otra opción...';
+                    await wait(CAMERA_RETRY_DELAYS[Math.min(attempt, CAMERA_RETRY_DELAYS.length - 1)]);
+                }
+            }
+            throw lastError || new Error('No se encontró una cámara disponible.');
+        }
+
+        function startFrameProcessing(sessionId) {
+            const processFrame = async () => {
+                if (sessionId !== cameraSessionId || !stream) return;
+
+                if (!isCaptured && handsDetector && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+                    try {
+                        await handsDetector.send({ image: video });
+                    } catch (error) {
+                        // Evita que un frame transitorio interrumpa el uso de la cámara.
+                        console.warn('No se pudo analizar un frame de cámara:', error);
+                    }
+                }
+
+                if (sessionId === cameraSessionId && stream) {
+                    cameraFrameRequestId = requestAnimationFrame(processFrame);
+                }
+            };
+            cameraFrameRequestId = requestAnimationFrame(processFrame);
+        }
+
+        async function startCameraSafely(facingMode) {
+            cameraError.classList.add('hidden');
+            cameraStatusText.textContent = 'Iniciando cámara...';
+            cameraDot.classList.remove('bg-red-500');
+
+            // Siempre liberar el stream anterior antes de solicitar uno nuevo.
+            stopActiveCamera();
 
             try {
-                const constraints = {
-                    video: {
-                        facingMode: useFacingMode,
-                        width: { ideal: 640 },
-                        height: { ideal: 480 }
-                    },
-                    audio: false
-                };
-                
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const newStream = await getCameraStream(facingMode);
+                stream = newStream;
+                const videoTrack = stream.getVideoTracks()[0];
+                lastCameraDeviceId = videoTrack && videoTrack.getSettings ? videoTrack.getSettings().deviceId : null;
+
                 video.srcObject = stream;
+                await video.play();
 
-                initMediaPipe();
+                // El detector se inicializa una única vez; crear varios también duplica el trabajo por frame.
+                if (!handsDetector) initMediaPipe();
 
-                const camera = new Camera(video, {
-                    onFrame: async () => {
-                        if (!isCaptured && handsDetector) {
-                            await handsDetector.send({ image: video });
-                        }
-                    },
-                    width: 640,
-                    height: 480
-                });
-                camera.start();
-
+                const sessionId = cameraSessionId;
+                startFrameProcessing(sessionId);
+                cameraStatusText.textContent = 'Cámara activa';
+                cameraDot.classList.remove('bg-red-500', 'bg-pink-600');
+                cameraDot.classList.add('bg-emerald-500');
             } catch (err) {
-                console.error("No se pudo arrancar la cámara:", err);
+                console.error('No se pudo arrancar la cámara:', err);
+                stopActiveCamera();
                 cameraError.classList.remove('hidden');
-                cameraStatusText.textContent = "Cámara Desconectada";
+                cameraStatusText.textContent = isCameraBusyError(err)
+                    ? 'Cámara ocupada por otra aplicación'
+                    : 'Cámara desconectada';
+                cameraErrorMessage.textContent = isCameraBusyError(err)
+                    ? 'La cámara está siendo usada por otra aplicación o pestaña. Cierra Zoom, Teams, la app Cámara y otras pestañas que la usen; después pulsa “Reintentar Cámara”.'
+                    : 'No se pudo acceder a la cámara. Revisa el permiso del navegador y vuelve a intentarlo.';
+                cameraDot.classList.remove('bg-emerald-500', 'bg-pink-600');
                 cameraDot.classList.add('bg-red-500');
             }
+        }
+
+        function startCamera(facingMode = useFacingMode) {
+            // Encola las acciones del usuario: nunca habrá dos getUserMedia en paralelo.
+            cameraStartQueue = cameraStartQueue
+                .catch(() => undefined)
+                .then(() => startCameraSafely(facingMode));
+            return cameraStartQueue;
         }
 
         btnSwitchCamera.addEventListener('click', () => {
@@ -1016,7 +1116,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             startCamera();
         });
 
-        btnRetryCamera.addEventListener('click', startCamera);
+        btnRetryCamera.addEventListener('click', () => startCamera());
+
+        window.addEventListener('pagehide', stopActiveCamera);
 
         // --- STREAMING_CHUNK: Executing the sculpture baking simulation...
         btnCapture.addEventListener('click', () => {
