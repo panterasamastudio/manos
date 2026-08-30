@@ -132,6 +132,11 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
   document.getElementById("logout").onclick=()=>ClayHandAuth.logout();
   document.getElementById("login").onclick=()=>ClayHandAuth.openAuth();
+  // Se dispara cuando auth.js confirma el login con Google (o un cambio de
+  // perfil/logout): sin esto, la página quedaba "congelada" en la vista de
+  // "Ingresar" después de elegir la cuenta de Gmail, porque nada volvía a
+  // llamar a render().
+  document.addEventListener("ch:authchange", render);
   render();
 });
 </script>
