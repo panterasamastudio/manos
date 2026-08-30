@@ -3,9 +3,9 @@
  * IMPORTANTE: para producción, verificar el credential de Google en servidor.
  */
 window.CLAYHAND_CONFIG = Object.assign({
-  GOOGLE_CLIENT_ID: "REEMPLAZAR_CON_TU_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+  GOOGLE_CLIENT_ID: "383549486388-9sopp2762s5s2j9fts2mvoa8o4ucsocf.apps.googleusercontent.com",
   MERCADOPAGO_CHECKOUT_URL: "https://mpago.la/2xWiBBK",
-  API_BASE_URL: "" // opcional: URL de tu backend para crear/verificar pedidos
+  API_BASE_URL: "" // opcional: backend futuro; el flujo actual usa el link de Mercado Pago + WhatsApp
 }, window.CLAYHAND_CONFIG || {});
 
 const CH_AUTH_KEY = "clayhand_auth_v1";
