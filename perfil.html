@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi perfil · ClayHand 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{--pink:#e4007c;--violet:#8b5cf6;--bg:#070707;--panel:#111;--line:#2b2b2b;--muted:#aaa;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:Manrope,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}.wrap{width:min(1050px,92%);margin:auto}.nav{height:74px;border-bottom:1px solid #1d1d1d;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800}.brand b{color:var(--pink)}.brand small{color:#777;margin-left:10px;font-weight:400}.nav-actions{display:flex;gap:10px;align-items:center}.btn{border:1px solid #333;background:#151515;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.btn.primary{border:0;background:linear-gradient(90deg,var(--pink),var(--violet))}.hero{padding:55px 0 25px}.eyebrow{font:12px "DM Mono";color:#e4007c;text-transform:uppercase;letter-spacing:.15em}.hero h1{font-size:42px;margin:10px 0}.grid{display:grid;grid-template-columns:1fr 1.3fr;gap:20px;padding-bottom:60px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}.card h2{margin:0 0 15px;font-size:19px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:12px;color:#bbb}.field input{width:100%;padding:12px;border:1px solid #333;border-radius:9px;background:#080808;color:#fff}.hint{font-size:12px;color:#888;line-height:1.5}.order{border:1px solid #292929;border-radius:14px;padding:17px;margin-top:13px}.order-head{display:flex;justify-content:space-between;gap:10px}.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#241322;color:#f7a4d0}.timeline{margin:15px 0 0;padding-left:18px;color:#bbb;font-size:12px;line-height:1.9}.danger{color:#ff9bbf;border-color:#5b243c}.empty{padding:30px;border:1px dashed #333;border-radius:14px;color:#888}.hidden{display:none!important}@media(max-width:760px){.grid{grid-template-columns:1fr}.hero h1{font-size:32px}}
+</style>
+<script src="auth.js"></script>
+</head>
+<body>
+<nav class="nav wrap">
+  <a class="brand" href="index.html">PANTERA<b>SAMA</b><small>CLAYHAND 3D</small></a>
+  <div class="nav-actions">
+    <a class="btn" href="simulador.html">Volver al simulador</a>
+    <button id="logout" class="btn">Cerrar sesión</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="logged-out" class="hero hidden">
+    <div class="eyebrow">Acceso privado</div>
+    <h1>Tu perfil está reservado para usuarios registrados.</h1>
+    <p class="hint">Iniciá sesión con Google para consultar tus datos y pedidos.</p>
+    <button id="login" class="btn primary">Ingresar con Google</button>
+  </section>
+
+  <section id="profile-content" class="hidden">
+    <div class="hero">
+      <div class="eyebrow">Mi perfil</div>
+      <h1>Hola, <span id="hello"></span>.</h1>
+      <p class="hint">Acá podés modificar tus datos de entrega y consultar el estado de tus piezas.</p>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Datos personales y de entrega</h2>
+        <form id="profile-form">
+          <div class="field"><label>Cuenta Google</label><input id="email" disabled></div>
+          <div class="field"><label>Nombre completo</label><input id="fullName" required></div>
+          <div class="field"><label>Número de teléfono</label><input id="phone" type="tel" required></div>
+          <div class="field"><label>Dirección</label><input id="address" required></div>
+          <div class="field"><label>Código postal</label><input id="postalCode" required></div>
+          <button class="btn primary" type="submit">Guardar cambios</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Mis pedidos</h2>
+        <div id="orders"></div>
+      </section>
+    </div>
+  </section>
+</main>
+
+
+<div id="ch-auth-modal" class="ch-modal hidden" aria-hidden="true">
+  <div class="ch-modal-card">
+    <button id="ch-auth-close" class="ch-close" aria-label="Cerrar">×</button>
+    <div class="eyebrow">ClayHand 3D</div><h3>Ingresá con Google</h3>
+    <p class="ch-muted">Usá tu cuenta de Google para acceder a tu perfil.</p>
+    <div id="google-signin-button" class="ch-google"></div>
+  </div>
+</div>
+<style>
+.ch-modal{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}.ch-modal.hidden{display:none}.ch-modal-card{width:min(460px,100%);background:#111;border:1px solid rgba(228,0,124,.35);border-radius:22px;padding:28px;color:#fff;box-shadow:0 25px 80px rgba(0,0,0,.55)}.ch-modal-card h3{margin:8px 0;font-size:24px}.ch-muted{color:#aaa;font-size:13px;line-height:1.5}.ch-close{float:right;border:0;background:transparent;color:#aaa;font-size:24px;cursor:pointer}.ch-google{display:flex;justify-content:center;margin:22px 0}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const loggedOut=document.getElementById("logged-out"), content=document.getElementById("profile-content");
+  function render(){
+    const u=ClayHandAuth.getUser(), p=ClayHandAuth.getProfile();
+    if(!u){loggedOut.classList.remove("hidden");content.classList.add("hidden");return}
+    loggedOut.classList.add("hidden");content.classList.remove("hidden");
+    document.getElementById("hello").textContent=p?.fullName||u.name||"";
+    document.getElementById("email").value=u.email||"";
+    document.getElementById("fullName").value=p?.fullName||u.name||"";
+    document.getElementById("phone").value=p?.phone||"";
+    document.getElementById("address").value=p?.address||"";
+    document.getElementById("postalCode").value=p?.postalCode||"";
+    renderOrders();
+  }
+  function renderOrders(){
+    const box=document.getElementById("orders"), orders=ClayHandAuth.orders();
+    if(!orders.length){box.innerHTML='<div class="empty">Todavía no tenés pedidos registrados.</div>';return}
+    box.innerHTML=orders.map(o=>{
+      const delivery=o.estimatedDelivery?new Date(o.estimatedDelivery).toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}):"Se calcula al confirmar el pago";
+      const tracking=o.trackingNumber||"Pendiente de asignación";
+      const status=o.paymentStatus==="approved"?"Pago confirmado":o.status==="cancel_requested"?"Cancelación solicitada":"Esperando pago";
+      const canCancel=o.paymentStatus==="approved" && o.status!=="cancel_requested" && o.status!=="cancelled";
+      return `<article class="order">
+        <div class="order-head"><strong>${escapeHtml(o.design||"ClayHand 3D")}</strong><span class="badge">${status}</span></div>
+        <div class="timeline">
+          <div>Pedido: ${new Date(o.createdAt).toLocaleDateString("es-AR")}</div>
+          <div>Seguimiento: <strong>${escapeHtml(tracking)}</strong></div>
+          <div>Entrega estimada: <strong>${delivery}</strong></div>
+          <div>Plazo informado: <strong>7 días</strong> desde la confirmación del pago.</div>
+          ${o.cancellation?`<div>Cancelación: ${escapeHtml(o.cancellation.status||"solicitada")}. Reembolso: hasta 72 horas hábiles.</div>`:""}
+        </div>
+        ${canCancel?`<button class="btn danger cancel" data-id="${o.id}">Cancelar compra</button>`:""}
+      </article>`;
+    }).join("");
+    box.querySelectorAll(".cancel").forEach(b=>b.onclick=()=>cancelOrder(b.dataset.id));
+  }
+  function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+  async function cancelOrder(id){
+    const o=ClayHandAuth.orders().find(x=>x.id===id); if(!o)return;
+    if(!confirm("¿Querés solicitar la cancelación de esta compra? El reembolso se procesa en hasta 72 horas hábiles."))return;
+    ClayHandAuth.updateOrder(id,{status:"cancel_requested",cancellation:{status:"solicitada",requestedAt:new Date().toISOString(),refundSla:"72 horas hábiles"}});
+    // Si se configura un backend, este evento debe enviarse allí para ejecutar el reembolso real.
+    if(window.CLAYHAND_CONFIG.API_BASE_URL){
+      try{await fetch(window.CLAYHAND_CONFIG.API_BASE_URL+"/api/orders/"+encodeURIComponent(id)+"/cancel",{method:"POST",headers:{"Content-Type":"application/json"}})}catch(e){console.warn(e)}
+    }
+    renderOrders();
+    alert("Solicitud de cancelación registrada. El reembolso se procesa en hasta 72 horas hábiles.");
+  }
+  document.getElementById("profile-form").onsubmit=e=>{
+    e.preventDefault();
+    ClayHandAuth.saveProfile({
+      fullName:document.getElementById("fullName").value.trim(),
+      phone:document.getElementById("phone").value.trim(),
+      address:document.getElementById("address").value.trim(),
+      postalCode:document.getElementById("postalCode").value.trim()
+    }); render(); alert("Perfil actualizado.");
+  };
+  document.getElementById("logout").onclick=()=>ClayHandAuth.logout();
+  document.getElementById("login").onclick=()=>ClayHandAuth.openAuth();
+  render();
+});
+</script>
+</body>
+</html>
