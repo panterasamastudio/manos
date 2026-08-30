@@ -200,6 +200,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <li><a href="blog_alquimia_y_mudras.html" class="hover:text-[#E4007C] transition">Blog</a></li>
 
                 <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
+                <li data-ch-logged-out><a href="perfil.html" class="hover:text-[#E4007C] transition">Ingresar</a></li>
+                <li data-ch-logged-in class="hidden"><a href="perfil.html" class="hover:text-[#E4007C] transition">Mi perfil</a></li>
                 <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
             </ul>
         <button id="menuBtn" class="md:hidden text-white focus:outline-none">
@@ -490,6 +492,49 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400" id="toast-icon"></i>
         <span id="toast-text">Mensaje de estado</span>
     </div>
+
+
+<!-- ClayHand · Autenticación Google -->
+<style>
+  .ch-modal{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+  .ch-modal.hidden{display:none}
+  .ch-modal-card{width:min(460px,100%);background:#111;border:1px solid rgba(228,0,124,.35);border-radius:22px;padding:28px;color:#fff;box-shadow:0 25px 80px rgba(0,0,0,.55)}
+  .ch-modal-card h3{margin:0 0 8px;font-size:24px}.ch-muted{color:#aaa;font-size:13px;line-height:1.5}
+  .ch-field{display:grid;gap:6px;margin-top:14px}.ch-field label{font-size:12px;color:#cfcfcf}
+  .ch-field input{width:100%;padding:12px 13px;border-radius:10px;border:1px solid #333;background:#0a0a0a;color:#fff;outline:none}
+  .ch-field input:focus{border-color:#e4007c}.ch-primary{width:100%;padding:13px;border:0;border-radius:11px;background:linear-gradient(90deg,#e4007c,#8b5cf6);color:#fff;font-weight:800;cursor:pointer;margin-top:18px}
+  .ch-close{float:right;border:0;background:transparent;color:#aaa;font-size:24px;cursor:pointer}.ch-google{display:flex;justify-content:center;margin:22px 0 4px}
+  .ch-profile-link{font-size:12px;color:#f7a4d0}.ch-profile-link:hover{text-decoration:underline}
+</style>
+
+<div id="ch-auth-modal" class="ch-modal hidden" aria-hidden="true">
+  <div class="ch-modal-card">
+    <button id="ch-auth-close" class="ch-close" aria-label="Cerrar">×</button>
+    <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e4007c">ClayHand 3D</div>
+    <h3>Entrá a tu cuenta</h3>
+    <p class="ch-muted">Registrate o iniciá sesión con Google para guardar tu diseño, continuar con tu pedido y acceder a <b>Mi perfil</b>.</p>
+    <div id="google-signin-button" class="ch-google"></div>
+    <p class="ch-muted" style="text-align:center;margin-top:12px">Al continuar aceptás que usemos estos datos para gestionar tu diseño y pedido.</p>
+  </div>
+</div>
+
+<div id="ch-profile-modal" class="ch-modal hidden" aria-hidden="true">
+  <div class="ch-modal-card">
+    <button id="ch-profile-close" class="ch-close" aria-label="Cerrar">×</button>
+    <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e4007c">Datos de entrega</div>
+    <h3>Completá tu perfil</h3>
+    <p class="ch-muted">Necesitamos estos datos antes de generar tu pieza por primera vez y antes de enviarte a Mercado Pago.</p>
+    <form id="ch-profile-form">
+      <div class="ch-field"><label for="ch-fullName">Nombre completo</label><input id="ch-fullName" autocomplete="name" required></div>
+      <div class="ch-field"><label for="ch-phone">Número de teléfono</label><input id="ch-phone" type="tel" autocomplete="tel" required></div>
+      <div class="ch-field"><label for="ch-address">Dirección de entrega</label><input id="ch-address" autocomplete="street-address" required></div>
+      <div class="ch-field"><label for="ch-postalCode">Código postal</label><input id="ch-postalCode" autocomplete="postal-code" required></div>
+      <button class="ch-primary" type="submit">Guardar y continuar</button>
+    </form>
+  </div>
+</div>
+
+    <script src="auth.js"></script>
 
     <!-- Script principal -->
     <script>
@@ -1121,7 +1166,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         window.addEventListener('pagehide', stopActiveCamera);
 
         // --- STREAMING_CHUNK: Executing the sculpture baking simulation...
-        btnCapture.addEventListener('click', () => {
+        btnCapture.addEventListener('click', (event) => {
+            // Primera generación: requiere cuenta Google + datos de entrega.
+            if (window.ClayHandAuth && !ClayHandAuth.requireLogin('generate')) return;
+
             const isHandVisible = jointSpheres.some(s => s.visible);
             if (!isHandVisible) {
                 showToast("Coloca tu mano en el visor antes de esculpir", "alert-triangle");
@@ -1225,10 +1273,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             btnWhatsAppOrder.href = `https://wa.me/5491166545235?text=${encodeURIComponent(message)}`;
         }
 
-        btnCheckout.addEventListener('click', () => {
+        btnCheckout.addEventListener('click', (event) => {
+            event.preventDefault();
+            // Antes de Mercado Pago: cuenta + nombre completo + teléfono + dirección + CP.
+            if (window.ClayHandAuth && !ClayHandAuth.requireLogin('checkout')) return;
+
             rememberDesignAndPrepareContact();
+            const user = ClayHandAuth.getUser();
+            const profile = ClayHandAuth.getProfile();
+            const order = {
+                id: 'CH-' + Date.now(),
+                design: artworkTitle.textContent,
+                email: user.email,
+                customerName: profile.fullName,
+                phone: profile.phone,
+                address: profile.address,
+                postalCode: profile.postalCode,
+                amount: 175000,
+                status: 'pending_payment',
+                paymentStatus: 'pending',
+                createdAt: new Date().toISOString(),
+                deliveryDays: 7,
+                estimatedDelivery: null,
+                trackingNumber: null,
+                cancellation: null
+            };
+            ClayHandAuth.saveOrder(order);
             closeAlchemyModal();
-            showToast("Pedido preparado. Continuá el pago seguro en Mercado Pago.", "credit-card");
+            showToast("Datos guardados. Continuá el pago seguro en Mercado Pago.", "credit-card");
+
+            // Checkout Pro/Link de Mercado Pago. La confirmación real debe llegar
+            // desde el backend/webhook antes de marcar el pedido como pagado.
+            setTimeout(() => {
+                window.location.href = window.CLAYHAND_CONFIG.MERCADOPAGO_CHECKOUT_URL || btnCheckout.href;
+            }, 350);
         });
 
         btnWhatsAppOrder.addEventListener('click', rememberDesignAndPrepareContact);
@@ -1370,7 +1448,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             }
         }
-
+ 
         function openGallery() {
             gallerySidebar.classList.remove('translate-x-full');
             galleryOverlay.classList.remove('hidden');
