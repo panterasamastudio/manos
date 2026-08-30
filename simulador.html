@@ -419,11 +419,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <i data-lucide="check-square" class="w-4 h-4"></i> ¿Cómo concretar tu pedido?
                     </h5>
                     <ol class="text-xs text-stone-300 space-y-2 list-decimal list-inside pl-1">
-                        <li>Presiona el botón de abajo.</li>
-                        <li>Se <span class="text-pink-300 font-semibold">descargará automáticamente</span> la captura 3D de tu mano.</li>
-                        <li>Se abrirá tu correo dirigido a <span class="text-pink-300 font-semibold">panterasamastudio@tumanoenescultura.com</span>.</li>
-                        <li>¡Adjunta la captura descargada y envíala para iniciar la alquimia!</li>
+                        <li>Elegí cómo querés avanzar: <span class="text-pink-300 font-semibold">reserva 50%</span> o consulta personalizada.</li>
+                        <li>Confirmá tu pedido: guardaremos el nombre de tu diseño en este dispositivo.</li>
+                        <li>Pagá de forma segura con Mercado Pago.</li>
+                        <li>Después del pago, coordinamos los detalles por WhatsApp. La imagen es opcional.</li>
                     </ol>
+                </div>
+
+                <div class="bg-stone-950/80 p-4 rounded-xl border border-stone-800 space-y-1.5">
+                    <h5 class="text-xs font-semibold text-pink-500 uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="package" class="w-4 h-4"></i> Valores y envío
+                    </h5>
+                    <p class="text-[11px] text-stone-300 leading-relaxed">
+                        El botón de abajo abona la <span class="text-stone-100 font-medium">seña del 50% (AR$ 175.000)</span>. Al finalizar la escultura se solicita el <span class="text-stone-100 font-medium">saldo final de AR$ 175.000</span>, es decir <span class="text-stone-100 font-medium">AR$ 350.000 en total</span>.
+                    </p>
+                    <p class="text-[11px] text-stone-500 leading-relaxed">
+                        Envío incluido dentro de Argentina. Para envíos internacionales, escribinos y lo coordinamos por WhatsApp o videollamada.
+                    </p>
                 </div>
 
                 <div class="flex items-center gap-3 pt-1">
@@ -436,8 +448,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
             <!-- Acciones Modal -->
             <div class="p-6 pt-2 border-t border-stone-800 bg-stone-950/40 flex flex-col gap-2">
-                <button id="btn-send-email" class="w-full py-3 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-stone-950 font-bold rounded-xl shadow-lg text-sm transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="mail" class="w-4.5 h-4.5"></i> Descargar e Iniciar Pedido
+                <a id="btn-checkout" href="https://mpago.la/2xWiBBK" target="_blank" rel="noopener" class="w-full py-3 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-stone-950 font-bold rounded-xl shadow-lg text-sm transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="credit-card" class="w-4.5 h-4.5"></i> Pagar reserva · AR$ 175.000
+                </a>
+                <a id="btn-whatsapp-order" href="https://wa.me/5491166545235" target="_blank" rel="noopener" class="w-full py-2 border border-stone-700 hover:border-pink-500 text-stone-200 text-xs font-semibold rounded-lg transition text-center">
+                    Confirmar mi diseño por WhatsApp
+                </a>
+                <button id="btn-download-optional" class="w-full py-2 text-stone-400 hover:text-white text-xs font-semibold rounded-lg transition">
+                    Descargar imagen del diseño (opcional)
                 </button>
                 <button id="btn-modal-cancel" class="w-full py-2 bg-stone-800 hover:bg-stone-750 text-stone-300 text-xs font-semibold rounded-lg transition">
                     Volver al Taller
@@ -532,7 +550,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         const modalAlchemy = document.getElementById('modal-alchemy');
         const btnModalClose = document.getElementById('btn-modal-close');
         const btnModalCancel = document.getElementById('btn-modal-cancel');
-        const btnSendEmail = document.getElementById('btn-send-email');
+        const btnCheckout = document.getElementById('btn-checkout');
+        const btnWhatsAppOrder = document.getElementById('btn-whatsapp-order');
+        const btnDownloadOptional = document.getElementById('btn-download-optional');
         const modalArtworkTitle = document.getElementById('modal-artwork-title');
 
         // --- VARIABLES DE ESTADO ---
@@ -1085,9 +1105,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             if (e.target === modalAlchemy) closeAlchemyModal();
         });
 
-        // Acción de Descarga y Envío por Email
-        btnSendEmail.addEventListener('click', () => {
-            // 1. Descargar la imagen automáticamente
+        // Pedido simple: el diseño se recuerda localmente y el pago se realiza en Mercado Pago.
+        function downloadCurrentDesign() {
             const dataUrl = get3DCanvasScreenshot();
             const link = document.createElement('a');
             link.href = dataUrl;
@@ -1095,19 +1114,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
 
-            // 2. Preparar y disparar el correo electrónico
-            const emailDestination = "panterasamastudio@gmail.com";
-            const subjectText = `Pedido Alquímico: ${artworkTitle.textContent}`;
-            const bodyText = `¡Hola, equipo de Pantera Sama Studio!\n\nAcabo de esculpir mi mano en arcilla 3D con el título de la obra: ${artworkTitle.textContent}.\n\nMe encantaría que la personalicen en una pieza coleccionable artística física utilizando su proceso artesanal y de alquimia.\n\n[IMPORTANTE: Por favor, arrastra y adjunta aquí la captura de la escultura que se acaba de descargar automáticamente en tu dispositivo]\n\n¡Muchas gracias!`;
+        function rememberDesignAndPrepareContact() {
+            const designName = artworkTitle.textContent.replace(/["']/g, '').trim();
+            localStorage.setItem('panteraSamaLastDesign', designName);
+            const message = `Hola! Acabo de crear el diseño \"${designName}\" en el simulador y quiero coordinar mi ClayHand 3D.`;
+            btnWhatsAppOrder.href = `https://wa.me/5491166545235?text=${encodeURIComponent(message)}`;
+        }
 
-            const mailtoURL = `mailto:${emailDestination}?subject=${encodeURIComponent(subjectText)}&body=${encodeURIComponent(bodyText)}`;
-            
-            // Abrir el mailto en el cliente nativo
-            window.location.href = mailtoURL;
-
+        btnCheckout.addEventListener('click', () => {
+            rememberDesignAndPrepareContact();
             closeAlchemyModal();
-            showToast("¡Captura descargada! Adjúntala en tu email.", "mail");
+            showToast("Pedido preparado. Continuá el pago seguro en Mercado Pago.", "credit-card");
+        });
+
+        btnWhatsAppOrder.addEventListener('click', rememberDesignAndPrepareContact);
+
+        btnDownloadOptional.addEventListener('click', () => {
+            downloadCurrentDesign();
+            showToast("Imagen descargada. Es opcional para tu pedido.", "download");
         });
 
         // --- SISTEMAS DE GUARDADO Y COMPARTIR ---
