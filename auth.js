@@ -12,6 +12,78 @@ const CH_AUTH_KEY = "clayhand_auth_v1";
 const CH_PROFILE_KEY = "clayhand_profile_v1";
 const CH_ORDERS_KEY = "clayhand_orders_v1";
 
+/* ---------------------------------------------------------------------
+ * Conexión con Firestore (la base de datos de Firebase).
+ * auth.js se carga como <script> clásico (no type="module") en todas las
+ * páginas, así que usamos import() dinámico para traer el SDK modular de
+ * Firebase y reutilizar la instancia de la app/Firestore que ya inicializa
+ * firebaseConfig.js (evita inicializar Firebase dos veces).
+ * localStorage se sigue usando como caché rápida y como respaldo por si el
+ * usuario está sin conexión, pero ahora todo se sincroniza también con
+ * Firestore, que es lo que antes faltaba por completo.
+ * ------------------------------------------------------------------- */
+let _fsDb = null;
+let _fs = null;
+const _dbReady = (async () => {
+  try {
+    const [{ db }, firestoreModule] = await Promise.all([
+      import("./firebaseConfig.js"),
+      import("https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js")
+    ]);
+    _fsDb = db;
+    _fs = firestoreModule;
+    window.ClayHandDB = _fsDb;
+    return _fsDb;
+  } catch (e) {
+    console.error("ClayHand: no se pudo conectar con la base de datos de Firebase (Firestore). Se sigue usando el almacenamiento local como respaldo.", e);
+    return null;
+  }
+})();
+
+async function fsSaveProfile(uid, profile) {
+  await _dbReady;
+  if (!_fsDb || !_fs || !uid) return;
+  try {
+    await _fs.setDoc(_fs.doc(_fsDb, "users", uid), profile, { merge: true });
+  } catch (e) {
+    console.error("ClayHand: error guardando el perfil en Firestore", e);
+  }
+}
+
+async function fsLoadProfile(uid) {
+  await _dbReady;
+  if (!_fsDb || !_fs || !uid) return null;
+  try {
+    const snap = await _fs.getDoc(_fs.doc(_fsDb, "users", uid));
+    return snap.exists() ? snap.data() : null;
+  } catch (e) {
+    console.error("ClayHand: error leyendo el perfil desde Firestore", e);
+    return null;
+  }
+}
+
+async function fsSaveOrder(uid, order) {
+  await _dbReady;
+  if (!_fsDb || !_fs || !uid || !order?.id) return;
+  try {
+    await _fs.setDoc(_fs.doc(_fsDb, "users", uid, "orders", order.id), order, { merge: true });
+  } catch (e) {
+    console.error("ClayHand: error guardando el pedido en Firestore", e);
+  }
+}
+
+async function fsLoadOrders(uid) {
+  await _dbReady;
+  if (!_fsDb || !_fs || !uid) return [];
+  try {
+    const snap = await _fs.getDocs(_fs.collection(_fsDb, "users", uid, "orders"));
+    return snap.docs.map(d => d.data());
+  } catch (e) {
+    console.error("ClayHand: error leyendo los pedidos desde Firestore", e);
+    return [];
+  }
+}
+
 window.ClayHandAuth = {
   getUser() {
     try { return JSON.parse(localStorage.getItem(CH_AUTH_KEY) || "null"); } catch { return null; }
@@ -29,6 +101,8 @@ window.ClayHandAuth = {
     const merged = Object.assign({}, current, profile, { updatedAt: new Date().toISOString() });
     localStorage.setItem(CH_PROFILE_KEY, JSON.stringify(merged));
     this.refreshUI();
+    const user = this.getUser();
+    if (user?.sub) fsSaveProfile(user.sub, Object.assign({ email: user.email || "" }, merged));
     return merged;
   },
   logout() {
@@ -44,12 +118,41 @@ window.ClayHandAuth = {
     const orders = this.orders();
     orders.unshift(order);
     localStorage.setItem(CH_ORDERS_KEY, JSON.stringify(orders));
+    const user = this.getUser();
+    if (user?.sub) fsSaveOrder(user.sub, order);
     return order;
   },
   updateOrder(id, patch) {
     const orders = this.orders().map(o => o.id === id ? Object.assign({}, o, patch) : o);
     localStorage.setItem(CH_ORDERS_KEY, JSON.stringify(orders));
-    return orders.find(o => o.id === id);
+    const updated = orders.find(o => o.id === id);
+    const user = this.getUser();
+    if (user?.sub && updated) fsSaveOrder(user.sub, updated);
+    return updated;
+  },
+  // Trae perfil y pedidos guardados en Firestore y los combina con lo que
+  // ya hay en localStorage (por ejemplo, pedidos hechos en otro dispositivo
+  // o antes de que existiera esta sincronización).
+  async syncFromCloud(uid) {
+    if (!uid) return;
+    try {
+      const [cloudProfile, cloudOrders] = await Promise.all([fsLoadProfile(uid), fsLoadOrders(uid)]);
+      if (cloudProfile) {
+        const current = this.getProfile() || {};
+        const merged = Object.assign({}, cloudProfile, current);
+        localStorage.setItem(CH_PROFILE_KEY, JSON.stringify(merged));
+      }
+      if (cloudOrders && cloudOrders.length) {
+        const localOrders = this.orders();
+        const merged = cloudOrders.slice();
+        localOrders.forEach(lo => { if (!merged.some(o => o.id === lo.id)) merged.push(lo); });
+        merged.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+        localStorage.setItem(CH_ORDERS_KEY, JSON.stringify(merged));
+      }
+      this.refreshUI();
+    } catch (e) {
+      console.error("ClayHand: no se pudo sincronizar con la base de datos de Firebase", e);
+    }
   },
   openAuth(options = {}) {
     const modal = document.getElementById("ch-auth-modal");
@@ -124,7 +227,7 @@ window.ClayHandAuth = {
       theme: "outline", size: "large", text: "continue_with", shape: "pill", width: 320
     });
   },
-  handleGoogleCredential(response) {
+  async handleGoogleCredential(response) {
     try {
       const payload = JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));
       const user = {
@@ -135,6 +238,9 @@ window.ClayHandAuth = {
         loginAt: new Date().toISOString()
       };
       localStorage.setItem(CH_AUTH_KEY, JSON.stringify(user));
+      // Antes de continuar, trae de Firestore el perfil/pedidos de este
+      // usuario (si ya existían, por ejemplo desde otro dispositivo).
+      await ClayHandAuth.syncFromCloud(user.sub);
       ClayHandAuth.closeAuth();
       ClayHandAuth.refreshUI();
       const authModal = document.getElementById("ch-auth-modal");
@@ -168,6 +274,8 @@ window.ClayHandAuth = {
 
 document.addEventListener("DOMContentLoaded", () => {
   ClayHandAuth.refreshUI();
+  const loggedUser = ClayHandAuth.getUser();
+  if (loggedUser?.sub) ClayHandAuth.syncFromCloud(loggedUser.sub);
   const authClose = document.getElementById("ch-auth-close");
   const profileClose = document.getElementById("ch-profile-close");
   authClose?.addEventListener("click", () => ClayHandAuth.closeAuth());
