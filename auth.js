@@ -236,53 +236,57 @@ window.ClayHandAuth = {
     const container = document.getElementById("google-signin-button");
     if (!container) return;
     container.innerHTML = "";
-    if (!window.google?.accounts?.id) {
-      container.innerHTML = '<p class="text-xs text-amber-300">Cargando inicio de sesión con Google…</p>';
-      setTimeout(() => this.renderGoogleButton(), 500);
+    // Usamos el popup del propio SDK de Firebase. El botón anterior de GIS
+    // emitía un token para un Client ID externo y Firebase lo rechazaba como
+    // `auth/invalid-credential` al intentar asociarlo a este proyecto.
+    if (!_firebaseAuth || !_firebaseAuthSdk) {
+      container.innerHTML = '<p class="text-xs text-amber-300">Cargando inicio de sesión seguro…</p>';
+      _dbReady.then(() => this.renderGoogleButton());
       return;
     }
-    const configured = window.CLAYHAND_CONFIG.GOOGLE_CLIENT_ID &&
-      !window.CLAYHAND_CONFIG.GOOGLE_CLIENT_ID.startsWith("REEMPLAZAR_");
-    if (!configured) {
-      container.innerHTML = '<div class="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">Falta configurar el <b>Google Client ID</b> en <code>auth.js</code>. La estructura de registro ya está preparada.</div>';
-      return;
+    container.innerHTML = '<button type="button" class="ch-firebase-google" style="width:320px;border:0;border-radius:999px;padding:13px 18px;background:#fff;color:#171717;font:700 14px Manrope,system-ui,sans-serif;cursor:pointer" aria-label="Continuar con Google">Continuar con Google</button>';
+    container.querySelector(".ch-firebase-google").addEventListener("click", () => this.signInWithFirebaseGoogle());
+  },
+  async finishFirebaseLogin(firebaseUser, fallback = {}) {
+    const user = {
+      sub: firebaseUser.uid,
+      email: firebaseUser.email || fallback.email || "",
+      name: firebaseUser.displayName || fallback.name || "",
+      picture: firebaseUser.photoURL || fallback.picture || "",
+      loginAt: new Date().toISOString()
+    };
+    localStorage.setItem(CH_AUTH_KEY, JSON.stringify(user));
+    await this.syncFromCloud(user.sub);
+    this.closeAuth();
+    this.refreshUI();
+    const authModal = document.getElementById("ch-auth-modal");
+    const action = authModal?.dataset.continueAction || "";
+    if (action === "generate" || action === "checkout") this.openProfile({continueAction: action});
+    else this.openProfile();
+  },
+  async signInWithFirebaseGoogle() {
+    try {
+      if (!_firebaseAuth || !_firebaseAuthSdk) throw new Error("Firebase todavía no terminó de inicializarse.");
+      const provider = new _firebaseAuthSdk.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const result = await _firebaseAuthSdk.signInWithPopup(_firebaseAuth, provider);
+      await this.finishFirebaseLogin(result.user);
+    } catch (e) {
+      console.error("No se pudo procesar el acceso con Google", e);
+      const detail = e?.code === "auth/operation-not-allowed"
+        ? "Activá Google en Firebase Console > Authentication > Sign-in method."
+        : e?.code === "auth/unauthorized-domain"
+          ? "Agregá este dominio en Firebase Console > Authentication > Settings > Authorized domains."
+          : "Revisá la configuración de Firebase e intentá nuevamente.";
+      alert("No se pudo completar el inicio de sesión con Google. " + detail);
     }
-    google.accounts.id.initialize({
-      client_id: window.CLAYHAND_CONFIG.GOOGLE_CLIENT_ID,
-      callback: window.ClayHandAuth.handleGoogleCredential,
-      auto_select: false,
-      cancel_on_tap_outside: true
-    });
-    google.accounts.id.renderButton(container, {
-      theme: "outline", size: "large", text: "continue_with", shape: "pill", width: 320
-    });
   },
   async handleGoogleCredential(response) {
     try {
       const payload = JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));
       const firebaseResult = await signInFirebaseWithGoogle(response.credential);
       const firebaseUser = firebaseResult.user;
-      const user = {
-        // El UID de Firebase permite que las reglas validen request.auth.uid.
-        sub: firebaseUser.uid,
-        email: firebaseUser.email || payload.email || "",
-        name: firebaseUser.displayName || payload.name || "",
-        picture: firebaseUser.photoURL || payload.picture || "",
-        loginAt: new Date().toISOString()
-      };
-      localStorage.setItem(CH_AUTH_KEY, JSON.stringify(user));
-      // Antes de continuar, trae de Firestore el perfil/pedidos de este
-      // usuario (si ya existían, por ejemplo desde otro dispositivo).
-      await ClayHandAuth.syncFromCloud(user.sub);
-      ClayHandAuth.closeAuth();
-      ClayHandAuth.refreshUI();
-      const authModal = document.getElementById("ch-auth-modal");
-      const action = authModal?.dataset.continueAction || "";
-      if (action === "generate" || action === "checkout") {
-        ClayHandAuth.openProfile({continueAction: action});
-      } else {
-        ClayHandAuth.openProfile();
-      }
+      await this.finishFirebaseLogin(firebaseUser, payload);
     } catch (e) {
       console.error("No se pudo procesar el acceso con Google", e);
       const detail = e?.code === "auth/operation-not-allowed"
