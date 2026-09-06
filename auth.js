@@ -1,6 +1,5 @@
 /* ClayHand 3D · Auth / Perfil
- * Google Identity Services + perfil local.
- * IMPORTANTE: para producción, verificar el credential de Google en servidor.
+ * Google Identity Services + Firebase Authentication + perfil local.
  */
 window.CLAYHAND_CONFIG = Object.assign({
   GOOGLE_CLIENT_ID: "383549486388-9sopp2762s5s2j9fts2mvoa8o4ucsocf.apps.googleusercontent.com",
@@ -24,24 +23,46 @@ const CH_ORDERS_KEY = "clayhand_orders_v1";
  * ------------------------------------------------------------------- */
 let _fsDb = null;
 let _fs = null;
+let _firebaseAuth = null;
+let _firebaseAuthSdk = null;
+let _firebaseSessionReady = Promise.resolve();
 const _dbReady = (async () => {
   try {
-    const [{ db }, firestoreModule] = await Promise.all([
+    const [{ app, db }, firestoreModule, authModule] = await Promise.all([
       import("./firebaseConfig.js"),
-      import("https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js")
+      import("https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js"),
+      import("https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js")
     ]);
     _fsDb = db;
     _fs = firestoreModule;
+    _firebaseAuthSdk = authModule;
+    _firebaseAuth = authModule.getAuth(app);
+    // Firebase restaura la sesión guardada de forma asíncrona al recargar la
+    // página. Esperamos esa restauración antes de leer/escribir Firestore.
+    _firebaseSessionReady = new Promise((resolve) => {
+      authModule.onAuthStateChanged(_firebaseAuth, () => resolve(), () => resolve());
+    });
     window.ClayHandDB = _fsDb;
+    window.ClayHandFirebaseAuth = _firebaseAuth;
     return _fsDb;
   } catch (e) {
-    console.error("ClayHand: no se pudo conectar con la base de datos de Firebase (Firestore). Se sigue usando el almacenamiento local como respaldo.", e);
+    console.error("ClayHand: no se pudo inicializar Firebase.", e);
     return null;
   }
 })();
 
+async function signInFirebaseWithGoogle(idToken) {
+  await _dbReady;
+  if (!_firebaseAuth || !_firebaseAuthSdk) {
+    throw new Error("Firebase no pudo inicializarse. Revisá firebaseConfig.js y la conexión a internet.");
+  }
+  const credential = _firebaseAuthSdk.GoogleAuthProvider.credential(idToken);
+  return _firebaseAuthSdk.signInWithCredential(_firebaseAuth, credential);
+}
+
 async function fsSaveProfile(uid, profile) {
   await _dbReady;
+  await _firebaseSessionReady;
   if (!_fsDb || !_fs || !uid) return;
   try {
     await _fs.setDoc(_fs.doc(_fsDb, "users", uid), profile, { merge: true });
@@ -52,6 +73,7 @@ async function fsSaveProfile(uid, profile) {
 
 async function fsLoadProfile(uid) {
   await _dbReady;
+  await _firebaseSessionReady;
   if (!_fsDb || !_fs || !uid) return null;
   try {
     const snap = await _fs.getDoc(_fs.doc(_fsDb, "users", uid));
@@ -64,6 +86,7 @@ async function fsLoadProfile(uid) {
 
 async function fsSaveOrder(uid, order) {
   await _dbReady;
+  await _firebaseSessionReady;
   if (!_fsDb || !_fs || !uid || !order?.id) return;
   try {
     await _fs.setDoc(_fs.doc(_fsDb, "users", uid, "orders", order.id), order, { merge: true });
@@ -74,6 +97,7 @@ async function fsSaveOrder(uid, order) {
 
 async function fsLoadOrders(uid) {
   await _dbReady;
+  await _firebaseSessionReady;
   if (!_fsDb || !_fs || !uid) return [];
   try {
     const snap = await _fs.getDocs(_fs.collection(_fsDb, "users", uid, "orders"));
@@ -105,7 +129,13 @@ window.ClayHandAuth = {
     if (user?.sub) fsSaveProfile(user.sub, Object.assign({ email: user.email || "" }, merged));
     return merged;
   },
-  logout() {
+  async logout() {
+    try {
+      await _dbReady;
+      if (_firebaseAuth && _firebaseAuthSdk) await _firebaseAuthSdk.signOut(_firebaseAuth);
+    } catch (e) {
+      console.warn("ClayHand: no se pudo cerrar la sesión de Firebase", e);
+    }
     localStorage.removeItem(CH_AUTH_KEY);
     localStorage.removeItem(CH_PROFILE_KEY);
     this.refreshUI();
@@ -230,11 +260,14 @@ window.ClayHandAuth = {
   async handleGoogleCredential(response) {
     try {
       const payload = JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));
+      const firebaseResult = await signInFirebaseWithGoogle(response.credential);
+      const firebaseUser = firebaseResult.user;
       const user = {
-        sub: payload.sub,
-        email: payload.email,
-        name: payload.name || "",
-        picture: payload.picture || "",
+        // El UID de Firebase permite que las reglas validen request.auth.uid.
+        sub: firebaseUser.uid,
+        email: firebaseUser.email || payload.email || "",
+        name: firebaseUser.displayName || payload.name || "",
+        picture: firebaseUser.photoURL || payload.picture || "",
         loginAt: new Date().toISOString()
       };
       localStorage.setItem(CH_AUTH_KEY, JSON.stringify(user));
@@ -252,7 +285,12 @@ window.ClayHandAuth = {
       }
     } catch (e) {
       console.error("No se pudo procesar el acceso con Google", e);
-      alert("No se pudo completar el inicio de sesión con Google.");
+      const detail = e?.code === "auth/operation-not-allowed"
+        ? "Activá Google en Firebase Console > Authentication > Sign-in method."
+        : e?.code === "auth/unauthorized-domain"
+          ? "Agregá este dominio en Firebase Console > Authentication > Settings > Authorized domains."
+          : "Revisá la configuración de Firebase e intentá nuevamente.";
+      alert("No se pudo completar el inicio de sesión con Google. " + detail);
     }
   },
   requireLogin(action) {
