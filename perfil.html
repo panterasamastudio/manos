@@ -12,16 +12,18 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:Manrope,system-ui,sans-serif}
 a{color:inherit;text-decoration:none}.wrap{width:min(1050px,92%);margin:auto}.nav{height:74px;border-bottom:1px solid #1d1d1d;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800}.brand b{color:var(--pink)}.brand small{color:#777;margin-left:10px;font-weight:400}.nav-actions{display:flex;gap:10px;align-items:center}.btn{border:1px solid #333;background:#151515;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.btn.primary{border:0;background:linear-gradient(90deg,var(--pink),var(--violet))}.hero{padding:55px 0 25px}.eyebrow{font:12px "DM Mono";color:#e4007c;text-transform:uppercase;letter-spacing:.15em}.hero h1{font-size:42px;margin:10px 0}.grid{display:grid;grid-template-columns:1fr 1.3fr;gap:20px;padding-bottom:60px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}.card h2{margin:0 0 15px;font-size:19px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:12px;color:#bbb}.field input{width:100%;padding:12px;border:1px solid #333;border-radius:9px;background:#080808;color:#fff}.hint{font-size:12px;color:#888;line-height:1.5}.order{border:1px solid #292929;border-radius:14px;padding:17px;margin-top:13px}.order-head{display:flex;justify-content:space-between;gap:10px}.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#241322;color:#f7a4d0}.timeline{margin:15px 0 0;padding-left:18px;color:#bbb;font-size:12px;line-height:1.9}.danger{color:#ff9bbf;border-color:#5b243c}.empty{padding:30px;border:1px dashed #333;border-radius:14px;color:#888}.hidden{display:none!important}@media(max-width:760px){.grid{grid-template-columns:1fr}.hero h1{font-size:32px}}
 </style>
+<style>
+.ps-header{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.88);backdrop-filter:blur(18px);border-bottom:1px solid #2b2b2b}.ps-nav{max-width:1240px;margin:auto;min-height:76px;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:20px}.ps-brand{font-weight:800;letter-spacing:-1.4px;font-size:20px}.ps-brand b{color:#f02b91}.ps-brand small{font:500 10px 'DM Mono',monospace;letter-spacing:.07em;color:#aaaab1;margin-left:9px}.ps-links{display:flex;align-items:center;gap:22px;font-size:13px;font-weight:700;color:#cacacf}.ps-links a:hover{color:#fff}.ps-cta{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:800;color:#fff;background:#f02b91;padding:11px 17px;transition:.2s ease}.ps-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(240,43,145,.25)}.ps-menu{display:none;background:none;border:0;color:#fff;font-size:24px}.profile-account-actions{display:flex;justify-content:flex-end;padding-top:18px}.profile-account-actions .btn{font-size:12px;padding:8px 12px}@media(max-width:900px){.ps-menu{display:block}.ps-links{display:none}.ps-links.open{display:flex;position:absolute;left:0;right:0;top:76px;z-index:10;flex-direction:column;align-items:stretch;padding:20px 26px;background:#0a0a0c;border-bottom:1px solid #2b2b2b}.ps-links.open a{text-align:center;padding:5px}.ps-links.open .ps-cta{text-align:center}.ps-brand small{display:none}.ps-nav{padding:0 18px}}
+</style>
 <script src="auth.js"></script>
 </head>
 <body>
-<nav class="nav wrap">
-  <a class="brand" href="index.html">PANTERA<b>SAMA</b><small>CLAYHAND 3D</small></a>
-  <div class="nav-actions">
-    <a class="btn" href="simulador.html">Volver al simulador</a>
-    <button id="logout" class="btn">Cerrar sesión</button>
-  </div>
-</nav>
+<header class="ps-header"><nav class="ps-nav">
+  <a class="ps-brand" href="index.html">PANTERA<b>SAMA</b><small>CLAYHAND 3D</small></a>
+  <button class="ps-menu" aria-label="Abrir menú" id="ps-menu">☰</button>
+  <div class="ps-links" id="ps-links"><a href="index.html">Inicio</a><a href="simulador.html">Simulador de croquis</a><a href="laboratorioalquimia.html">Sesión de alquimia</a><a href="index.html#proceso">El proceso</a><a href="blog_alquimia_y_mudras.html">Blog</a><a href="metododepago.html">Medios de pago</a><a href="perfil.html" data-ch-logged-out>Ingresar</a><a href="perfil.html" data-ch-logged-in class="hidden">Mi perfil</a><a class="ps-cta" href="simulador.html">Encargar una obra <span>→</span></a></div>
+</nav></header>
+<script>document.getElementById('ps-menu').addEventListener('click',()=>document.getElementById('ps-links').classList.toggle('open'));</script>
 
 <main class="wrap">
   <section id="logged-out" class="hero hidden">
@@ -32,6 +34,7 @@ a{color:inherit;text-decoration:none}.wrap{width:min(1050px,92%);margin:auto}.na
   </section>
 
   <section id="profile-content" class="hidden">
+    <div class="profile-account-actions"><button id="logout" class="btn">Cerrar sesión</button></div>
     <div class="hero">
       <div class="eyebrow">Mi perfil</div>
       <h1>Hola, <span id="hello"></span>.</h1>
