@@ -173,6 +173,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         transition: opacity 0.3s; 
     }
     .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
+    .nav-pantera { display: none !important; }
 </style>
 <div id="ch-notification" class="ch-notification-banner">
   <span class="ch-notification-text">
@@ -202,7 +203,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
                 <li data-ch-logged-out><a href="perfil.html" class="hover:text-[#E4007C] transition">Ingresar</a></li>
                 <li data-ch-logged-in class="hidden"><a href="perfil.html" class="hover:text-[#E4007C] transition">Mi perfil</a></li>
-                <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+                <li><a href="simulador.html" class="cta-button-custom">Encargar una obra</a></li>
             </ul>
         <button id="menuBtn" class="md:hidden text-white focus:outline-none">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -217,9 +218,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <a href="metododepago.html" class="block py-2">Medios de Pago</a>
         <a href="perfil.html" class="block py-2" data-ch-logged-out>Ingresar</a>
         <a href="perfil.html" class="block py-2 hidden" data-ch-logged-in>Mi perfil</a>
-        <a href="https://www.constanzatubio.com" class="cta-button-custom block mt-2">Estudio</a>
+        <a href="simulador.html" class="cta-button-custom block mt-2">Encargar una obra</a>
     </div>
 </nav>
+
+<style>
+.ps-header{position:sticky;top:0;z-index:60;background:rgba(5,5,5,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.14)}.ps-nav{max-width:1240px;margin:auto;min-height:76px;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:20px}.ps-brand{font-family:Manrope,system-ui,sans-serif;font-weight:800;letter-spacing:-1.4px;font-size:20px;color:#fafafa}.ps-brand b{color:#f02b91}.ps-brand small{font:500 10px 'DM Mono',monospace;letter-spacing:.07em;color:#aaaab1;margin-left:9px}.ps-links{display:flex;align-items:center;gap:22px;font:700 13px Manrope,system-ui,sans-serif;color:#cacacf}.ps-links a{color:inherit;text-decoration:none}.ps-links a:hover{color:#fff}.ps-cta{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:800;color:#fff!important;background:#f02b91;padding:11px 17px;transition:.2s ease}.ps-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(240,43,145,.25)}.ps-menu{display:none;background:none;border:0;color:#fff;font-size:24px}@media(max-width:900px){.ps-menu{display:block}.ps-links{display:none}.ps-links.open{display:flex;position:absolute;left:0;right:0;top:76px;z-index:10;flex-direction:column;align-items:stretch;padding:20px 26px;background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,.14)}.ps-links.open a{text-align:center;padding:5px}.ps-links.open .ps-cta{text-align:center}.ps-brand small{display:none}.ps-nav{padding:0 18px}}
+</style>
+<header class="ps-header"><nav class="ps-nav"><a class="ps-brand" href="index.html">PANTERA<b>SAMA</b><small>CLAYHAND 3D</small></a><button class="ps-menu" aria-label="Abrir menú" id="ps-menu">☰</button><div class="ps-links" id="ps-links"><a href="index.html">Inicio</a><a href="simulador.html">Simulador de croquis</a><a href="laboratorioalquimia.html">Sesión de alquimia</a><a href="index.html#proceso">El proceso</a><a href="blog_alquimia_y_mudras.html">Blog</a><a href="metododepago.html">Medios de pago</a><a href="perfil.html" data-ch-logged-out>Ingresar</a><a href="perfil.html" data-ch-logged-in class="hidden">Mi perfil</a><a class="ps-cta" href="simulador.html">Encargar una obra <span>→</span></a></div></nav></header>
+<script>document.getElementById('ps-menu').addEventListener('click',()=>document.getElementById('ps-links').classList.toggle('open'));</script>
 
 <script>
     document.getElementById('menuBtn').addEventListener('click', () => {
@@ -394,6 +401,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <p class="font-light text-[11px] tracking-wide text-stone-400">panterasamastudio@gmail.com</p>
         </div>
     </footer>
+
+    <!-- Personalización previa al pago -->
+    <div id="modal-customization" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4" role="dialog" aria-modal="true" aria-labelledby="customization-title">
+        <div class="bg-stone-900 text-stone-100 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-2xl border border-pink-600/30 shadow-[0_0_50px_rgba(228,0,124,0.15)]">
+            <div class="p-5 border-b border-stone-800 flex items-center justify-between sticky top-0 bg-stone-900 z-10">
+                <div><p class="text-pink-500 text-[10px] font-bold tracking-widest uppercase">Paso 1 de 2</p><h3 id="customization-title" class="serif-font text-xl font-bold">Personalizá tu obra</h3></div>
+                <button id="btn-customization-close" class="text-stone-400 hover:text-white p-2" aria-label="Cerrar"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-5 grid sm:grid-cols-2 gap-4 text-sm">
+                <label class="block">Medidas<select id="custom-size" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="30 x 40 cm">30 x 40 cm</option><option value="50 x 70 cm" selected>50 x 70 cm</option><option value="70 x 100 cm">70 x 100 cm</option></select></label>
+                <label class="block">Superficie<select id="custom-surface" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="pedestal">Pedestal</option><option value="bastidor">Bastidor sobre pared</option></select></label>
+                <label class="block">Color de la mano<input id="custom-hand-color" type="color" value="#b06c4d" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+                <label class="block">Color de fondo<input id="custom-background-color" type="color" value="#ded6ca" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+                <label class="block">Terminación del fondo<select id="custom-pattern" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="solid">Liso</option><option value="spots">Manchas mezcladas</option><option value="stripes">Rayas</option><option value="geometric">Geométrico</option></select></label>
+                <label class="block">Color de manchas / diseño<input id="custom-accent-color" type="color" value="#e4007c" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+            </div>
+            <div class="px-5 pb-3 text-xs text-stone-400">Los cambios se reflejan en el visor para que puedas decidir el acabado antes de confirmar.</div>
+            <div class="p-5 pt-3 border-t border-stone-800 flex flex-col-reverse sm:flex-row gap-2 justify-end"><button id="btn-customization-cancel" class="py-2 px-4 text-stone-300 text-sm">Volver al taller</button><button id="btn-customization-confirm" class="py-3 px-5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl font-bold text-sm">Confirmar obra y continuar →</button></div>
+        </div>
+    </div>
 
     <!-- Modal Alquímico de Pedido (Pantera Sama Studio) -->
     <div id="modal-alchemy" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
@@ -593,6 +620,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         const btnWhatsAppOrder = document.getElementById('btn-whatsapp-order');
         const btnDownloadOptional = document.getElementById('btn-download-optional');
         const modalArtworkTitle = document.getElementById('modal-artwork-title');
+        const modalCustomization = document.getElementById('modal-customization');
+        const btnCustomizationClose = document.getElementById('btn-customization-close');
+        const btnCustomizationCancel = document.getElementById('btn-customization-cancel');
+        const btnCustomizationConfirm = document.getElementById('btn-customization-confirm');
+        const customizationInputs = ['custom-size', 'custom-surface', 'custom-hand-color', 'custom-background-color', 'custom-pattern', 'custom-accent-color'].map(id => document.getElementById(id));
 
         // --- VARIABLES DE ESTADO ---
         let stream = null;
@@ -606,6 +638,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         let galleryItems = [];
         let clearGalleryClickCount = 0;
         let lastCapturedImageURL = null;
+        let artworkCustomization = {};
 
         // --- CONFIGURACIÓN DEL MOTOR 3D (THREE.JS) ---
         let scene, camera3D, renderer, controls;
@@ -614,6 +647,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         let boneCylinders = [];
         let palmMesh; // Relleno de la palma
         let pedestal; // Base de madera de la escultura
+        let wallBackdrop;
         let isRotatingPedestal = true;
 
         function init3DStudio() {
@@ -676,6 +710,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             // 5. Luz ambiental suave - Reducida para acentuar sombras y realzar el volumen
             const ambientLight = new THREE.AmbientLight(0x2d241e, 0.45);
             scene.add(ambientLight);
+
+            // Pared editable: se actualiza desde el paso de personalización.
+            wallBackdrop = new THREE.Mesh(
+                new THREE.PlaneGeometry(560, 440),
+                new THREE.MeshBasicMaterial({ color: 0xded6ca })
+            );
+            wallBackdrop.position.set(0, 15, -125);
+            scene.add(wallBackdrop);
 
             // --- PEDESTAL DE MADERA NOBLE ---
             const pedestalGeo = new THREE.CylinderGeometry(85, 95, 25, 12);
@@ -1242,9 +1284,68 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         // --- SISTEMA DE PEDIDOS ALQUÍMICOS (PANTERA SAMA STUDIO) ---
 
-        // Abrir Modal Alquímico
+        function selectedCustomization() {
+            return {
+                size: document.getElementById('custom-size').value,
+                surface: document.getElementById('custom-surface').value,
+                handColor: document.getElementById('custom-hand-color').value,
+                backgroundColor: document.getElementById('custom-background-color').value,
+                pattern: document.getElementById('custom-pattern').value,
+                accentColor: document.getElementById('custom-accent-color').value
+            };
+        }
+
+        function makeWallTexture(settings) {
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 700;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = settings.backgroundColor;
+            ctx.fillRect(0, 0, 700, 700);
+            ctx.fillStyle = settings.accentColor;
+            ctx.globalAlpha = 0.62;
+            if (settings.pattern === 'spots') {
+                [[110,150,78],[310,100,54],[510,240,100],[240,440,92],[550,530,62],[90,610,68]].forEach(([x,y,r]) => { ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); });
+            } else if (settings.pattern === 'stripes') {
+                for (let x = -700; x < 900; x += 120) { ctx.save(); ctx.translate(x, 0); ctx.rotate(-0.35); ctx.fillRect(0, -200, 55, 1200); ctx.restore(); }
+            } else if (settings.pattern === 'geometric') {
+                for (let x = 0; x < 700; x += 140) for (let y = 0; y < 700; y += 140) { ctx.beginPath(); ctx.moveTo(x + 70, y + 12); ctx.lineTo(x + 128, y + 112); ctx.lineTo(x + 12, y + 112); ctx.closePath(); ctx.fill(); }
+            }
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        function applyCustomization() {
+            if (!scene || !handMeshGroup) return;
+            const settings = selectedCustomization();
+            artworkCustomization = settings;
+            const handHex = parseInt(settings.handColor.slice(1), 16);
+            handMeshGroup.traverse(node => { if (node.isMesh && node.material && node !== pedestal) node.material.color.setHex(handHex); });
+            if (wallBackdrop) {
+                const previousTexture = wallBackdrop.material.map;
+                wallBackdrop.material.map = makeWallTexture(settings);
+                wallBackdrop.material.color.setHex(0xffffff);
+                wallBackdrop.material.needsUpdate = true;
+                if (previousTexture) previousTexture.dispose();
+            }
+            const scale = settings.size === '30 x 40 cm' ? 0.78 : settings.size === '70 x 100 cm' ? 1.2 : 1;
+            handMeshGroup.scale.setScalar(scale);
+            pedestal.visible = settings.surface === 'pedestal';
+            handMeshGroup.position.y = settings.surface === 'pedestal' ? -25 : -5;
+        }
+
+        // Abrir primero el paso de personalización, antes del modal de pago.
         btnAlchemyCTA.addEventListener('click', () => {
+            modalCustomization.classList.remove('hidden');
+            applyCustomization();
+        });
+        customizationInputs.forEach(input => input.addEventListener('input', applyCustomization));
+        const closeCustomizationModal = () => modalCustomization.classList.add('hidden');
+        btnCustomizationClose.addEventListener('click', closeCustomizationModal);
+        btnCustomizationCancel.addEventListener('click', closeCustomizationModal);
+        modalCustomization.addEventListener('click', event => { if (event.target === modalCustomization) closeCustomizationModal(); });
+        btnCustomizationConfirm.addEventListener('click', () => {
+            applyCustomization();
             modalArtworkTitle.textContent = artworkTitle.textContent;
+            closeCustomizationModal();
             modalAlchemy.classList.remove('hidden');
         });
 
@@ -1272,7 +1373,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         function rememberDesignAndPrepareContact() {
             const designName = artworkTitle.textContent.replace(/["']/g, '').trim();
             localStorage.setItem('panteraSamaLastDesign', designName);
-            const message = `Hola! Acabo de crear el diseño \"${designName}\" en el simulador y quiero coordinar mi ClayHand 3D.`;
+            localStorage.setItem('panteraSamaCustomization', JSON.stringify(artworkCustomization));
+            const details = artworkCustomization.size ? ` Medidas: ${artworkCustomization.size}; soporte: ${artworkCustomization.surface === 'bastidor' ? 'bastidor sobre pared' : 'pedestal'}; fondo: ${artworkCustomization.pattern}.` : '';
+            const message = `Hola! Acabo de crear el diseño \"${designName}\" en el simulador y quiero coordinar mi ClayHand 3D.${details}`;
             btnWhatsAppOrder.href = `https://wa.me/5491166545235?text=${encodeURIComponent(message)}`;
         }
 
@@ -1301,6 +1404,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 trackingNumber: null,
                 cancellation: null
             };
+            order.customization = artworkCustomization;
             ClayHandAuth.saveOrder(order);
             closeAlchemyModal();
             showToast("Datos guardados. Continuá el pago seguro en Mercado Pago.", "credit-card");
