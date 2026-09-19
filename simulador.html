@@ -404,20 +404,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <!-- Personalización previa al pago -->
     <div id="modal-customization" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4" role="dialog" aria-modal="true" aria-labelledby="customization-title">
-        <div class="bg-stone-900 text-stone-100 max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-2xl border border-pink-600/30 shadow-[0_0_50px_rgba(228,0,124,0.15)]">
+        <div class="bg-stone-900 text-stone-100 max-w-5xl w-full max-h-[90vh] overflow-y-auto rounded-2xl border border-pink-600/30 shadow-[0_0_50px_rgba(228,0,124,0.15)]">
             <div class="p-5 border-b border-stone-800 flex items-center justify-between sticky top-0 bg-stone-900 z-10">
                 <div><p class="text-pink-500 text-[10px] font-bold tracking-widest uppercase">Paso 1 de 2</p><h3 id="customization-title" class="serif-font text-xl font-bold">Personalizá tu obra</h3></div>
                 <button id="btn-customization-close" class="text-stone-400 hover:text-white p-2" aria-label="Cerrar"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="p-5 grid sm:grid-cols-2 gap-4 text-sm">
-                <label class="block">Medidas<select id="custom-size" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="30 x 40 cm">30 x 40 cm</option><option value="50 x 70 cm" selected>50 x 70 cm</option><option value="70 x 100 cm">70 x 100 cm</option></select></label>
-                <label class="block">Superficie<select id="custom-surface" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="pedestal">Pedestal</option><option value="bastidor">Bastidor sobre pared</option></select></label>
-                <label class="block">Color de la mano<input id="custom-hand-color" type="color" value="#b06c4d" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
-                <label class="block">Color de fondo<input id="custom-background-color" type="color" value="#ded6ca" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
-                <label class="block">Terminación del fondo<select id="custom-pattern" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="solid">Liso</option><option value="spots">Manchas mezcladas</option><option value="stripes">Rayas</option><option value="geometric">Geométrico</option></select></label>
-                <label class="block">Color de manchas / diseño<input id="custom-accent-color" type="color" value="#e4007c" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+            <div class="p-5 grid lg:grid-cols-[minmax(280px,.8fr)_minmax(360px,1.2fr)] gap-6">
+                <section class="text-sm"><p class="text-pink-400 text-[10px] font-bold tracking-widest uppercase mb-3">Definí el acabado</p><div class="grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                    <label class="block">Medidas<select id="custom-size" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="30 x 40 cm">30 x 40 cm</option><option value="50 x 70 cm" selected>50 x 70 cm</option><option value="70 x 100 cm">70 x 100 cm</option></select></label>
+                    <label class="block">Superficie<select id="custom-surface" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="pedestal">Pedestal</option><option value="bastidor">Bastidor sobre pared</option></select></label>
+                    <label class="block">Color de la mano<input id="custom-hand-color" type="color" value="#b06c4d" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+                    <label class="block">Color de fondo<input id="custom-background-color" type="color" value="#ded6ca" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+                    <label class="block">Terminación del fondo<select id="custom-pattern" class="mt-1 w-full rounded-lg bg-stone-800 border border-stone-700 p-2 text-white"><option value="solid">Liso</option><option value="spots">Manchas mezcladas</option><option value="stripes">Rayas</option><option value="geometric">Geométrico</option></select></label>
+                    <label class="block">Color de manchas / diseño<input id="custom-accent-color" type="color" value="#e4007c" class="mt-1 block h-10 w-full rounded bg-stone-800 p-1"></label>
+                </div></section>
+                <section class="min-w-0"><div class="flex items-center justify-between gap-3 mb-3"><div><p class="text-pink-400 text-[10px] font-bold tracking-widest uppercase">Croquis 360° en transformación</p><p class="text-stone-400 text-xs mt-1">Previsualización del gesto que acabás de capturar.</p></div><span id="preview-surface-label" class="text-[10px] rounded-full px-2 py-1 bg-stone-800 text-stone-300">Pedestal</span></div>
+                    <div class="relative aspect-[4/3] overflow-hidden rounded-xl border border-stone-700 bg-[#161514]"><img id="customization-preview" class="absolute inset-0 w-full h-full object-cover" alt="Previsualización del croquis 360 grados personalizado"><div class="absolute left-3 top-3 text-[10px] font-bold tracking-wider bg-black/60 px-2 py-1 rounded text-white">VISTA 360°</div><div class="absolute right-3 top-8 bottom-8 border-l border-dashed border-white/70"></div><span id="preview-height-label" class="absolute right-5 top-1/2 -translate-y-1/2 -rotate-90 origin-center whitespace-nowrap text-[10px] font-bold bg-black/60 px-2 py-1 rounded">70 cm</span><div class="absolute left-10 right-10 bottom-5 border-t border-dashed border-white/70"></div><span id="preview-width-label" class="absolute bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-black/60 px-2 py-1 rounded">50 cm</span></div>
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs"><div class="rounded-lg border border-stone-800 bg-stone-950/50 p-3"><span class="block text-stone-500 text-[10px] uppercase tracking-wider">Escala elegida</span><strong id="preview-size-label" class="block mt-1 text-stone-100">50 x 70 cm</strong></div><div class="rounded-lg border border-stone-800 bg-stone-950/50 p-3"><span class="block text-stone-500 text-[10px] uppercase tracking-wider">Montaje</span><strong id="preview-mount-label" class="block mt-1 text-stone-100">Pedestal escultórico</strong></div></div>
+                </section>
             </div>
-            <div class="px-5 pb-3 text-xs text-stone-400">Los cambios se reflejan en el visor para que puedas decidir el acabado antes de confirmar.</div>
+            <div class="px-5 pb-3 text-xs text-stone-400">Cada ajuste se aplica al croquis 360° antes de confirmar la obra.</div>
             <div class="p-5 pt-3 border-t border-stone-800 flex flex-col-reverse sm:flex-row gap-2 justify-end"><button id="btn-customization-cancel" class="py-2 px-4 text-stone-300 text-sm">Volver al taller</button><button id="btn-customization-confirm" class="py-3 px-5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl font-bold text-sm">Confirmar obra y continuar →</button></div>
         </div>
     </div>
@@ -625,6 +631,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         const btnCustomizationCancel = document.getElementById('btn-customization-cancel');
         const btnCustomizationConfirm = document.getElementById('btn-customization-confirm');
         const customizationInputs = ['custom-size', 'custom-surface', 'custom-hand-color', 'custom-background-color', 'custom-pattern', 'custom-accent-color'].map(id => document.getElementById(id));
+        const customizationPreview = document.getElementById('customization-preview');
+        const previewSurfaceLabel = document.getElementById('preview-surface-label');
+        const previewSizeLabel = document.getElementById('preview-size-label');
+        const previewMountLabel = document.getElementById('preview-mount-label');
+        const previewWidthLabel = document.getElementById('preview-width-label');
+        const previewHeightLabel = document.getElementById('preview-height-label');
 
         // --- VARIABLES DE ESTADO ---
         let stream = null;
@@ -1313,6 +1325,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             return new THREE.CanvasTexture(canvas);
         }
 
+        function refreshCustomizationPreview(settings) {
+            const [width, height] = settings.size.split(' x ');
+            const onWall = settings.surface === 'bastidor';
+            previewSurfaceLabel.textContent = onWall ? 'Bastidor sobre pared' : 'Pedestal';
+            previewSizeLabel.textContent = settings.size;
+            previewMountLabel.textContent = onWall ? 'Bastidor sobre pared' : 'Pedestal escultórico';
+            previewWidthLabel.textContent = width;
+            previewHeightLabel.textContent = height;
+            if (renderer && scene && camera3D) {
+                renderer.render(scene, camera3D);
+                customizationPreview.src = renderer.domElement.toDataURL('image/png');
+            }
+        }
+
         function applyCustomization() {
             if (!scene || !handMeshGroup) return;
             const settings = selectedCustomization();
@@ -1330,6 +1356,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             handMeshGroup.scale.setScalar(scale);
             pedestal.visible = settings.surface === 'pedestal';
             handMeshGroup.position.y = settings.surface === 'pedestal' ? -25 : -5;
+            refreshCustomizationPreview(settings);
         }
 
         // Abrir primero el paso de personalización, antes del modal de pago.
