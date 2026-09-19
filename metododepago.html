@@ -70,6 +70,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         transition: opacity 0.3s; 
     }
     .nav-pantera .cta-button-custom:hover { opacity: 0.9; }
+    .nav-pantera { display: none !important; }
 </style>
 
 <!-- NAV -->
@@ -88,7 +89,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <li><a href="metododepago.html" class="hover:text-[#E4007C] transition">Medios de Pago</a></li>
             <li data-ch-logged-out><a href="perfil.html" class="hover:text-[#E4007C] transition">Ingresar</a></li>
             <li data-ch-logged-in class="hidden"><a href="perfil.html" class="hover:text-[#E4007C] transition">Mi perfil</a></li>
-            <li><a href="https://www.constanzatubio.com" class="cta-button-custom" target="_blank">Estudio</a></li>
+            <li><a href="simulador.html" class="cta-button-custom">Encargar una obra</a></li>
         </ul>
         <button id="menuBtn" class="md:hidden text-white focus:outline-none" aria-label="Toggle Menu">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -104,9 +105,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <a href="metododepago.html" class="block py-2">Medios de Pago</a>
         <a href="perfil.html" class="block py-2" data-ch-logged-out>Ingresar</a>
         <a href="perfil.html" class="block py-2 hidden" data-ch-logged-in>Mi perfil</a>
-        <a href="https://www.constanzatubio.com" class="cta-button-custom block mt-2">Estudio</a>
+        <a href="simulador.html" class="cta-button-custom block mt-2">Encargar una obra</a>
     </div>
 </nav>
+
+<style>
+.ps-header{position:sticky;top:0;z-index:60;background:rgba(5,5,5,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.14)}.ps-nav{max-width:1240px;margin:auto;min-height:76px;padding:0 26px;display:flex;align-items:center;justify-content:space-between;gap:20px}.ps-brand{font-family:Manrope,system-ui,sans-serif;font-weight:800;letter-spacing:-1.4px;font-size:20px;color:#fafafa}.ps-brand b{color:#f02b91}.ps-brand small{font:500 10px 'DM Mono',monospace;letter-spacing:.07em;color:#aaaab1;margin-left:9px}.ps-links{display:flex;align-items:center;gap:22px;font:700 13px Manrope,system-ui,sans-serif;color:#cacacf}.ps-links a{color:inherit;text-decoration:none}.ps-links a:hover{color:#fff}.ps-cta{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:800;color:#fff!important;background:#f02b91;padding:11px 17px;transition:.2s ease}.ps-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(240,43,145,.25)}.ps-menu{display:none;background:none;border:0;color:#fff;font-size:24px}@media(max-width:900px){.ps-menu{display:block}.ps-links{display:none}.ps-links.open{display:flex;position:absolute;left:0;right:0;top:76px;z-index:10;flex-direction:column;align-items:stretch;padding:20px 26px;background:#0a0a0c;border-bottom:1px solid rgba(255,255,255,.14)}.ps-links.open a{text-align:center;padding:5px}.ps-links.open .ps-cta{text-align:center}.ps-brand small{display:none}.ps-nav{padding:0 18px}}
+</style>
+<header class="ps-header"><nav class="ps-nav"><a class="ps-brand" href="index.html">PANTERA<b>SAMA</b><small>CLAYHAND 3D</small></a><button class="ps-menu" aria-label="Abrir menú" id="ps-menu">☰</button><div class="ps-links" id="ps-links"><a href="index.html">Inicio</a><a href="simulador.html">Simulador de croquis</a><a href="laboratorioalquimia.html">Sesión de alquimia</a><a href="index.html#proceso">El proceso</a><a href="blog_alquimia_y_mudras.html">Blog</a><a href="metododepago.html">Medios de pago</a><a href="perfil.html" data-ch-logged-out>Ingresar</a><a href="perfil.html" data-ch-logged-in class="hidden">Mi perfil</a><a class="ps-cta" href="simulador.html">Encargar una obra <span>→</span></a></div></nav></header>
+<script>document.getElementById('ps-menu').addEventListener('click',()=>document.getElementById('ps-links').classList.toggle('open'));</script>
 
 <header class="py-16 px-6 max-w-5xl mx-auto text-center">
     <h1 class="text-5xl md:text-6xl font-bold mb-6 text-neutral-900 leading-tight">Escultura Original <br>hecha a tu medida.</h1>
